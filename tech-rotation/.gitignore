@@ -15,3 +15,6 @@ __pycache__/
 
 # data/state.json und data/orders.jsonl werden bewusst versioniert:
 # sie sind der Zustand, den der CI-Lauf zwischen zwei Monaten mitnimmt.
+
+# Lokale Zugangsdaten -- gehoeren nie ins Repository
+.env

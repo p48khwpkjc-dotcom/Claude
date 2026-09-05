@@ -55,9 +55,117 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+## Der erste Lauf
+
+Sieben Schritte vom frischen Klon bis zum laufenden Depot. Die ersten fuenf
+bewegen kein Geld.
+
+**1. Installieren**
+
+```bash
+cd tech-rotation
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+python -m pytest -q          # muss gruen sein, bevor irgendetwas laeuft
+```
+
+**2. Startbereitschaft pruefen**
+
+```bash
+techrot preflight
+```
+
+Prueft in einem Durchgang: Konfiguration, Erreichbarkeit und Aktualitaet der
+Kursdaten, Datenqualitaet je Ticker, Benchmark-Historie und Regime-Lage,
+Schreibrechte fuer Zustand und Journal, Depotstand, Brokerzugang — und zeigt
+zum Schluss, was der erste Lauf konkret kaufen wuerde. Rueckgabewert 0 heisst
+sauber, 1 heisst Hinweise, ab 2 fehlt etwas Wesentliches.
+
+Der haeufigste Hinweis beim ersten Mal: einzelne Ticker haben zu wenig
+Historie (junge Boersengaenge). Das ist kein Fehler, sie fallen einfach aus
+dem Universum, bis sie 300 Handelstage haben.
+
+**3. Backtest ansehen**
+
+```bash
+techrot backtest --out out/
+```
+
+Das ist der Moment, die Strategie abzulehnen. Passen Drawdown und Turnover
+nicht zu dir, aendere `config.yaml` und rechne neu — nicht spaeter mit echtem
+Geld. `out/rebalances.csv` zeigt je Termin, welche Titel gehalten wurden und
+warum die Exposure so hoch war.
+
+**4. Startkapital setzen**
+
+```yaml
+execution:
+  starting_cash: 100000    # dein tatsaechlicher Einsatz
+```
+
+Gilt nur fuer den Paper-Broker. Bei Alpaca kommt der Depotwert vom Konto und
+dieser Wert wird ignoriert.
+
+**5. Papierlauf**
+
+```bash
+techrot rebalance --execute      # broker: paper
+techrot status
+```
+
+Laesst mindestens einen Monatswechsel mitlaufen, bevor echtes Geld folgt. So
+siehst du eine echte Rotation statt nur den Erstkauf.
+
+**6. Broker anbinden** (nur fuer echten Handel)
+
+```bash
+cp .env.example .env             # Schluessel eintragen
+set -a && source .env && set +a
+```
+
+```yaml
+execution:
+  broker: alpaca
+  mode: paper                    # Alpaca-Papierkonto, echte API, kein Geld
+```
+
+Nochmal `techrot preflight` — jetzt muss unter *Brokerzugang* der echte
+Depotwert stehen. Danach laeuft die Strategie gegen Alpacas Papierkonto:
+gleiche API, gleiche Orders, kein Risiko.
+
+**7. Scharf schalten**
+
+```yaml
+execution:
+  mode: live
+```
+
+```bash
+export TECHROT_ALLOW_LIVE=I_UNDERSTAND
+techrot preflight                # muss "LIVE" melden
+techrot rebalance                # Trockenlauf: Orders lesen
+techrot rebalance --execute      # jetzt fliesst Geld
+```
+
+Fuer den automatischen Betrieb den Workflow auf den Default-Branch bringen,
+`ALPACA_API_KEY_ID` und `ALPACA_API_SECRET_KEY` als Repository-Secrets
+hinterlegen und in `.github/workflows/tech-rotation.yml` die auskommentierte
+`TECHROT_ALLOW_LIVE`-Zeile aktivieren.
+
+### Was der automatische Lauf taeglich tut
+
+Der Workflow laeuft an jedem Handelstag, rebalanciert aber nur einmal im
+Monat. An allen anderen Tagen schreibt er nur den Depotwert fort und
+committet `data/state.json`. Das ist Absicht: die Drawdown-Bremse braucht
+eine taegliche Equity-Kurve — genau wie im Backtest. Mit nur monatlichen
+Punkten wuerde ein Einbruch zwischen zwei Terminen schlicht nicht gesehen.
+Ein Lauf mit Handel ist am Commit *"Rebalancing"* statt *"Depotbewertung"*
+erkennbar.
+
 ## Benutzung
 
 ```bash
+techrot preflight                  # Startbereitschaft in einem Durchgang
 techrot check-data                 # Datenqualitaet je Ticker
 techrot rank                       # aktuelle Rangliste
 techrot backtest --out out/        # historische Simulation
@@ -165,7 +273,7 @@ rueckwirkend mit den heutigen Gewinnern gerechnet (Survivorship-Bias).
 ## Tests
 
 ```bash
-python -m pytest -q          # 119 Tests
+python -m pytest -q          # 157 Tests
 ```
 
 Die Fixtures sind analytisch konstruiert (exponentieller Trend mal Sinuswelle),
@@ -201,9 +309,10 @@ src/techrot/
   execution.py           Der Lauf: Plan bauen, Plan ausfuehren
   backtest.py            Monatliche Simulation
   report.py              Konsolen- und Markdown-Ausgabe
+  preflight.py           Startbereitschaftspruefung
   cli.py                 Kommandozeile
 scripts/make_demo.py     Synthetisches Setup ohne Netz
-tests/                   119 Tests
+tests/                   157 Tests
 ```
 
 `plan_rebalance` ist frei von Seiteneffekten und liefert einen vollstaendig

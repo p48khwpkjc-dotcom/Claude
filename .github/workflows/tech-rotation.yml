@@ -71,10 +71,22 @@ jobs:
       - name: Abhaengigkeiten installieren
         run: pip install -e .
 
-      - name: Datenqualitaet pruefen
-        id: data
-        continue-on-error: true
-        run: techrot check-data --refresh | tee "$GITHUB_STEP_SUMMARY"
+      - name: Startbereitschaft pruefen
+        id: preflight
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: |
+          set +e
+          techrot preflight --refresh | tee -a "$GITHUB_STEP_SUMMARY"
+          CODE=${PIPESTATUS[0]}
+          # 0 = sauber, 1 = Hinweise (z.B. Benchmark unter der SMA -- ein
+          # gueltiger Zustand), ab 2 fehlt etwas Wesentliches.
+          if [ "$CODE" -ge 2 ]; then
+            echo "Preflight blockiert den Lauf." >&2
+            exit 1
+          fi
+          exit 0
 
       - name: Rebalancing
         id: run
@@ -115,8 +127,16 @@ jobs:
             echo "Kein Zustandswechsel -- nichts zu committen."
             exit 0
           fi
+          # An Handelstagen ohne Rebalancing aendert sich nur die
+          # Equity-Kurve. Das ist beabsichtigt: die Drawdown-Bremse braucht
+          # taegliche Punkte, genau wie im Backtest.
+          if git diff --quiet -- data/orders.jsonl; then
+            NACHRICHT="Tech-Rotation: Depotbewertung $(date -u +%Y-%m-%d)"
+          else
+            NACHRICHT="Tech-Rotation: Rebalancing $(date -u +%Y-%m-%d)"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
-          git commit -m "Tech-Rotation: Zustand nach Lauf vom $(date -u +%Y-%m-%d)"
+          git commit -m "$NACHRICHT"
           git push

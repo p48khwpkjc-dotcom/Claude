@@ -1,5 +1,6 @@
 """Kommandozeile der Strategie.
 
+    techrot preflight   Startbereitschaft pruefen
     techrot rank        Rangliste des Universums
     techrot rebalance   Rebalancing planen (Standard: Trockenlauf)
     techrot backtest    Historische Simulation
@@ -20,6 +21,7 @@ from .brokers import BrokerError, build_broker
 from .config import Config, ConfigError, load_config
 from .data import DataError, check_data_quality, load_prices
 from .execution import execute_plan, mark_to_market, plan_rebalance
+from .preflight import render_preflight, run_preflight
 from .report import plan_to_markdown, render_backtest, render_plan
 from .state import PortfolioState
 
@@ -67,8 +69,16 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         print("\n[Trockenlauf] Keine Orders gesendet. Mit --execute ausfuehren.")
         return 0
 
+    state_path = cfg.path(cfg.execution.state_file)
+
     if not plan.due:
-        print("\nKein Rebalancing faellig -- nichts zu tun.")
+        # Auch ohne Handel den Depotwert festhalten. Die Drawdown-Bremse
+        # braucht eine taegliche Equity-Kurve -- genau wie im Backtest. Nur
+        # monatliche Punkte wuerden einen Einbruch zwischen zwei Terminen
+        # schlicht nicht sehen.
+        mark_to_market(state, prices)
+        state.save(state_path)
+        print("\nKein Rebalancing faellig -- nur Depotbewertung fortgeschrieben.")
         return 0
 
     assert broker is not None  # oben zusammen mit args.execute gebaut
@@ -90,10 +100,16 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         )
 
     mark_to_market(state, prices)
-    state_path = cfg.path(cfg.execution.state_file)
     state.save(state_path)
     print(f"\nZustand gespeichert: {state_path}")
     return 1 if failed else 0
+
+
+def cmd_preflight(args: argparse.Namespace) -> int:
+    cfg, state = _load(args)
+    result = run_preflight(cfg, state, refresh=args.refresh)
+    print(render_preflight(result))
+    return result.exit_code
 
 
 def cmd_backtest(args: argparse.Namespace) -> int:
@@ -182,6 +198,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     def add_common(p: argparse.ArgumentParser) -> None:
         p.add_argument("--refresh", action="store_true", help="Cache umgehen")
+
+    p_pre = sub.add_parser("preflight", help="Startbereitschaft pruefen")
+    add_common(p_pre)
+    p_pre.set_defaults(func=cmd_preflight)
 
     p_rank = sub.add_parser("rank", help="Rangliste anzeigen")
     add_common(p_rank)
