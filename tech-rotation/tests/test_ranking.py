@@ -89,7 +89,10 @@ def test_ranking_korreliert_mit_dem_trend(panel: PriceData, cfg):
 
     expected = pd.Series({t: int(t[1:]) for t in positive})
     actual = ranking.loc[positive, "rank"]
-    assert expected.corr(actual, method="spearman") > 0.85
+    # Rangkorrelation von Hand: Pearson auf den Raengen ist Spearman.
+    # pandas' method="spearman" wuerde scipy nachladen, das hier nicht zu den
+    # Abhaengigkeiten gehoert.
+    assert expected.rank().corr(actual.rank()) > 0.85
 
     assert ranking.index[0] == "T00"
     # Fallende Titel landen hinter allen steigenden.
