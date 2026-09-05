@@ -43,6 +43,18 @@ def cmd_rank(args: argparse.Namespace) -> int:
 def cmd_rebalance(args: argparse.Namespace) -> int:
     cfg, state = _load(args)
     prices = load_prices(cfg, refresh=args.refresh)
+
+    # Bei echter Ausfuehrung zuerst den Broker fragen: der Plan muss auf dem
+    # tatsaechlichen Depotstand rechnen, nicht auf der lokalen Buchhaltung.
+    broker = None
+    if args.execute:
+        try:
+            broker = build_broker(cfg.execution, state)
+            broker.sync(state)
+        except BrokerError as exc:
+            print(f"FEHLER Broker: {exc}", file=sys.stderr)
+            return 2
+
     plan = plan_rebalance(cfg, prices, state, force=args.force)
 
     print(render_plan(plan, top=args.top))
@@ -59,12 +71,7 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         print("\nKein Rebalancing faellig -- nichts zu tun.")
         return 0
 
-    try:
-        broker = build_broker(cfg.execution, state)
-    except BrokerError as exc:
-        print(f"\nFEHLER Broker: {exc}", file=sys.stderr)
-        return 2
-
+    assert broker is not None  # oben zusammen mit args.execute gebaut
     mode = "LIVE" if cfg.execution.mode == "live" else "Papier"
     print(f"\nSende {len(plan.orders)} Orders an {broker.name} ({mode}) ...")
     fills = execute_plan(cfg, plan, state, broker)

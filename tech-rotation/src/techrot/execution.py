@@ -224,20 +224,15 @@ def execute_plan(
             },
         )
 
-    # Bei einem externen Broker ist dessen Positionsbestand massgeblich, nicht
-    # die lokale Buchhaltung.
-    if broker.name != "paper":
-        try:
-            state.positions = broker.positions()
-        except Exception as exc:  # noqa: BLE001
-            _append_journal(
-                journal,
-                {
-                    "run_id": run_id,
-                    "status": "position_sync_failed",
-                    "error": str(exc),
-                },
-            )
+    # Nach dem Handel gilt der Kontostand des Brokers, nicht die lokale
+    # Buchhaltung. Fuer den Paper-Broker ist das ein No-op.
+    try:
+        broker.sync(state)
+    except Exception as exc:  # noqa: BLE001
+        _append_journal(
+            journal,
+            {"run_id": run_id, "status": "account_sync_failed", "error": str(exc)},
+        )
 
     state.last_rebalance = str(plan.asof.date())
     return fills

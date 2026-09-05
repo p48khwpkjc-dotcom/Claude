@@ -11,9 +11,11 @@ import json
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from io import StringIO
 from pathlib import Path
 from typing import Protocol
 
+import numpy as np
 import pandas as pd
 
 from .config import Config, DataConfig
@@ -68,7 +70,10 @@ def _normalize(frame: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
     frame = frame[~frame.index.duplicated(keep="last")].sort_index()
     for ticker in tickers:
         if ticker not in frame.columns:
-            frame[ticker] = pd.NA
+            # np.nan, nicht pd.NA: pd.NA laesst sich nicht nach float64 casten
+            # und wuerde den ganzen Lauf abbrechen, statt den fehlenden Ticker
+            # der Qualitaetspruefung zu ueberlassen.
+            frame[ticker] = np.nan
     return frame[tickers].astype("float64")
 
 
@@ -114,6 +119,10 @@ class StooqProvider:
 
     name = "stooq"
 
+    def __init__(self, transport: object | None = None) -> None:
+        # Nur Tests reichen hier einen Transport herein.
+        self._transport = transport
+
     def fetch(
         self, tickers: list[str], start: datetime, end: datetime
     ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -121,7 +130,11 @@ class StooqProvider:
 
         closes: dict[str, pd.Series] = {}
         volumes: dict[str, pd.Series] = {}
-        with httpx.Client(timeout=30.0, follow_redirects=True) as client:
+        with httpx.Client(
+            timeout=30.0,
+            follow_redirects=True,
+            transport=self._transport,  # type: ignore[arg-type]
+        ) as client:
             for ticker in tickers:
                 url = f"https://stooq.com/q/d/l/?s={ticker.lower()}.us&i=d"
                 try:
@@ -129,21 +142,27 @@ class StooqProvider:
                     resp.raise_for_status()
                 except httpx.HTTPError as exc:
                     raise DataError(f"Stooq-Abruf fuer {ticker} fehlgeschlagen: {exc}") from exc
-                from io import StringIO
 
                 frame = pd.read_csv(StringIO(resp.text))
-                if "Date" not in frame.columns:
+                # Stooq antwortet auf ein unbekanntes Symbol mit Klartext
+                # statt CSV -- so einen Ticker still ueberspringen.
+                if "Date" not in frame.columns or "Close" not in frame.columns:
                     continue
                 frame["Date"] = pd.to_datetime(frame["Date"])
                 frame = frame.set_index("Date").sort_index()
                 closes[ticker] = frame["Close"]
-                volumes[ticker] = frame.get("Volume", pd.Series(dtype="float64"))
+                if "Volume" in frame.columns:
+                    volumes[ticker] = frame["Volume"]
 
         if not closes:
             raise DataError("Stooq lieferte fuer kein Symbol Daten")
 
         close = pd.DataFrame(closes)
-        volume = pd.DataFrame(volumes).reindex(close.index)
+        # Ein Symbol ohne Volumenspalte bekommt NaN und faellt damit ueber die
+        # Liquiditaetspruefung heraus, statt still mit 0 durchzurutschen.
+        volume = pd.DataFrame(volumes, index=close.index) if volumes else pd.DataFrame(
+            index=close.index
+        )
         window = (close.index >= pd.Timestamp(start)) & (close.index <= pd.Timestamp(end))
         return _normalize(close[window], tickers), _normalize(volume[window], tickers)
 

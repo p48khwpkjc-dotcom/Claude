@@ -204,3 +204,47 @@ def test_up_to_schneidet_beide_frames(panel: PriceData):
     assert gekuerzt.close.index[-1] == asof
     assert gekuerzt.volume.index[-1] == asof
     assert len(gekuerzt.close) == len(gekuerzt.volume) == 101
+
+
+def test_externer_broker_ueberschreibt_den_lokalen_stand(panel: PriceData, cfg, tmp_path):
+    """Nach dem Handel gilt der Kontostand des Brokers, nicht die eigene
+    Buchhaltung -- sonst driften Depotwert und Ordergroessen auseinander."""
+    cfg = load_config(write_config(tmp_path, list(cfg.tickers)))
+    state = fresh_state(cfg)
+    plan = plan_rebalance(cfg, panel, state, force=True)
+
+    class ExternerBroker(PaperBroker):
+        name = "extern"
+
+        def sync(self, state: PortfolioState) -> None:
+            state.positions = {"T00": 42.0}
+            state.cash = 777.0
+
+    execute_plan(cfg, plan, state, ExternerBroker(state, cfg.execution))
+
+    assert state.positions == {"T00": 42.0}
+    assert state.cash == pytest.approx(777.0)
+
+
+def test_fehlgeschlagener_sync_landet_im_journal(panel: PriceData, cfg, tmp_path):
+    cfg = load_config(write_config(tmp_path, list(cfg.tickers)))
+    state = fresh_state(cfg)
+    plan = plan_rebalance(cfg, panel, state, force=True)
+
+    class SyncKaputt(PaperBroker):
+        name = "extern"
+
+        def sync(self, state: PortfolioState) -> None:
+            raise BrokerError("Konto nicht abrufbar")
+
+    fills = execute_plan(cfg, plan, state, SyncKaputt(state, cfg.execution))
+
+    # Die Orders sind trotzdem durch, nur der Abgleich fehlt.
+    assert len(fills) == len(plan.orders)
+    entries = [
+        json.loads(line)
+        for line in cfg.path(cfg.execution.journal_file).read_text().splitlines()
+    ]
+    sync_fehler = [e for e in entries if e["status"] == "account_sync_failed"]
+    assert len(sync_fehler) == 1
+    assert "Konto nicht abrufbar" in sync_fehler[0]["error"]

@@ -52,6 +52,10 @@ class Broker(Protocol):
 
     def submit(self, order: Order) -> Fill: ...
 
+    def sync(self, state: PortfolioState) -> None:
+        """Uebernimmt den Kontostand des Brokers in den lokalen Zustand."""
+        ...
+
 
 class PaperBroker:
     """Simuliert Ausfuehrungen mit Slippage- und Gebuehrenmodell.
@@ -70,6 +74,9 @@ class PaperBroker:
 
     def positions(self) -> dict[str, float]:
         return dict(self.state.positions)
+
+    def sync(self, state: PortfolioState) -> None:
+        """Nichts zu tun: der Paper-Broker bucht direkt in den Zustand."""
 
     def submit(self, order: Order) -> Fill:
         direction = 1.0 if order.quantity > 0 else -1.0
@@ -99,7 +106,7 @@ class AlpacaBroker:
     PAPER_URL = "https://paper-api.alpaca.markets"
     LIVE_URL = "https://api.alpaca.markets"
 
-    def __init__(self, cfg: ExecutionConfig) -> None:
+    def __init__(self, cfg: ExecutionConfig, transport: object | None = None) -> None:
         import httpx
 
         key = os.environ.get("ALPACA_API_KEY_ID")
@@ -125,6 +132,9 @@ class AlpacaBroker:
                 "APCA-API-SECRET-KEY": secret,
                 "accept": "application/json",
             },
+            # Nur Tests reichen hier einen Transport herein; im Betrieb bleibt
+            # es der echte HTTP-Stack.
+            transport=transport,  # type: ignore[arg-type]
         )
 
     def close(self) -> None:
@@ -152,13 +162,27 @@ class AlpacaBroker:
             raise BrokerError(f"Alpaca {method} {path} nicht erreichbar: {exc}") from exc
         return resp.json()
 
-    def account_equity(self) -> float:
+    def account(self) -> dict[str, float]:
+        """Kontostand: Depotwert und freies Guthaben."""
         data = self._request("GET", "/v2/account")
-        return float(data["equity"])  # type: ignore[index,call-overload]
+        return {
+            "equity": float(data["equity"]),  # type: ignore[index,call-overload]
+            "cash": float(data["cash"]),  # type: ignore[index,call-overload]
+        }
 
     def positions(self) -> dict[str, float]:
         data = self._request("GET", "/v2/positions")
         return {p["symbol"]: float(p["qty"]) for p in data}  # type: ignore[union-attr]
+
+    def sync(self, state: PortfolioState) -> None:
+        """Uebernimmt Positionen UND Cash vom Broker.
+
+        Beides gehoert zusammen: mit gesyncten Positionen, aber lokal
+        fortgeschriebenem Cash waere der Depotwert falsch -- und damit jede
+        Ordergroesse, die Drawdown-Bremse und das Vol-Targeting.
+        """
+        state.positions = self.positions()
+        state.cash = self.account()["cash"]
 
     def submit(self, order: Order) -> Fill:
         quantity = abs(order.quantity)

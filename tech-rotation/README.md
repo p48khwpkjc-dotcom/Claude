@@ -121,6 +121,9 @@ ueber, Verkaeufe unter dem Referenzkurs. Das Papierergebnis ist damit eher zu
 pessimistisch als zu optimistisch.
 
 Alpaca zielt standardmaessig auf den **Paper-Endpunkt** (`paper-api.alpaca.markets`).
+Nach jedem Handel uebernimmt `sync()` Positionen **und** Cash vom Broker: mit
+gesyncten Positionen bei lokal fortgeschriebenem Cash waere der Depotwert falsch
+und damit jede Ordergroesse, die Drawdown-Bremse und das Vol-Targeting.
 
 ### Sicherungen
 
@@ -162,7 +165,7 @@ rueckwirkend mit den heutigen Gewinnern gerechnet (Survivorship-Bias).
 ## Tests
 
 ```bash
-python -m pytest -q          # 82 Tests
+python -m pytest -q          # 119 Tests
 ```
 
 Die Fixtures sind analytisch konstruiert (exponentieller Trend mal Sinuswelle),
@@ -173,6 +176,12 @@ Abgedeckt sind unter anderem: die Renditemessung auf bekannten Kursreihen, jeder
 einzelne Risikofilter, die Turnover-Bremse, das Positionslimit, Zustands-
 Persistenz, Ausfuehrung samt Journal, das Weiterlaufen nach einer abgelehnten
 Order und der Lookahead-Schutz.
+
+Der Alpaca-Pfad laeuft in den Tests gegen einen httpx-MockTransport: echte
+Client-Konstruktion, echte Header, echtes Fehlerverhalten, nur die Gegenstelle
+ist simuliert. Geprueft werden dabei auch alle drei Live-Verriegelungen und
+dass eine Fehlermeldung nie den API-Schluessel enthaelt. Es geht keine Anfrage
+ins Netz.
 
 Der letzte Punkt ist der wichtigste: `test_kein_lookahead` prueft, dass ein Plan
 zum Stichtag identisch ausfaellt, egal ob spaetere Kurse im Panel stehen oder
@@ -194,7 +203,7 @@ src/techrot/
   report.py              Konsolen- und Markdown-Ausgabe
   cli.py                 Kommandozeile
 scripts/make_demo.py     Synthetisches Setup ohne Netz
-tests/                   82 Tests
+tests/                   119 Tests
 ```
 
 `plan_rebalance` ist frei von Seiteneffekten und liefert einen vollstaendig
