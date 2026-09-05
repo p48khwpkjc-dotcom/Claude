@@ -1,0 +1,122 @@
+name: Tech-Rotation
+
+# Der Job laeuft an jedem US-Handelstag vor der Eroeffnung. Ob wirklich
+# rebalanciert wird, entscheidet die Strategie selbst: `techrot rebalance`
+# handelt nur, wenn seit dem letzten Lauf ein Kalendermonat vergangen ist.
+# Ein ausgefallener Lauf holt den Termin am naechsten Tag nach.
+#
+# 13:00 UTC liegt vor der Eroeffnung in beiden US-Zeitzonen (13:30 UTC im
+# Sommer, 14:30 UTC im Winter). Signale stammen damit vom Vortagesschluss,
+# die Marktorders werden zur Eroeffnung ausgefuehrt.
+#
+# Achtung: GitHub startet Cron-Workflows nur vom Default-Branch. Solange
+# diese Datei auf einem Feature-Branch liegt, laeuft nur der manuelle Start.
+
+on:
+  schedule:
+    - cron: "0 13 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Nur planen, keine Orders senden"
+        type: boolean
+        default: true
+      force:
+        description: "Auch ausserhalb des Monatstermins rebalancieren"
+        type: boolean
+        default: false
+  push:
+    paths:
+      - "tech-rotation/**"
+      - ".github/workflows/tech-rotation.yml"
+
+defaults:
+  run:
+    working-directory: tech-rotation
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Abhaengigkeiten installieren
+        run: pip install -e ".[dev]"
+      - name: Testsuite
+        run: python -m pytest -q
+
+  rebalance:
+    name: Rebalancing
+    # Auf Push nur testen: gehandelt wird nach Zeitplan oder auf Zuruf.
+    if: github.event_name != 'push'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: tech-rotation-rebalance
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Abhaengigkeiten installieren
+        run: pip install -e .
+
+      - name: Datenqualitaet pruefen
+        id: data
+        continue-on-error: true
+        run: techrot check-data --refresh | tee "$GITHUB_STEP_SUMMARY"
+
+      - name: Rebalancing
+        id: run
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          # TECHROT_ALLOW_LIVE bleibt bewusst ungesetzt. Echter Handel
+          # verlangt, dass diese Zeile hier bewusst aktiviert wird UND
+          # execution.mode in config.yaml auf "live" steht.
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "schedule" ] \
+             || [ "${{ inputs.dry_run }}" = "false" ]; then
+            ARGS="--execute"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          techrot rebalance $ARGS --markdown report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebalance-report-${{ github.run_id }}
+          path: |
+            tech-rotation/report.md
+            tech-rotation/data/state.json
+            tech-rotation/data/orders.jsonl
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - name: Zustand zurueckschreiben
+        if: success()
+        run: |
+          if git diff --quiet -- data/; then
+            echo "Kein Zustandswechsel -- nichts zu committen."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Tech-Rotation: Zustand nach Lauf vom $(date -u +%Y-%m-%d)"
+          git push

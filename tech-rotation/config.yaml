@@ -1,0 +1,131 @@
+# Tech-Rotation: Konfiguration
+# Alle Parameter der Strategie an einer Stelle. Jede Aenderung hier wirkt auf
+# Ranking, Risikopruefung, Backtest und Ausfuehrung gleichzeitig.
+
+strategy:
+  name: tech-rotation
+  base_currency: USD
+  benchmark: QQQ
+
+universe:
+  # Liquide US-Tech-Werte (Nasdaq-100-Kern + Halbleiter + Software).
+  # Bewusst statisch und versioniert: reproduzierbar, kein Survivorship-Bias
+  # durch stilles Nachziehen der Liste. Beim Aendern die Liste committen.
+  tickers:
+    - AAPL
+    - MSFT
+    - NVDA
+    - GOOGL
+    - AMZN
+    - META
+    - AVGO
+    - AMD
+    - TSM
+    - ORCL
+    - CRM
+    - ADBE
+    - NFLX
+    - CSCO
+    - QCOM
+    - TXN
+    - INTU
+    - AMAT
+    - LRCX
+    - KLAC
+    - MU
+    - PANW
+    - SNOW
+    - NOW
+    - SHOP
+    - UBER
+    - ARM
+    - MRVL
+    - ADI
+    - SNPS
+    - CDNS
+    - CRWD
+    - DDOG
+    - ANET
+    - APP
+    - PLTR
+
+data:
+  provider: yfinance        # yfinance | stooq | local_csv
+  cache_dir: data/cache
+  cache_ttl_hours: 12
+  history_years: 8
+  # Datenqualitaets-Gates. Ein Ticker, der eines davon reisst, faellt aus dem
+  # investierbaren Universum, statt mit Luecken ins Ranking zu gehen.
+  min_history_days: 300
+  max_staleness_days: 5
+  max_missing_ratio: 0.02
+
+ranking:
+  # Lookbacks in Handelstagen, gemessen ab dem Signaldatum rueckwaerts.
+  # "end: 21" ueberspringt den letzten Monat (Short-Term-Reversal-Effekt).
+  lookbacks:
+    mom_12_1:
+      start: 252
+      end: 21
+    mom_6_1:
+      start: 126
+      end: 21
+    mom_3_0:
+      start: 63
+      end: 0
+  vol_window: 63
+  # Gewichte der z-Scores im Gesamtscore. Summe wird normalisiert.
+  weights:
+    mom_12_1: 0.40
+    mom_6_1: 0.30
+    mom_3_0: 0.15
+    risk_adj_mom: 0.15
+  winsorize_z: 3.0
+
+selection:
+  top_n: 8
+  # Bestandsschutz: eine gehaltene Position bleibt, solange sie unter
+  # buffer_rank liegt. Senkt den Turnover deutlich, ohne das Signal zu
+  # verwaessern.
+  buffer_rank: 12
+  weighting: inverse_vol    # equal | inverse_vol
+
+risk:
+  eligibility:
+    min_avg_dollar_volume: 50000000
+    adv_window: 20
+    max_annual_vol: 0.90
+    require_positive_absolute_momentum: true
+    require_above_sma: 200        # 0 = Filter aus
+  portfolio:
+    max_position_weight: 0.20
+    max_gross_exposure: 1.00
+    min_names: 4
+    # Regime-Filter: liegt der Benchmark unter seiner SMA, wird die
+    # Zielexposure auf regime_exposure gekappt.
+    regime_sma: 200
+    regime_exposure: 0.0
+    # Volatilitaets-Targeting auf Portfolioebene.
+    vol_target: 0.18
+    vol_lookback: 63
+    max_vol_scalar: 1.0
+    # Drawdown-Bremse auf der eigenen Equity-Kurve.
+    max_drawdown_brake: 0.20
+    drawdown_exposure_floor: 0.30
+    max_turnover_per_rebalance: 0.60
+
+execution:
+  broker: paper             # paper | alpaca
+  mode: paper               # paper | live -- live braucht zusaetzlich TECHROT_ALLOW_LIVE
+  order_type: market
+  min_order_notional: 250
+  slippage_bps: 5
+  commission_bps: 1
+  starting_cash: 100000
+  state_file: data/state.json
+  journal_file: data/orders.jsonl
+
+backtest:
+  start: "2019-01-01"
+  end: null                 # null = bis zum letzten Kurs
+  rebalance: month_start    # month_start | month_end

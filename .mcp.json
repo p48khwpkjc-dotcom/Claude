@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "vibe-trading": {
+      "command": "${VIBE_TRADING_MCP_BIN:-vibe-trading-mcp}",
+      "args": [],
+      "env": {}
+    }
+  }
+}
