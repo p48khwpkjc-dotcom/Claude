@@ -30,8 +30,16 @@ from daytrader.config import Config, load_config
 from daytrader.data.loader import cache_path, read_cache
 from daytrader.strategies import available, build
 
-SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT",
-           "AVAXUSDT", "LINKUSDT", "DOGEUSDT", "DOTUSDT", "LTCUSDT", "ATOMUSDT"]
+SYMBOLS = [
+    # The original twelve.
+    "BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT",
+    "AVAXUSDT", "LINKUSDT", "DOGEUSDT", "DOTUSDT", "LTCUSDT", "ATOMUSDT",
+    # Widened so that "profitable on 60% of symbols" is a real hurdle rather
+    # than a coin flip over twelve correlated majors.
+    "TRXUSDT", "BCHUSDT", "ETCUSDT", "UNIUSDT", "AAVEUSDT", "NEARUSDT",
+    "FILUSDT", "ICPUSDT", "HBARUSDT", "VETUSDT", "ALGOUSDT", "INJUSDT",
+    "RUNEUSDT", "GRTUSDT", "SANDUSDT", "AXSUSDT",
+]
 
 # (decision interval, higher-timeframe filter, hold times in hours)
 # The higher-timeframe filter must actually be higher: resampling 4h to 4h
@@ -40,7 +48,17 @@ GRIDS = [("1h", "4h", [12, 24, 48]), ("4h", "1d", [48, 96, 192])]
 
 HTF = {iv: htf for iv, htf, _ in GRIDS}
 
-SPLITS = {"train": (0.00, 0.50), "test": (0.50, 0.75), "holdout": (0.75, 1.00)}
+# Split by calendar date, not by fraction of each symbol's history. Fractions
+# move when history is added, and moving them would slide the holdout boundary
+# backwards over ground that test has already been run on. These two dates are
+# exactly where the original 900-day fractional split fell, so the holdout
+# covers the same untouched period it always did -- and every symbol now shares
+# the same boundaries instead of each having its own.
+SPLITS = {
+    "train":   (None,         "2025-06-13"),
+    "test":    ("2025-06-13", "2026-01-24"),
+    "holdout": ("2026-01-24", None),
+}
 
 # --- the hurdles, fixed in advance (SUCHPROTOKOLL.md) ------------------------
 MIN_TRADES = 300
@@ -52,7 +70,8 @@ MIN_EXPECTANCY = 0.05
 def segment(df: pd.DataFrame, name: str, warmup: int) -> pd.DataFrame:
     """Slice one split, prefixed with enough history to warm the indicators."""
     lo, hi = SPLITS[name]
-    a, b = int(len(df) * lo), int(len(df) * hi)
+    a = 0 if lo is None else int(df.index.searchsorted(pd.Timestamp(lo, tz="UTC")))
+    b = len(df) if hi is None else int(df.index.searchsorted(pd.Timestamp(hi, tz="UTC")))
     return df.iloc[max(0, a - warmup):b]
 
 

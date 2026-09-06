@@ -18,6 +18,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
+import zlib
+
 import numpy as np
 import pandas as pd
 
@@ -82,7 +84,10 @@ def generate(
     spec = REGIMES[regime] if isinstance(regime, str) else regime
     vol = annual_vol if annual_vol is not None else spec.annual_vol
 
-    rng = np.random.default_rng(seed + abs(hash(symbol)) % 10_000)
+    # crc32, not hash(): Python randomises string hashing per process, so
+    # hash() here made the "deterministic" generator produce different
+    # candles on every run and turned selective strategies into flaky tests.
+    rng = np.random.default_rng(seed + zlib.crc32(symbol.encode()) % 10_000)
     minutes = bar_minutes(interval)
     start = start or datetime(2024, 1, 1, tzinfo=timezone.utc)
     index = pd.date_range(start, periods=bars, freq=f"{minutes}min", tz="UTC")
