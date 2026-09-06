@@ -5,9 +5,10 @@ gestartet bist: alles Wichtige liegt im Repo, es geht nichts verloren.
 
 ## Der Stand in einem Satz
 
-Der Backtest auf echten Kerzen ist gelaufen, und er ist negativ: keine der sechs
-Strategien verdient Geld, auch nicht ohne Gebühren. Die Einzelheiten stehen in
-**[ERGEBNIS.md](ERGEBNIS.md)**.
+Auf 5m verdient keine Strategie Geld und es gibt auch keine Kante
+(**[ERGEBNIS.md](ERGEBNIS.md)**). Auf 1h gibt es eine — klein, aber in beiden
+Hälften stabil — und sie ist um rund 0,1 R pro Trade kleiner als die Taker-Gebühr
+(**[ZEITRAHMEN.md](ZEITRAHMEN.md)**).
 
 ## Fertig und getestet
 
@@ -59,19 +60,48 @@ python -m daytrader backtest              # -> out/report.md
 python -m daytrader costs
 ```
 
+## Was der Zeitrahmen-Durchgang ergeben hat
+
+Richtung 1 aus ERGEBNIS.md ist abgearbeitet: 15m, 30m und 1h gerechnet, 900 Tage,
+72 Kombinationen aus Zeitrahmen, Haltedauer und Strategie. Drei Ergebnisse:
+
+- **Der Zeitrahmen wirkt wie vorhergesagt.** Von 5m auf 1h wird ein Trade
+  viereinhalbmal billiger (0,69 R → 0,15 R bei 2×ATR), der Erwartungswert steigt
+  von −0,41 R auf −0,07 R.
+- **Die Haltedauer muss zur Kerze passen, nicht zur Uhr.** Rund dreißig Kerzen:
+  8 h auf 15m, 12 h auf 30m, 24 h auf 1h. Drei Stunden auf 1h schneiden zwei
+  Drittel der erreichbaren Ziele ab. Die Obergrenze liegt ohnehin bei knapp 29 %
+  der Trades — mehr erreicht ihr Ziel nie, egal wie lange man hält.
+- **Auf 1h liegen 5 von 6 Strategien ohne Kosten in beiden Hälften über 1,0.**
+  Die Rohkante beträgt +0,03 bis +0,08 R, die Gebühr 0,15 R. Es fehlen also rund
+  0,1 R pro Trade.
+
+Die Konfigurationen liegen in `configs/` und sind lauffähig:
+
+```bash
+python -m daytrader fetch --interval 1h --days 900
+python -m daytrader -c configs/1h.yaml backtest
+```
+
 ## Nächster Schritt
 
-Hier ist eine Entscheidung fällig, keine Programmieraufgabe. Der 5m-Intraday-
-Ansatz auf Preis und Volumen ist durchgerechnet und trägt nicht. Drei Richtungen
-stehen offen, jede verlässt die bisherige Anlage — ERGEBNIS.md wägt sie ab:
+Der Abstand ist jetzt beziffert statt behauptet, und das macht die Entscheidung
+schärfer. Zwei Wege bleiben:
 
-1. Längerer Zeitrahmen (1h/4h), wo derselbe Trade einen Bruchteil kostet
-2. Andere Gebührenstruktur (Maker statt Taker) — hilft nur mit einer Kante
-3. Eine andere Signalquelle: Orderbuch, Finanzierungsraten, Cross-Asset
+1. **Die Gebühr unter die Kante drücken.** Mit 0,02 % Maker statt 0,05 % Taker
+   stehen `donchian_breakout` (1,06 / 1,07) und `squeeze_breakout` (1,02 / 1,03)
+   in beiden Hälften über eins. Nur bekommt eine Ausbruchsstrategie keine
+   Maker-Fills — die Limit-Order füllt bevorzugt, wenn der Ausbruch scheitert.
+   Diesen Effekt kann die Engine nicht abbilden, der Lauf ist eine Obergrenze.
+   Wer hier weitermacht, muss zuerst die Negativauslese modellieren.
+2. **Die Kante wachsen lassen.** Dafür braucht es ein Signal, das nicht aus Preis
+   und Volumen derselben Kerzen stammt: Orderbuch, Finanzierungsraten,
+   Cross-Asset.
 
-Was **nicht** ansteht: an Parametern drehen, bis eine Kurve nach oben zeigt. Bei
-sechs Strategien und einem kostenfreien Profitfaktor um 1,0 findet man diese
-Kurve garantiert, und sie bedeutet nichts.
+Was **nicht** ansteht: an Parametern drehen, bis eine Kurve nach oben zeigt. Von
+72 gerechneten Kombinationen lagen zwei außerhalb der Stichprobe über 1,0 und nur
+eine davon auch innerhalb, mit 1,01. Der Median liegt bei 0,70. Bei so vielen
+Versuchen ist die beste Zelle die Erwartung, keine Entdeckung.
 
 Der Live-Loop gegen die Testnet-API ist weiterhin nicht gebaut — und solange
 keine Strategie im Backtest trägt, gibt es dafür auch keinen Anlass.

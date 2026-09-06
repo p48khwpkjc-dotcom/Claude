@@ -7,6 +7,13 @@ Stand: fertig gerechnet, und das Ergebnis ist negativ. Auf 466.557 echten 5m-Ker
 (BTC, ETH, SOL, 18 Monate) verdient keine der sechs Strategien Geld — auch nicht mit
 Gebühren und Slippage auf null. Der Befund und was daraus folgt: **[ERGEBNIS.md](ERGEBNIS.md)**.
 
+Auf höheren Zeitrahmen sieht es anders aus: auf 1h-Kerzen liegen fünf von sechs
+Strategien ohne Kosten in beiden Hälften über einem Profitfaktor von 1,0. Diese
+Rohkante ist real, aber mit +0,03 bis +0,08 R pro Trade kleiner als die
+Taker-Gebühr von 0,15 R. Der Durchgang über 15m, 30m und 1h — samt der Frage, wie
+lange ein Trade gehalten werden muss, um sein Ziel überhaupt zu erreichen — steht
+in **[ZEITRAHMEN.md](ZEITRAHMEN.md)**. Lauffähige Konfigurationen: `configs/`.
+
 ## Schnellstart
 
 ```bash

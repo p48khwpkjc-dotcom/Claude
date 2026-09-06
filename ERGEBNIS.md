@@ -102,6 +102,9 @@ verlassen die bisherige Anlage:
 
 1. **Längerer Zeitrahmen.** Auf 1h- oder 4h-Kerzen ist der ATR ein Vielfaches,
    die Gebühr bleibt gleich. Dieselbe Strategie kostet dort einen Bruchteil.
+   → Durchgerechnet in **[ZEITRAHMEN.md](ZEITRAHMEN.md)**: die Kosten fallen wie
+   erwartet, und auf 1h taucht erstmals eine in beiden Hälften stabile Rohkante
+   auf. Sie bleibt um rund 0,1 R pro Trade unter der Gebühr.
 2. **Andere Gebührenstruktur.** Maker-Orders statt Taker, oder ein Konto mit
    Volumenrabatt. Das ändert die Größenordnung, nicht das Vorzeichen — ohne
    Kante bringt auch das nichts.
