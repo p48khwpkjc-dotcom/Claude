@@ -26,6 +26,8 @@ andere mit `--source synthetic` weiter.
 Kommt die Umgebung an keine Börse heran, transportiert `export`/`verify` die Kerzen
 über das Repository dorthin: Schritt für Schritt in **[DATEN-HOLEN.md](DATEN-HOLEN.md)**.
 
+Aktueller Projektstand und nächster Schritt: **[STATUS.md](STATUS.md)**.
+
 ## Das Wichtigste zuerst: die Kostenrechnung
 
 Bevor irgendeine Strategie sinnvoll bewertet werden kann, muss man wissen, was ein
