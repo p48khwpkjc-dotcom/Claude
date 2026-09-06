@@ -15,3 +15,6 @@ out/
 .env
 *.key
 secrets.yaml
+
+# Suchläufe schreiben ihre Rohtabellen hierher; sie sind reproduzierbar.
+research/search_*.csv
