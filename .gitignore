@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Market data cache and backtest output are reproducible, not source
+data/cache/
+out/
+
+# Never commit credentials
+.env
+*.key
+secrets.yaml

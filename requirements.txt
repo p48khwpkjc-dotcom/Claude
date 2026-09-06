@@ -1,0 +1,9 @@
+# Runtime
+numpy>=1.26
+pandas>=2.1
+pyarrow>=14.0      # parquet cache
+requests>=2.31
+PyYAML>=6.0
+
+# Development
+pytest>=7.4
