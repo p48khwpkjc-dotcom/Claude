@@ -13,7 +13,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -55,11 +55,11 @@ class VolExpansion(Strategy):
 
         offset = self.p["stop_atr_mult"] * atr
         if loc >= self.p["close_pct"]:
-            return Signal(Side.LONG, close - offset, close + self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"range {rng / med:.1f}x median, closed near the high")
+            return entry(Side.LONG, close, close - offset, close + self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"range {rng / med:.1f}x median, closed near the high")
         if loc <= 1.0 - self.p["close_pct"]:
-            return Signal(Side.SHORT, close + offset, close - self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"range {rng / med:.1f}x median, closed near the low")
+            return entry(Side.SHORT, close, close + offset, close - self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"range {rng / med:.1f}x median, closed near the low")
         return None

@@ -13,7 +13,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -59,18 +59,18 @@ class EmaMomentum(Strategy):
 
         # Only with the higher timeframe, never against it.
         if crossed_up and htf_close > htf_ema:
-            return Signal(
-                side=Side.LONG,
-                stop_loss=close - offset,
-                take_profit=close + self.p["target_r"] * offset,
+            return entry(
+                Side.LONG, close,
+                close - offset,
+                close + self.p["target_r"] * offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
                 reason=f"EMA{self.p['fast']}/{self.p['slow']} cross up, 1h above EMA{self.p['htf_ema']}",
             )
         if crossed_down and htf_close < htf_ema:
-            return Signal(
-                side=Side.SHORT,
-                stop_loss=close + offset,
-                take_profit=close - self.p["target_r"] * offset,
+            return entry(
+                Side.SHORT, close,
+                close + offset,
+                close - self.p["target_r"] * offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
                 reason=f"EMA{self.p['fast']}/{self.p['slow']} cross down, 1h below EMA{self.p['htf_ema']}",
             )

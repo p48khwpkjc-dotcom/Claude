@@ -15,7 +15,7 @@ from ..config import Config
 from ..core import indicators as ind
 from ..core.timeframe import bar_minutes
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -63,19 +63,19 @@ class OpeningRangeBreakout(Strategy):
         stop_offset = self.p["stop_atr_mult"] * atr
         if a["first_break_up"][i]:
             stop = close - stop_offset
-            return Signal(
-                side=Side.LONG,
-                stop_loss=stop,
-                take_profit=close + self.p["target_r"] * stop_offset,
+            return entry(
+                Side.LONG, close,
+                stop,
+                close + self.p["target_r"] * stop_offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
                 reason=f"break above {a['or_high'][i]:.2f} on {vol_ratio:.1f}x volume",
             )
         if a["first_break_dn"][i]:
             stop = close + stop_offset
-            return Signal(
-                side=Side.SHORT,
-                stop_loss=stop,
-                take_profit=close - self.p["target_r"] * stop_offset,
+            return entry(
+                Side.SHORT, close,
+                stop,
+                close - self.p["target_r"] * stop_offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
                 reason=f"break below {a['or_low'][i]:.2f} on {vol_ratio:.1f}x volume",
             )

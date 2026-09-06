@@ -11,7 +11,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -47,11 +47,11 @@ class DonchianBreakout(Strategy):
 
         offset = self.p["stop_atr_mult"] * atr
         if close > upper:
-            return Signal(Side.LONG, close - offset, close + self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"{self.p['channel']}-bar high broken at {upper:.2f}")
+            return entry(Side.LONG, close, close - offset, close + self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"{self.p['channel']}-bar high broken at {upper:.2f}")
         if close < lower:
-            return Signal(Side.SHORT, close + offset, close - self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"{self.p['channel']}-bar low broken at {lower:.2f}")
+            return entry(Side.SHORT, close, close + offset, close - self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"{self.p['channel']}-bar low broken at {lower:.2f}")
         return None

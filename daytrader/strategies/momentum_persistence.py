@@ -16,7 +16,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -65,12 +65,12 @@ class MomentumPersistence(Strategy):
         offset = self.p["stop_atr_mult"] * atr
         if z >= self.p["entry_z"]:
             self._last_entry = i
-            return Signal(Side.LONG, close - offset, close + self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"weekly momentum at {z:.1f} sigma")
+            return entry(Side.LONG, close, close - offset, close + self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"weekly momentum at {z:.1f} sigma")
         if z <= -self.p["entry_z"]:
             self._last_entry = i
-            return Signal(Side.SHORT, close + offset, close - self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"weekly momentum at {z:.1f} sigma")
+            return entry(Side.SHORT, close, close + offset, close - self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"weekly momentum at {z:.1f} sigma")
         return None

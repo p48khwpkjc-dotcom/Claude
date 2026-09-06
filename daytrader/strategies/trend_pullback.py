@@ -15,7 +15,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -60,11 +60,11 @@ class TrendPullback(Strategy):
         # The bar must dip to the EMA and close back above it: a touch that
         # holds, not a break that keeps going.
         if up and low <= pull and close > pull:
-            return Signal(Side.LONG, close - offset, close + self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"pullback to EMA{self.p['pull_ema']} in an uptrend")
+            return entry(Side.LONG, close, close - offset, close + self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"pullback to EMA{self.p['pull_ema']} in an uptrend")
         if down and high >= pull and close < pull:
-            return Signal(Side.SHORT, close + offset, close - self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"pullback to EMA{self.p['pull_ema']} in a downtrend")
+            return entry(Side.SHORT, close, close + offset, close - self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"pullback to EMA{self.p['pull_ema']} in a downtrend")
         return None

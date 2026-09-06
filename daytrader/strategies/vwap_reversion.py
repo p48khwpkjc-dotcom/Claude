@@ -14,7 +14,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -74,4 +74,4 @@ class VwapReversion(Strategy):
         reward = abs(target - price)
         if risk <= 0 or reward / risk < self.p["min_target_r"]:
             return None  # the snap-back is not worth the stop it needs
-        return Signal(side=side, stop_loss=stop, take_profit=target, reason=why)
+        return entry(side, price, stop, target, reason=why)

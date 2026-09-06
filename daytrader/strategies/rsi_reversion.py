@@ -12,7 +12,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -48,9 +48,9 @@ class RsiReversion(Strategy):
         # Wait for the turn: an oversold reading that is still falling is a
         # falling knife, not a signal.
         if rsi < self.p["oversold"] and rsi > rsi_prev:
-            return Signal(Side.LONG, close - stop, close + target,
-                          reason=f"RSI {rsi:.0f} turning up from oversold")
+            return entry(Side.LONG, close, close - stop, close + target,
+                         reason=f"RSI {rsi:.0f} turning up from oversold")
         if rsi > self.p["overbought"] and rsi < rsi_prev:
-            return Signal(Side.SHORT, close + stop, close - target,
-                          reason=f"RSI {rsi:.0f} rolling over from overbought")
+            return entry(Side.SHORT, close, close + stop, close - target,
+                         reason=f"RSI {rsi:.0f} rolling over from overbought")
         return None

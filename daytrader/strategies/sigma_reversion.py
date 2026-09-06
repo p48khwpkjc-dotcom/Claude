@@ -15,7 +15,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -55,11 +55,11 @@ class SigmaReversion(Strategy):
         z = ret / sd
         offset = self.p["stop_atr_mult"] * atr
         if z <= -self.p["sigma"]:
-            return Signal(Side.LONG, close - offset, close + self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"{z:.1f} sigma down bar in a flat regime")
+            return entry(Side.LONG, close, close - offset, close + self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"{z:.1f} sigma down bar in a flat regime")
         if z >= self.p["sigma"]:
-            return Signal(Side.SHORT, close + offset, close - self.p["target_r"] * offset,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"{z:.1f} sigma up bar in a flat regime")
+            return entry(Side.SHORT, close, close + offset, close - self.p["target_r"] * offset,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"{z:.1f} sigma up bar in a flat regime")
         return None

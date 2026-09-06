@@ -16,7 +16,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -59,13 +59,13 @@ class FailedBreakout(Strategy):
         if up == 1 and close < upper:
             stop = max(ph + 0.25 * atr, close + offset)
             risk = stop - close
-            return Signal(Side.SHORT, stop, close - self.p["target_r"] * risk,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"break above {upper:.4f} closed back inside")
+            return entry(Side.SHORT, close, stop, close - self.p["target_r"] * risk,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"break above {upper:.4f} closed back inside")
         if down == 1 and close > lower:
             stop = min(pl - 0.25 * atr, close - offset)
             risk = close - stop
-            return Signal(Side.LONG, stop, close + self.p["target_r"] * risk,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"break below {lower:.4f} closed back inside")
+            return entry(Side.LONG, close, stop, close + self.p["target_r"] * risk,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"break below {lower:.4f} closed back inside")
         return None

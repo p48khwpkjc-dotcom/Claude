@@ -17,7 +17,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.timeframe import align_to, resample_ohlcv
-from ..core.types import Signal
+from ..core.types import Side, Signal
 
 _REGISTRY: dict[str, type["Strategy"]] = {}
 
@@ -100,3 +100,26 @@ class Strategy(ABC):
 def clean(*values: float) -> bool:
     """True when every input is a usable number -- the warmup guard for signals."""
     return all(v == v and v not in (float("inf"), float("-inf")) for v in values)
+
+
+def entry(side: Side, price: float, stop: float, target: float | None,
+          *, trail_atr_mult: float | None = None, reason: str = "") -> Signal | None:
+    """Build a Signal, or None when the geometry is not a tradeable one.
+
+    A stop is normally price minus some multiple of ATR, and on a low-priced
+    instrument in a volatile stretch that subtraction can land at or below
+    zero; a short's target does the same thing. Those are not trades, they are
+    the arithmetic running off the end of the price scale, and a strategy that
+    hands one to the engine crashes the run. Standing aside is the honest
+    answer -- if the stop cannot fit above zero, the instrument is too cheap
+    for the risk the strategy wants to take.
+    """
+    if not clean(price, stop) or price <= 0 or stop <= 0:
+        return None
+    if target is not None and (not clean(target) or target <= 0):
+        return None
+    if side is Side.LONG and stop >= price:
+        return None
+    if side is Side.SHORT and stop <= price:
+        return None
+    return Signal(side, stop, target, reason=reason, trail_atr_mult=trail_atr_mult)

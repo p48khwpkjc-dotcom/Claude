@@ -14,7 +14,7 @@ import pandas as pd
 from ..config import Config
 from ..core import indicators as ind
 from ..core.types import Side, Signal
-from .base import Strategy, clean, register
+from .base import Strategy, clean, entry, register
 
 
 @register
@@ -61,15 +61,15 @@ class InsideBarBreak(Strategy):
             risk = close - stop
             if risk <= 0:
                 return None
-            return Signal(Side.LONG, stop, close + self.p["target_r"] * risk,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"break above a {self.p['contraction_bars']}-bar coil")
+            return entry(Side.LONG, close, stop, close + self.p["target_r"] * risk,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"break above a {self.p['contraction_bars']}-bar coil")
         if close < lo and htf_close < htf_ema:
             stop = hi + buf
             risk = stop - close
             if risk <= 0:
                 return None
-            return Signal(Side.SHORT, stop, close - self.p["target_r"] * risk,
-                          trail_atr_mult=self.p["trail_atr_mult"],
-                          reason=f"break below a {self.p['contraction_bars']}-bar coil")
+            return entry(Side.SHORT, close, stop, close - self.p["target_r"] * risk,
+                         trail_atr_mult=self.p["trail_atr_mult"],
+                         reason=f"break below a {self.p['contraction_bars']}-bar coil")
         return None
