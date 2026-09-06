@@ -34,7 +34,11 @@ SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT",
            "AVAXUSDT", "LINKUSDT", "DOGEUSDT", "DOTUSDT", "LTCUSDT", "ATOMUSDT"]
 
 # (decision interval, higher-timeframe filter, hold times in hours)
-GRIDS = [("1h", "4h", [12, 24, 48]), ("4h", "4h", [48, 96, 192])]
+# The higher-timeframe filter must actually be higher: resampling 4h to 4h
+# is a no-op, which quietly turns the trend filter into "the previous bar".
+GRIDS = [("1h", "4h", [12, 24, 48]), ("4h", "1d", [48, 96, 192])]
+
+HTF = {iv: htf for iv, htf, _ in GRIDS}
 
 SPLITS = {"train": (0.00, 0.50), "test": (0.50, 0.75), "holdout": (0.75, 1.00)}
 
@@ -157,8 +161,8 @@ def main() -> int:
 
     if args.final:
         print(f"HOLDOUT — einmalig, für {args.final} ({args.interval}, {args.hold}h)\n")
-        htf = "4h"
-        c = run_cell(args.final, args.interval, htf, args.hold, load(args.interval), "holdout")
+        c = run_cell(args.final, args.interval, HTF[args.interval], args.hold,
+                 load(args.interval), "holdout")
         print(json.dumps(c.per_symbol, indent=2))
         print(f"\nGesamt: n={c.trades}  PF={c.profit_factor}  E={c.expectancy_r:+.4f}  "
               f"Symbole profitabel {c.symbols_profitable}/{c.symbols}")
@@ -166,7 +170,8 @@ def main() -> int:
 
     if args.confirm:
         print(f"TEST — Bestätigung für {args.confirm} ({args.interval}, {args.hold}h)\n")
-        c = run_cell(args.confirm, args.interval, "4h", args.hold, load(args.interval), "test")
+        c = run_cell(args.confirm, args.interval, HTF[args.interval], args.hold,
+                 load(args.interval), "test")
         print(json.dumps(c.per_symbol, indent=2))
         print(f"\nGesamt: n={c.trades}  PF={c.profit_factor}  E={c.expectancy_r:+.4f}  "
               f"Symbole profitabel {c.symbols_profitable}/{c.symbols}")

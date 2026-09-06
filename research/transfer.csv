@@ -1,0 +1,17 @@
+strategy,interval,hold_h,pf_train,pf_test,n_train,n_test,sym_train,sym_test
+ema_momentum,4h,192,1.47,0.754,303,192,10/12,4/12
+ema_momentum,4h,96,1.466,0.748,303,192,10/12,4/12
+ema_momentum,4h,48,1.421,0.766,303,192,8/12,4/12
+keltner_trend,4h,48,1.298,1.26,469,325,11/12,8/12
+keltner_trend,4h,96,1.242,1.34,429,291,10/12,8/12
+vol_expansion,4h,48,1.218,1.161,328,259,9/12,7/12
+keltner_trend,4h,192,1.205,1.345,427,288,10/12,8/12
+squeeze_breakout,4h,48,1.186,1.229,525,354,8/12,9/12
+donchian_breakout,4h,48,1.171,1.737,448,275,9/12,10/12
+vol_expansion,4h,96,1.146,1.186,322,242,9/12,6/12
+squeeze_breakout,4h,192,1.137,1.219,516,346,8/12,8/12
+donchian_breakout,4h,96,1.133,1.711,415,258,8/12,12/12
+squeeze_breakout,4h,96,1.133,1.223,517,348,8/12,9/12
+vol_expansion,4h,192,1.125,1.214,320,238,9/12,8/12
+donchian_breakout,1h,48,1.103,0.907,2929,1529,8/12,5/12
+donchian_breakout,1h,24,1.101,0.91,3011,1575,8/12,5/12
