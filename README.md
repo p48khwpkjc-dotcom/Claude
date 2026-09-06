@@ -3,9 +3,9 @@
 Backtest- und Signal-Framework für Intraday-Krypto. Entscheidungen auf 5m-Kerzen,
 Trendfilter auf 1h, Risiko- und Kostenrechnung vor jeder Strategie.
 
-Stand: Datenlayer, Backtest-Engine, sechs Strategiekandidaten, Risk-Layer und der
-Regime-Prüfstand sind fertig und getestet. Der Live-Loop gegen die Testnet-API ist
-noch nicht gebaut.
+Stand: fertig gerechnet, und das Ergebnis ist negativ. Auf 466.557 echten 5m-Kerzen
+(BTC, ETH, SOL, 18 Monate) verdient keine der sechs Strategien Geld — auch nicht mit
+Gebühren und Slippage auf null. Der Befund und was daraus folgt: **[ERGEBNIS.md](ERGEBNIS.md)**.
 
 ## Schnellstart
 
@@ -35,12 +35,17 @@ Trade kostet. `python -m daytrader costs` rechnet das aus:
 
 | Stop | Abstand | Kosten pro Trade | Trefferquote für Break-even bei 2R |
 |---|---|---|---|
-| 1,0 × ATR | 0,26 % | 0,69 R | 56 % |
-| 2,0 × ATR | 0,52 % | 0,35 R | 45 % |
-| 5,0 × ATR | 1,30 % | 0,14 R | 38 % |
+| 1,0 × ATR | 0,13 % | 1,38 R | 79 % |
+| 2,0 × ATR | 0,26 % | 0,69 R | 56 % |
+| 5,0 × ATR | 0,65 % | 0,28 R | 43 % |
 
-Bei einem engen 5m-Stop sind Gebühren und Slippage in derselben Größenordnung wie
-der Stop selbst. Ein „diszipliniert enger" Stop ist dann vor allem eine teure Art,
+(BTCUSDT, gemessen am echten 5m-ATR von 0,13 % des Kurses. Eine frühere Fassung
+dieser Tabelle rechnete mit synthetischen Kerzen und einem doppelt so großen ATR —
+die Kosten sind also doppelt so hoch wie zunächst angenommen.)
+
+Bei einem engen 5m-Stop sind Gebühren und Slippage größer als der Stop selbst: bei
+1,0 × ATR kostet ein Trade 1,38 R, also mehr, als er riskiert. Der Break-even bei 1R
+läge dort bei einer Trefferquote von 100 %. Ein „diszipliniert enger" Stop ist dann vor allem eine teure Art,
 die Börse zu bezahlen. Das ist der Grund, warum die meisten Intraday-Systeme
 scheitern, und es entscheidet, welche Stop-Abstände überhaupt testenswert sind.
 
@@ -74,6 +79,11 @@ gegen 85 in der Trendserie.
 
 Kursniveau-basierte Auslöser (Kanalbrüche, Abstand zu einem adaptiven Band) folgen
 dem Regime. Oszillatoren und Kreuzungen tun das nicht.
+
+Was der Prüfstand allerdings **nicht** leistet: eine Vorauswahl nach Rendite. Auf
+echten Kerzen liegt das hier verworfene `rsi_reversion` im Mittelfeld und das hier
+gelobte `squeeze_breakout` am unteren Ende (siehe [ERGEBNIS.md](ERGEBNIS.md)). Er
+misst innere Schlüssigkeit, und die sagt über den Ertrag nichts vorher.
 
 ## Aufbau
 

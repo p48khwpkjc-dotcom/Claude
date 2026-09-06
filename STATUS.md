@@ -3,6 +3,12 @@
 Kurznotiz für eine neue Sitzung. Wenn du diese Datei liest, weil du gerade neu
 gestartet bist: alles Wichtige liegt im Repo, es geht nichts verloren.
 
+## Der Stand in einem Satz
+
+Der Backtest auf echten Kerzen ist gelaufen, und er ist negativ: keine der sechs
+Strategien verdient Geld, auch nicht ohne Gebühren. Die Einzelheiten stehen in
+**[ERGEBNIS.md](ERGEBNIS.md)**.
+
 ## Fertig und getestet
 
 - **Datenlayer** – Binance-Kerzen ohne API-Key, Parquet-Cache, harte Validierung
@@ -16,45 +22,56 @@ gestartet bist: alles Wichtige liegt im Repo, es geht nichts verloren.
 - **Regime-Prüfstand** (`daytrader regimes`) – Strategieprüfung ohne Börsendaten
 - **Datentransport** (`daytrader export` / `verify`) – Kerzen über das Repo
 - 94 Tests, alle grün: `python -m pytest tests/ -q`
+- **Backtest auf 466.557 echten 5m-Kerzen** – BTC, ETH, SOL, 18 Monate
 
-## Was noch fehlt
+## Was der Backtest ergeben hat
 
-**Der Backtest auf echten Kerzen.** Bisher scheiterte er nur daran, dass die
-Umgebung keine Börse erreichen durfte.
+Profitfaktor 0,37 bis 0,50 über alle sechs Strategien, in und außerhalb der
+Stichprobe. Setzt man Gebühren und Slippage auf null, landet alles zwischen 0,89
+und 1,06 — ein Münzwurf. Es gibt also keine Kante, die von Kosten aufgefressen
+würde; es gibt keine Kante.
 
-## Nächster Schritt
+Nebenbefund: die frühere Kostenschätzung war um den Faktor zwei zu freundlich.
+Der echte 5m-ATR von BTC liegt bei 0,13 % des Kurses, nicht 0,26 %. Ein 1,2×ATR-
+Stop kostet damit nicht 0,69 R, sondern 1,38 R — mehr, als der Trade riskiert.
 
-Prüfen, ob der Datenzugang jetzt offen ist:
+## Der Netzwerkzugang ist offen
+
+`data-api.binance.vision` antwortet aus dieser Umgebung mit `200`. Der Umweg aus
+[DATEN-HOLEN.md](DATEN-HOLEN.md) — Kerzen auf dem eigenen Rechner holen und übers
+Repo transportieren — wird nicht mehr gebraucht. Die Anleitung bleibt trotzdem
+stehen, für den Fall, dass sich die Policy wieder ändert.
+
+Prüfen lässt sich das jederzeit:
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" https://data-api.binance.vision/api/v3/ping
 ```
 
-`200` heißt offen. Dann:
+`200` heißt offen, `000` heißt zu.
+
+Der Abruf dauert bei offenem Zugang rund vier Minuten, nicht die früher
+geschätzten zwanzig:
 
 ```bash
-pip install -r requirements.txt
-python -m daytrader fetch --days 540      # dauert 10-20 Minuten
+python -m daytrader fetch --days 540
 python -m daytrader backtest              # -> out/report.md
-python -m daytrader costs                 # mit echtem ATR statt synthetischem
+python -m daytrader costs
 ```
 
-Kommt `000`, ist der Netzwerkzugang noch zu – dann steht in
-[DATEN-HOLEN.md](DATEN-HOLEN.md), wie die Daten sonst hereinkommen.
+## Nächster Schritt
 
-## Worauf es beim Auswerten ankommt
+Hier ist eine Entscheidung fällig, keine Programmieraufgabe. Der 5m-Intraday-
+Ansatz auf Preis und Volumen ist durchgerechnet und trägt nicht. Drei Richtungen
+stehen offen, jede verlässt die bisherige Anlage — ERGEBNIS.md wägt sie ab:
 
-Der Regime-Prüfstand hat das Feld vorsortiert. **donchian_breakout** und
-**squeeze_breakout** halten ihre Verträge und schweigen dort, wo sie nicht
-funktionieren (15 % bzw. 30 % Fehlsignale). **rsi_reversion** feuert zu 99,9 %
-im falschen Regime, **ema_momentum** zu 85 %. Auf echten Daten sind also die
-ersten beiden die Kandidaten – die anderen dienen als Kontrollgruppe.
+1. Längerer Zeitrahmen (1h/4h), wo derselbe Trade einen Bruchteil kostet
+2. Andere Gebührenstruktur (Maker statt Taker) — hilft nur mit einer Kante
+3. Eine andere Signalquelle: Orderbuch, Finanzierungsraten, Cross-Asset
 
-Wichtig beim Lesen des Reports: Profitfaktor unter 1,2 überlebt keinen
-Regimewechsel, und die Lücke zwischen In-Sample und Out-of-Sample ist die
-Ehrlichkeitsprüfung. Halbiert sich eine Strategie außerhalb der Stichprobe,
-wurde sie angepasst und nicht entdeckt.
+Was **nicht** ansteht: an Parametern drehen, bis eine Kurve nach oben zeigt. Bei
+sechs Strategien und einem kostenfreien Profitfaktor um 1,0 findet man diese
+Kurve garantiert, und sie bedeutet nichts.
 
-Und der Befund, der alles andere überlagert: bei einem 1,2×ATR-Stop auf 5m-Kerzen
-fressen Gebühren und Slippage rund 0,69 R pro Trade. Enge Intraday-Stops sind
-meist unwirtschaftlich – siehe `daytrader costs`.
+Der Live-Loop gegen die Testnet-API ist weiterhin nicht gebaut — und solange
+keine Strategie im Backtest trägt, gibt es dafür auch keinen Anlass.
