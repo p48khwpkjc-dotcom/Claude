@@ -104,6 +104,53 @@ def cmd_costs(args, cfg) -> int:
     return 0
 
 
+def cmd_export(args, cfg) -> int:
+    """Fetch candles and stage them for transport through the repository."""
+    from .data import export
+
+    symbols = args.symbols.split(",") if args.symbols else cfg.data.symbols
+    interval = args.interval or cfg.data.interval
+    days = args.days or cfg.data.history_days
+    out_dir = Path(args.out)
+
+    frames = {}
+    for symbol in symbols:
+        symbol = symbol.strip()
+        print(f"fetching {symbol} {interval}, {days} days ...", flush=True)
+        frames[symbol] = loader.update(symbol, interval, days, cfg.cache_dir)
+
+    manifest = export.write(frames, interval, out_dir)
+    total_mb = sum(f.stat().st_size for f in out_dir.glob("*.parquet")) / 1e6
+    print(f"\nwrote {len(frames)} dataset(s), {total_mb:.1f} MB total")
+    print(f"manifest: {manifest}\n")
+    print("Now commit and push them:")
+    print(f"  git add {out_dir}")
+    print('  git commit -m "Add exchange candles for backtesting"')
+    print("  git push")
+    return 0
+
+
+def cmd_verify(args, cfg) -> int:
+    """Confirm exported candles arrived intact, then load them into the cache."""
+    from .data import export
+
+    out_dir = Path(args.out)
+    ok, messages = export.verify(out_dir)
+    for message in messages:
+        print(message)
+
+    if not ok:
+        print("\nverification failed -- do not backtest on this data", file=sys.stderr)
+        return 1
+
+    print("\nall checksums match")
+    if args.install:
+        for line in export.install(out_dir, cfg.cache_dir):
+            print(f"installed {line}")
+        print("\nready: python -m daytrader backtest")
+    return 0
+
+
 def cmd_regimes(args, cfg) -> int:
     """Test each strategy against market conditions built to order.
 
@@ -174,6 +221,18 @@ def main(argv: list[str] | None = None) -> int:
     p_cost.add_argument("--symbols", help="comma separated, defaults to config")
     p_cost.add_argument("--source", choices=["cache", "synthetic"])
     p_cost.set_defaults(func=cmd_costs)
+
+    p_exp = sub.add_parser("export", help="fetch candles and stage them for the repo")
+    p_exp.add_argument("--symbols", help="comma separated, defaults to config")
+    p_exp.add_argument("--interval", help="defaults to config")
+    p_exp.add_argument("--days", type=int, help="defaults to config")
+    p_exp.add_argument("--out", default="data/exchange")
+    p_exp.set_defaults(func=cmd_export)
+
+    p_ver = sub.add_parser("verify", help="check exported candles and load them")
+    p_ver.add_argument("--out", default="data/exchange")
+    p_ver.add_argument("--install", action="store_true", help="copy into the working cache")
+    p_ver.set_defaults(func=cmd_verify)
 
     p_reg = sub.add_parser("regimes", help="test strategies against constructed market conditions")
     p_reg.add_argument("--strategy", default="all")

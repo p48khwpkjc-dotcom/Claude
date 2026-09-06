@@ -8,6 +8,9 @@ venv/
 data/cache/
 out/
 
+# data/exchange/ is deliberately NOT ignored: it is how candles reach a
+# container that cannot call an exchange itself.
+
 # Never commit credentials
 .env
 *.key
