@@ -21,6 +21,8 @@ from .base import Strategy, clean, register
 @register
 class OpeningRangeBreakout(Strategy):
     name = "opening_range"
+    expects_edge_in = ("trending",)
+    expects_no_edge_in = ("choppy",)
     default_params = {
         "range_minutes": 60,
         "atr_window": 14,
@@ -49,32 +51,32 @@ class OpeningRangeBreakout(Strategy):
         return out
 
     def signal(self, df: pd.DataFrame, i: int) -> Signal | None:
-        row = df.iloc[i]
-        close, atr, vol_ratio = row["close"], row["atr"], row["vol_ratio"]
+        a = self.a
+        close, atr, vol_ratio = a["close"][i], a["atr"][i], a["vol_ratio"][i]
         if not clean(close, atr, vol_ratio) or atr <= 0:
             return None
         if vol_ratio < self.p["min_volume_ratio"]:
             return None
-        if df.index[i].hour >= self.p["max_entry_hour"]:
+        if self.index[i].hour >= self.p["max_entry_hour"]:
             return None  # a breakout with two hours of session left rarely runs
 
         stop_offset = self.p["stop_atr_mult"] * atr
-        if row["first_break_up"]:
+        if a["first_break_up"][i]:
             stop = close - stop_offset
             return Signal(
                 side=Side.LONG,
                 stop_loss=stop,
                 take_profit=close + self.p["target_r"] * stop_offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
-                reason=f"break above {row['or_high']:.2f} on {vol_ratio:.1f}x volume",
+                reason=f"break above {a['or_high'][i]:.2f} on {vol_ratio:.1f}x volume",
             )
-        if row["first_break_dn"]:
+        if a["first_break_dn"][i]:
             stop = close + stop_offset
             return Signal(
                 side=Side.SHORT,
                 stop_loss=stop,
                 take_profit=close - self.p["target_r"] * stop_offset,
                 trail_atr_mult=self.p["trail_atr_mult"],
-                reason=f"break below {row['or_low']:.2f} on {vol_ratio:.1f}x volume",
+                reason=f"break below {a['or_low'][i]:.2f} on {vol_ratio:.1f}x volume",
             )
         return None

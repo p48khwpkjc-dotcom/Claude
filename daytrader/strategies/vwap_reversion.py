@@ -20,16 +20,18 @@ from .base import Strategy, clean, register
 @register
 class VwapReversion(Strategy):
     name = "vwap_reversion"
+    expects_edge_in = ("choppy",)
+    expects_no_edge_in = ("trending",)
     default_params = {
-        "band_mult": 2.0,
+        "band_mult": 1.8,
         "rsi_window": 14,
-        "rsi_long_max": 32,
-        "rsi_short_min": 68,
+        "rsi_long_max": 38,
+        "rsi_short_min": 62,
         "atr_window": 14,
         "stop_atr_mult": 1.2,
         "min_target_r": 1.0,
         "htf_ema": 50,
-        "max_trend_slope": 0.02,
+        "max_trend_slope": 0.05,
     }
 
     def prepare(self, df: pd.DataFrame, cfg: Config) -> pd.DataFrame:
@@ -42,12 +44,11 @@ class VwapReversion(Strategy):
         return out
 
     def signal(self, df: pd.DataFrame, i: int) -> Signal | None:
-        close = df["close"].iloc[i]
-        atr = df["atr"].iloc[i]
-        vwap = df["vwap"].iloc[i]
-        lower, upper = df["vwap_lower"].iloc[i], df["vwap_upper"].iloc[i]
-        rsi, rsi_prev = df["rsi"].iloc[i], df["rsi"].iloc[i - 1]
-        slope = df["htf_slope"].iloc[i]
+        a = self.a
+        close, atr, vwap = a["close"][i], a["atr"][i], a["vwap"][i]
+        lower, upper = a["vwap_lower"][i], a["vwap_upper"][i]
+        rsi, rsi_prev = a["rsi"][i], a["rsi"][i - 1]
+        slope = a["htf_slope"][i]
 
         if not clean(close, atr, vwap, lower, upper, rsi, rsi_prev, slope) or atr <= 0:
             return None

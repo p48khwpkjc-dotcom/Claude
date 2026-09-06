@@ -3,8 +3,9 @@
 Backtest- und Signal-Framework für Intraday-Krypto. Entscheidungen auf 5m-Kerzen,
 Trendfilter auf 1h, Risiko- und Kostenrechnung vor jeder Strategie.
 
-Stand: Datenlayer, Backtest-Engine, drei Strategiekandidaten und der Risk-Layer
-sind fertig und getestet. Der Live-Loop gegen die Testnet-API ist noch nicht gebaut.
+Stand: Datenlayer, Backtest-Engine, sechs Strategiekandidaten, Risk-Layer und der
+Regime-Prüfstand sind fertig und getestet. Der Live-Loop gegen die Testnet-API ist
+noch nicht gebaut.
 
 ## Schnellstart
 
@@ -13,6 +14,7 @@ pip install -r requirements.txt
 
 python -m daytrader selftest              # läuft ohne Netz, auf synthetischen Daten
 python -m daytrader costs                 # was Gebühren pro Risikoeinheit kosten
+python -m daytrader regimes               # Strategieprüfung ohne Börsendaten
 python -m daytrader fetch                 # Kerzen von Binance in den lokalen Cache
 python -m daytrader backtest              # Strategievergleich -> out/report.md
 ```
@@ -37,6 +39,37 @@ der Stop selbst. Ein „diszipliniert enger" Stop ist dann vor allem eine teure 
 die Börse zu bezahlen. Das ist der Grund, warum die meisten Intraday-Systeme
 scheitern, und es entscheidet, welche Stop-Abstände überhaupt testenswert sind.
 
+## Der Regime-Prüfstand
+
+`python -m daytrader regimes` testet jede Strategie gegen Marktzustände, die per
+Konstruktion trenden oder mean-revertieren. Das braucht keine Börsendaten und
+beantwortet eine Frage, die vor dem Backtest kommt: *Ist die Strategie in sich
+schlüssig?* Eine Trendfolge, die auf einer nachweislich trendenden Serie verliert,
+ist kaputt – daran ändern echte Kerzen nichts.
+
+Jede Strategie hinterlegt im Code, was sie über sich behauptet
+(`expects_edge_in`, `expects_no_edge_in`). Der Prüfstand hält sie daran fest.
+
+Der Durchgang hat zwei populäre Indikatoren als strukturell fehlkalibriert entlarvt:
+
+| Strategie | Signale im falschen Regime | Urteil |
+|---|---|---|
+| rsi_reversion | 99,9 % | feuert fast ausschließlich dort, wo sie verliert |
+| ema_momentum | 85,2 % | dito |
+| vwap_reversion | 78,6 % | Trendfilter zu schwach |
+| opening_range | 46,6 % | gemischt |
+| squeeze_breakout | 29,7 % | gut gezielt |
+| donchian_breakout | 15,4 % | gut gezielt |
+
+Der Grund ist messbar: **RSI liegt in einer trendenden Serie zu 33 % der Zeit unter
+30, in einer seitwärts laufenden zu 0,06 %.** Wer überverkauften RSI kauft, kauft
+also praktisch nur in Abwärtstrends – das Gegenteil von Mean Reversion.
+Bei EMA-Kreuzungen ist es spiegelbildlich: 1.678 Kreuzungen in der Seitwärtsserie
+gegen 85 in der Trendserie.
+
+Kursniveau-basierte Auslöser (Kanalbrüche, Abstand zu einem adaptiven Band) folgen
+dem Regime. Oszillatoren und Kreuzungen tun das nicht.
+
 ## Aufbau
 
 ```
@@ -51,13 +84,17 @@ daytrader/
     synthetic.py       Deterministischer Generator für Tests ohne Netz
     loader.py          Parquet-Cache, inkrementelles Update, Validierung
   strategies/
-    vwap_reversion.py  Mean Reversion zum Session-VWAP
-    opening_range.py   Ausbruch aus der ersten UTC-Stunde
-    ema_momentum.py    EMA-Kreuzung mit 1h-Trendfilter
+    vwap_reversion.py    Mean Reversion zum Session-VWAP
+    rsi_reversion.py     Reine RSI-Reversion (Kontrollgruppe)
+    opening_range.py     Ausbruch aus der ersten UTC-Stunde
+    ema_momentum.py      EMA-Kreuzung mit 1h-Trendfilter
+    donchian_breakout.py Kanalausbruch (Kontrollgruppe Trendfolge)
+    squeeze_breakout.py  Bollinger-Kompression, Volatilitätsausbruch
   risk/manager.py      Positionsgröße, Kill-Switch, Cooldown, Tageslimits
   backtest/
     engine.py          Bar-für-Bar-Simulation mit Fills, Gebühren, Slippage
     costs.py           Kosten pro Risikoeinheit, Break-even-Trefferquoten
+    regimes.py         Prüfstand gegen konstruierte Marktzustände
     metrics.py         Profitfaktor, Erwartungswert in R, Drawdown, Sharpe
     runner.py          Walk-Forward-Matrix und Report
 ```
@@ -101,7 +138,10 @@ ausschließlich der Risk-Layer.
 ## Nächste Schritte
 
 1. `fetch` auf einer Maschine mit Börsenzugang, dann `backtest` auf echten Kerzen.
-   Erst diese Zahlen entscheiden, welche der drei Strategien weiterverfolgt wird.
+   Erst diese Zahlen entscheiden, welche Strategie weiterverfolgt wird. Der
+   Regime-Prüfstand hat das Feld vorsortiert – `donchian_breakout` und
+   `squeeze_breakout` sind die beiden Kandidaten, die ihre Verträge halten und
+   dort schweigen, wo sie nicht funktionieren.
 2. Live-Loop gegen Binance- oder Bybit-Testnet, mit Logging und Heartbeat.
 3. Deployment (systemd oder Docker) auf einen kleinen VPS.
 

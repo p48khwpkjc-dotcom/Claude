@@ -104,6 +104,45 @@ def cmd_costs(args, cfg) -> int:
     return 0
 
 
+def cmd_regimes(args, cfg) -> int:
+    """Test each strategy against market conditions built to order.
+
+    Needs no exchange data: a trend strategy that loses on a series which
+    trends by construction is broken, and that verdict is available offline.
+    """
+    from .backtest import regimes
+
+    strategies = available() if args.strategy in (None, "all") else args.strategy.split(",")
+    matrix = regimes.run(cfg, strategies, bars=args.bars)
+
+    claims = regimes.check_claims(cfg, matrix)
+    damage = regimes.cost_damage(matrix)
+
+    print("\n=== Does each strategy do what it claims? (frictionless) ===")
+    print(claims.to_string(index=False))
+    frequency = regimes.signal_frequency(cfg, strategies, bars=args.bars)
+    calib = regimes.calibration(cfg, matrix, frequency)
+
+    print("\n=== Where does each strategy fire, and is that where it works? ===")
+    print(calib.round(1).to_string(index=False))
+
+    print("\n=== What costs take, per unit of risk ===")
+    print(damage.round(3).to_string(index=False))
+
+    cfg.out_dir.mkdir(parents=True, exist_ok=True)
+    matrix.to_csv(cfg.out_dir / "regime_matrix.csv", index=False)
+    frequency.to_csv(cfg.out_dir / "regime_signal_frequency.csv", index=False)
+    claims.to_csv(cfg.out_dir / "regime_claims.csv", index=False)
+    path = regimes.write_report(cfg, matrix, claims, calib, damage, cfg.out_dir)
+    print(f"\nreport: {path}")
+
+    failures = (claims["status"] == "FAIL").sum()
+    if failures:
+        print(f"\n{failures} strategy/regime claim(s) failed -- those strategies are "
+              "broken independently of any real market.")
+    return 0
+
+
 def cmd_selftest(args, cfg) -> int:
     cfg.data.source = "synthetic"
     cfg.data.symbols = ["BTCUSDT"]
@@ -135,6 +174,11 @@ def main(argv: list[str] | None = None) -> int:
     p_cost.add_argument("--symbols", help="comma separated, defaults to config")
     p_cost.add_argument("--source", choices=["cache", "synthetic"])
     p_cost.set_defaults(func=cmd_costs)
+
+    p_reg = sub.add_parser("regimes", help="test strategies against constructed market conditions")
+    p_reg.add_argument("--strategy", default="all")
+    p_reg.add_argument("--bars", type=int, default=20_000)
+    p_reg.set_defaults(func=cmd_regimes)
 
     p_self = sub.add_parser("selftest", help="end-to-end run on synthetic data")
     p_self.add_argument("--bars", type=int, default=30_000)

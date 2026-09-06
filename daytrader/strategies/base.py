@@ -41,11 +41,19 @@ class Strategy(ABC):
     name: str = "base"
     default_params: dict[str, Any] = {}
 
+    # The claim a strategy makes about itself, checked by the regime harness.
+    # A trend strategy that cannot make money on a series which trends by
+    # construction is broken, whatever it does on real data.
+    expects_edge_in: tuple[str, ...] = ()
+    expects_no_edge_in: tuple[str, ...] = ()
+
     def __init__(self, params: dict[str, Any] | None = None) -> None:
         unknown = set(params or {}) - set(self.default_params)
         if unknown:
             raise ValueError(f"{self.name}: unknown parameters {sorted(unknown)}")
         self.p = {**self.default_params, **(params or {})}
+        self.a: dict[str, Any] = {}
+        self.index = None
 
     @property
     def warmup_bars(self) -> int:
@@ -55,6 +63,15 @@ class Strategy(ABC):
     @abstractmethod
     def prepare(self, df: pd.DataFrame, cfg: Config) -> pd.DataFrame:
         """Return a copy of `df` with the indicator columns this strategy reads."""
+
+    def bind(self, prepared: pd.DataFrame) -> None:
+        """Cache the prepared frame as numpy arrays for the per-bar loop.
+
+        `df["col"].iloc[i]` costs a Series lookup on every access, which
+        dominates the runtime of a sweep. The arrays hold identical values.
+        """
+        self.a = {c: prepared[c].to_numpy() for c in prepared.columns}
+        self.index = prepared.index
 
     @abstractmethod
     def signal(self, df: pd.DataFrame, i: int) -> Signal | None:

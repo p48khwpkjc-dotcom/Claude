@@ -72,6 +72,7 @@ class BacktestEngine:
 
     def run(self, df: pd.DataFrame) -> BacktestResult:
         prepared = self.strategy.prepare(df, self.cfg)
+        self.strategy.bind(prepared)
         atr = prepared["atr"].to_numpy() if "atr" in prepared.columns else np.zeros(len(prepared))
         risk = RiskManager(self.cfg.risk, self.cfg.account.start_equity)
 

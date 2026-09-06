@@ -39,15 +39,15 @@ backtest:
 
 strategies:
   vwap_reversion:
-    band_mult: 2.0
+    band_mult: 1.8
     rsi_window: 14
-    rsi_long_max: 32
-    rsi_short_min: 68
+    rsi_long_max: 38
+    rsi_short_min: 62
     atr_window: 14
     stop_atr_mult: 1.2
     min_target_r: 1.0
     htf_ema: 50
-    max_trend_slope: 0.02    # skip mean reversion inside a strong trend
+    max_trend_slope: 0.05    # skip mean reversion inside a strong trend
   opening_range:
     range_minutes: 60
     atr_window: 14
@@ -62,6 +62,31 @@ strategies:
     atr_window: 14
     stop_atr_mult: 1.5
     target_r: 2.0
-    min_volume_ratio: 1.2
+    min_volume_ratio: 1.0
     htf_ema: 50
     trail_atr_mult: 2.5
+  donchian_breakout:
+    channel: 48
+    atr_window: 14
+    stop_atr_mult: 2.0
+    target_r: 2.5
+    trail_atr_mult: 3.0
+    min_volume_ratio: 1.0
+  rsi_reversion:
+    rsi_window: 14
+    oversold: 30
+    overbought: 70
+    atr_window: 14
+    stop_atr_mult: 2.0
+    target_atr_mult: 2.0
+    exit_rsi: 50
+  squeeze_breakout:
+    bb_window: 20
+    bb_mult: 2.0
+    squeeze_lookback: 96
+    squeeze_percentile: 0.25
+    atr_window: 14
+    stop_atr_mult: 1.5
+    target_r: 2.0
+    trail_atr_mult: 2.5
+    min_volume_ratio: 1.2

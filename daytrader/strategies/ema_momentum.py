@@ -19,13 +19,15 @@ from .base import Strategy, clean, register
 @register
 class EmaMomentum(Strategy):
     name = "ema_momentum"
+    expects_edge_in = ("trending",)
+    expects_no_edge_in = ("choppy",)
     default_params = {
         "fast": 12,
         "slow": 34,
         "atr_window": 14,
         "stop_atr_mult": 1.5,
         "target_r": 2.0,
-        "min_volume_ratio": 1.2,
+        "min_volume_ratio": 1.0,
         "htf_ema": 50,
         "trail_atr_mult": 2.5,
     }
@@ -39,11 +41,12 @@ class EmaMomentum(Strategy):
         return out
 
     def signal(self, df: pd.DataFrame, i: int) -> Signal | None:
-        fast, slow = df["ema_fast"].iloc[i], df["ema_slow"].iloc[i]
-        fast_prev, slow_prev = df["ema_fast"].iloc[i - 1], df["ema_slow"].iloc[i - 1]
-        close, atr = df["close"].iloc[i], df["atr"].iloc[i]
-        htf_close, htf_ema = df["htf_close"].iloc[i], df["htf_ema"].iloc[i]
-        vol_ratio = df["vol_ratio"].iloc[i]
+        a = self.a
+        fast, slow = a["ema_fast"][i], a["ema_slow"][i]
+        fast_prev, slow_prev = a["ema_fast"][i - 1], a["ema_slow"][i - 1]
+        close, atr = a["close"][i], a["atr"][i]
+        htf_close, htf_ema = a["htf_close"][i], a["htf_ema"][i]
+        vol_ratio = a["vol_ratio"][i]
 
         if not clean(fast, slow, fast_prev, slow_prev, close, atr, htf_close, htf_ema, vol_ratio):
             return None
