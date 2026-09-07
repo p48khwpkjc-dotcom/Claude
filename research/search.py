@@ -44,7 +44,7 @@ SYMBOLS = [
 # (decision interval, higher-timeframe filter, hold times in hours)
 # The higher-timeframe filter must actually be higher: resampling 4h to 4h
 # is a no-op, which quietly turns the trend filter into "the previous bar".
-GRIDS = [("1h", "4h", [12, 24, 48]), ("4h", "1d", [48, 96, 192])]
+GRIDS = [("15m", "4h", [5, 12, 24]), ("1h", "4h", [12, 24, 48]), ("4h", "1d", [48, 96, 192])]
 
 HTF = {iv: htf for iv, htf, _ in GRIDS}
 
