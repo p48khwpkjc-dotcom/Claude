@@ -24,7 +24,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from search import HTF, load, run_cell, SYMBOLS  # noqa: E402
 
-TARGETS = [1.0, 1.5, 2.0, 2.5, 3.0]
+TARGETS = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0]
 STRATEGIES = [
     # the ICT / smart-money models
     "fair_value_gap", "liquidity_sweep", "order_block", "failed_breakout",

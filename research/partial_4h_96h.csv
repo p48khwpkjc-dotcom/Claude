@@ -1,0 +1,49 @@
+strategy,target_r,policy,trades,win_rate,pf,exp_r
+random_entry,2.0,A ohne Teilverkauf,6965,40.96,1.026,0.0163
+random_entry,2.0,B Teil bei 75%,6967,43.56,1.004,0.0037
+random_entry,2.0,C Teil bei 75% + BE,7057,43.6,1.005,0.0044
+random_entry,3.0,A ohne Teilverkauf,6474,39.5,1.084,0.0491
+random_entry,3.0,B Teil bei 75%,6473,40.2,1.06,0.0355
+random_entry,3.0,C Teil bei 75% + BE,6489,40.14,1.056,0.0332
+momentum_persistence,2.0,A ohne Teilverkauf,877,46.75,1.191,0.0887
+momentum_persistence,2.0,B Teil bei 75%,877,47.78,1.16,0.073
+momentum_persistence,2.0,C Teil bei 75% + BE,877,47.66,1.157,0.0717
+momentum_persistence,3.0,A ohne Teilverkauf,877,46.29,1.248,0.1162
+momentum_persistence,3.0,B Teil bei 75%,877,46.52,1.231,0.1079
+momentum_persistence,3.0,C Teil bei 75% + BE,877,46.52,1.228,0.1066
+donchian_breakout,2.0,A ohne Teilverkauf,3036,43.45,1.254,0.1417
+donchian_breakout,2.0,B Teil bei 75%,3036,46.84,1.229,0.1205
+donchian_breakout,2.0,C Teil bei 75% + BE,3038,46.84,1.216,0.1134
+donchian_breakout,3.0,A ohne Teilverkauf,2754,41.18,1.349,0.2015
+donchian_breakout,3.0,B Teil bei 75%,2754,42.56,1.323,0.1829
+donchian_breakout,3.0,C Teil bei 75% + BE,2754,42.56,1.315,0.1785
+vol_expansion,2.0,A ohne Teilverkauf,2499,44.54,1.259,0.1391
+vol_expansion,2.0,B Teil bei 75%,2498,47.84,1.243,0.1229
+vol_expansion,2.0,C Teil bei 75% + BE,2519,47.8,1.222,0.1131
+vol_expansion,3.0,A ohne Teilverkauf,2324,42.17,1.33,0.186
+vol_expansion,3.0,B Teil bei 75%,2323,43.78,1.317,0.1746
+vol_expansion,3.0,C Teil bei 75% + BE,2327,43.88,1.314,0.1728
+keltner_trend,2.0,A ohne Teilverkauf,3049,43.69,1.24,0.133
+keltner_trend,2.0,B Teil bei 75%,3049,46.61,1.21,0.1111
+keltner_trend,2.0,C Teil bei 75% + BE,3059,46.55,1.196,0.1036
+keltner_trend,3.0,A ohne Teilverkauf,2734,41.48,1.297,0.1696
+keltner_trend,3.0,B Teil bei 75%,2734,42.87,1.286,0.1602
+keltner_trend,3.0,C Teil bei 75% + BE,2734,42.87,1.286,0.1602
+fair_value_gap,2.0,A ohne Teilverkauf,8168,36.68,0.97,-0.0216
+fair_value_gap,2.0,B Teil bei 75%,8171,41.23,0.948,-0.0333
+fair_value_gap,2.0,C Teil bei 75% + BE,8240,41.29,0.947,-0.034
+fair_value_gap,3.0,A ohne Teilverkauf,7710,31.79,1.017,0.0117
+fair_value_gap,3.0,B Teil bei 75%,7713,34.85,1.003,0.0008
+fair_value_gap,3.0,C Teil bei 75% + BE,7754,34.83,1.0,-0.0014
+order_block,2.0,A ohne Teilverkauf,4199,34.01,0.848,-0.1034
+order_block,2.0,B Teil bei 75%,4209,38.32,0.819,-0.1168
+order_block,2.0,C Teil bei 75% + BE,4246,38.41,0.818,-0.1169
+order_block,3.0,A ohne Teilverkauf,4034,28.83,0.891,-0.0788
+order_block,3.0,B Teil bei 75%,4038,31.82,0.871,-0.0911
+order_block,3.0,C Teil bei 75% + BE,4064,31.82,0.869,-0.0926
+squeeze_breakout,2.0,A ohne Teilverkauf,4585,38.17,1.053,0.0362
+squeeze_breakout,2.0,B Teil bei 75%,4585,43.12,1.046,0.0286
+squeeze_breakout,2.0,C Teil bei 75% + BE,4600,43.11,1.044,0.0273
+squeeze_breakout,3.0,A ohne Teilverkauf,4451,33.5,1.068,0.0494
+squeeze_breakout,3.0,B Teil bei 75%,4453,36.42,1.068,0.0469
+squeeze_breakout,3.0,C Teil bei 75% + BE,4459,36.42,1.07,0.0478
