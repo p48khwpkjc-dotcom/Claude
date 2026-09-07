@@ -69,6 +69,15 @@ class Position:
     mae: float = 0.0             # worst excursion while open, in price
     mfe: float = 0.0             # best excursion while open, in price
 
+    # Scaling out. The position keeps its original risk_amount as the unit of
+    # measure after a partial, so an R multiple stays comparable to a trade
+    # that was never scaled -- otherwise every partial would silently redefine
+    # what one R means.
+    initial_qty: float = 0.0
+    partial_price: float | None = None
+    realised_pnl: float = 0.0    # banked by the partial, before the final exit
+    realised_fees: float = 0.0
+
     @property
     def notional(self) -> float:
         return self.qty * self.entry_price

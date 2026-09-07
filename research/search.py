@@ -110,8 +110,11 @@ class Cell:
 
 def run_cell(strategy: str, interval: str, htf: str, hold_h: int,
              data: dict[str, pd.DataFrame], split: str,
-             overrides: dict | None = None) -> Cell:
+             overrides: dict | None = None,
+             execution: dict | None = None) -> Cell:
     cfg = load_config(Path("config.yaml"))
+    for key, value in (execution or {}).items():
+        setattr(cfg.execution, key, value)
     if overrides:
         # Only keys the strategy already declares; an unknown one is a typo,
         # and Strategy.__init__ raises on it rather than silently ignoring it.

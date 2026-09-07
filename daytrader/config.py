@@ -39,6 +39,17 @@ class ExecutionConfig:
     slippage_bps: float = 3.0     # applied against you on every fill
     stop_slippage_bps: float = 5.0  # stops fill worse; they are market orders in a rush
 
+    # Scaling out. `partial_at_r` is measured in units of the initial risk, so
+    # 1.5 means "take some off at 1.5 times the distance to the stop". Zero
+    # switches the whole mechanism off, which is the default.
+    #
+    # This is an exit policy, not a strategy decision, which is why it lives
+    # here: every strategy is measured under the same policy or none of the
+    # comparison means anything.
+    partial_at_r: float = 0.0
+    partial_fraction: float = 0.5        # how much of the position comes off
+    breakeven_after_partial: bool = False  # move the stop to entry afterwards
+
 
 @dataclass(slots=True)
 class DataConfig:

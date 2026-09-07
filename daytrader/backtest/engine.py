@@ -179,7 +179,19 @@ class BacktestEngine:
             risk_amount=sized.risk_amount,
             reason=signal.reason,
             extreme_price=entry,
+            initial_qty=sized.qty,
+            partial_price=self._partial_level(signal.side, entry, signal.stop_loss),
         )
+
+    def _partial_level(self, side: Side, entry: float, stop: float) -> float | None:
+        """Price at which part of the position comes off, or None if disabled."""
+        at_r = self.cfg.execution.partial_at_r
+        if at_r <= 0:
+            return None
+        risk = abs(entry - stop)
+        if risk <= 0:
+            return None
+        return entry + side.sign * at_r * risk
 
     def _check_exit(self, pos: Position, i, o, h, l, c, now, max_hold, atr) -> Trade | None:
         high, low, bar_open = h[i], l[i], o[i]
@@ -195,6 +207,17 @@ class BacktestEngine:
             reason = ExitReason.TRAILING_STOP if pos.trailing_active else ExitReason.STOP_LOSS
             return self._close(pos, self._stop_fill(pos.side, pos.stop_loss, bar_open),
                                now, reason, high, low)
+
+        # The partial sits nearer than the target, so within a bar that reaches
+        # both it fills first. It is checked after the stop for the same reason
+        # the target is: without tick data the pessimistic order is the only one
+        # that cannot flatter the result.
+        if pos.partial_price is not None:
+            reached = high >= pos.partial_price if pos.side is Side.LONG \
+                else low <= pos.partial_price
+            if reached:
+                self._take_partial(pos)
+
         if hit_target:
             return self._close(pos, pos.take_profit, now, ExitReason.TAKE_PROFIT, high, low)
 
@@ -220,10 +243,34 @@ class BacktestEngine:
                     pos.stop_loss, pos.trailing_active = new_stop, True
         return None
 
+    def _take_partial(self, pos: Position) -> None:
+        """Bank part of the position at the scale-out level and shrink the rest.
+
+        The banked leg pays its own exit fee and slippage. Total exited notional
+        is unchanged by splitting the exit in two, so this costs no more in fees
+        than a single exit would -- what it changes is the shape of the outcome,
+        not the cost of it.
+        """
+        frac = min(max(self.cfg.execution.partial_fraction, 0.0), 1.0)
+        qty = pos.qty * frac
+        if qty <= 0:
+            pos.partial_price = None
+            return
+        fill = self._market_exit_fill(pos.side, pos.partial_price)
+        pos.realised_pnl += (fill - pos.entry_price) * qty * pos.side.sign
+        pos.realised_fees += self._fee(fill, qty)
+        pos.qty -= qty
+        pos.partial_price = None            # it only fires once
+        if self.cfg.execution.breakeven_after_partial:
+            # The classic follow-up: the remainder can no longer lose. It also
+            # can no longer survive a normal retracement, which is the trade-off
+            # the win rate hides.
+            pos.stop_loss = pos.entry_price
+
     def _close(self, pos: Position, exit_price: float, now, reason: ExitReason,
                high: float, low: float) -> Trade:
-        gross = (exit_price - pos.entry_price) * pos.qty * pos.side.sign
-        fees = pos.entry_fee + self._fee(exit_price, pos.qty)
+        gross = (exit_price - pos.entry_price) * pos.qty * pos.side.sign + pos.realised_pnl
+        fees = pos.entry_fee + self._fee(exit_price, pos.qty) + pos.realised_fees
         mae = min(pos.mae, (low - pos.entry_price) * pos.side.sign)
         mfe = max(pos.mfe, (high - pos.entry_price) * pos.side.sign)
         return Trade(
@@ -233,7 +280,7 @@ class BacktestEngine:
             exit_time=now.to_pydatetime() if hasattr(now, "to_pydatetime") else now,
             entry_price=pos.entry_price,
             exit_price=exit_price,
-            qty=pos.qty,
+            qty=pos.initial_qty or pos.qty,
             gross_pnl=gross,
             fees=fees,
             risk_amount=pos.risk_amount,

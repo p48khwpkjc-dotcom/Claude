@@ -12,6 +12,7 @@ from . import (  # noqa: F401
     momentum_persistence,
     opening_range,
     order_block,
+    random_entry,
     rsi_reversion,
     session_momentum,
     sigma_reversion,
