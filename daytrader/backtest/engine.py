@@ -181,7 +181,32 @@ class BacktestEngine:
             extreme_price=entry,
             initial_qty=sized.qty,
             partial_price=self._partial_level(signal.side, entry, signal.stop_loss),
+            ladder=self._build_ladder(signal, entry),
         )
+
+    def _build_ladder(self, signal: Signal, entry: float) -> list:
+        """Turn the configured rungs into price levels for this trade.
+
+        Everything is expressed as a fraction of the entry-to-target distance,
+        so a plan reads the same whatever the target happens to be. Without a
+        target there is no such distance and the ladder cannot exist.
+        """
+        rungs = self.cfg.execution.exit_ladder
+        if not rungs or signal.take_profit is None:
+            return []
+        span = (signal.take_profit - entry) * signal.side.sign
+        if span <= 0:
+            return []
+        out = []
+        for rung in rungs:
+            at = float(rung["at_tp_frac"])
+            trigger = entry + signal.side.sign * at * span
+            stop_frac = rung.get("stop_to_tp_frac")
+            new_stop = None if stop_frac is None else \
+                entry + signal.side.sign * float(stop_frac) * span
+            out.append((at, trigger, float(rung.get("close_frac", 0.0)), new_stop))
+        out.sort(key=lambda r: r[0])
+        return out
 
     def _partial_level(self, side: Side, entry: float, stop: float) -> float | None:
         """Price at which part of the position comes off, or None if disabled."""
@@ -218,6 +243,22 @@ class BacktestEngine:
             if reached:
                 self._take_partial(pos)
 
+        # Rungs are climbed in order within the bar: a bar that reaches the
+        # second rung has passed the first, so the first still fires and its
+        # stop still moves, exactly as it would have live.
+        while pos.ladder:
+            _, trigger, close_frac, new_stop = pos.ladder[0]
+            reached = high >= trigger if pos.side is Side.LONG else low <= trigger
+            if not reached:
+                break
+            pos.ladder.pop(0)
+            if close_frac > 0:
+                self._sell_part(pos, trigger, close_frac)
+            if new_stop is not None:
+                pos.stop_loss = new_stop
+            if pos.qty <= 0:
+                return self._close(pos, trigger, now, ExitReason.TAKE_PROFIT, high, low)
+
         if hit_target:
             return self._close(pos, pos.take_profit, now, ExitReason.TAKE_PROFIT, high, low)
 
@@ -243,6 +284,16 @@ class BacktestEngine:
                     pos.stop_loss, pos.trailing_active = new_stop, True
         return None
 
+    def _sell_part(self, pos: Position, level: float, frac: float) -> None:
+        """Bank `frac` of what is still open at `level`, paying its own costs."""
+        qty = pos.qty * min(max(frac, 0.0), 1.0)
+        if qty <= 0:
+            return
+        fill = self._market_exit_fill(pos.side, level)
+        pos.realised_pnl += (fill - pos.entry_price) * qty * pos.side.sign
+        pos.realised_fees += self._fee(fill, qty)
+        pos.qty -= qty
+
     def _take_partial(self, pos: Position) -> None:
         """Bank part of the position at the scale-out level and shrink the rest.
 
@@ -251,15 +302,7 @@ class BacktestEngine:
         than a single exit would -- what it changes is the shape of the outcome,
         not the cost of it.
         """
-        frac = min(max(self.cfg.execution.partial_fraction, 0.0), 1.0)
-        qty = pos.qty * frac
-        if qty <= 0:
-            pos.partial_price = None
-            return
-        fill = self._market_exit_fill(pos.side, pos.partial_price)
-        pos.realised_pnl += (fill - pos.entry_price) * qty * pos.side.sign
-        pos.realised_fees += self._fee(fill, qty)
-        pos.qty -= qty
+        self._sell_part(pos, pos.partial_price, self.cfg.execution.partial_fraction)
         pos.partial_price = None            # it only fires once
         if self.cfg.execution.breakeven_after_partial:
             # The classic follow-up: the remainder can no longer lose. It also

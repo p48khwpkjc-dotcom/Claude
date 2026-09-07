@@ -77,6 +77,9 @@ class Position:
     partial_price: float | None = None
     realised_pnl: float = 0.0    # banked by the partial, before the final exit
     realised_fees: float = 0.0
+    # Rungs of an exit ladder not yet climbed, each (trigger price, share to
+    # close, new stop or None). Kept sorted by distance from entry.
+    ladder: list = field(default_factory=list)
 
     @property
     def notional(self) -> float:

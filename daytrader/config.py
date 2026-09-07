@@ -50,6 +50,20 @@ class ExecutionConfig:
     partial_fraction: float = 0.5        # how much of the position comes off
     breakeven_after_partial: bool = False  # move the stop to entry afterwards
 
+    # A multi-step exit plan, as a list of rungs climbed in order. Each rung is
+    # {at_tp_frac, close_frac, stop_to_tp_frac}, measured as fractions of the
+    # distance from entry to the target -- which is how these plans are
+    # normally described ("at half way, stop to break even").
+    #
+    #   at_tp_frac      trigger, 0.5 = half way to the target
+    #   close_frac      share of what is still open to sell there
+    #   stop_to_tp_frac where the stop moves, 0.0 = entry, 0.5 = half way
+    #                   (null leaves the stop alone)
+    #
+    # Rungs must be listed in ascending at_tp_frac. This supersedes the single
+    # partial above when both are set.
+    exit_ladder: list[dict] = field(default_factory=list)
+
 
 @dataclass(slots=True)
 class DataConfig:

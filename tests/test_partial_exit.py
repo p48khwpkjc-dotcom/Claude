@@ -112,3 +112,92 @@ def test_the_stop_still_wins_a_tie_inside_one_bar(cfg):
     # is assumed first, so nothing is banked.
     res = run(cfg, [FLAT] * 3 + [FLAT, (100.0, 101.6, 98.5, 99.0)], SIG)
     assert res.trades[0].r_multiple == pytest.approx(-1.0)
+
+
+# --------------------------------------------------------------- exit ladder
+#
+# The plan under test, described the way traders describe it:
+#   at 50% of the way to target -> stop to break even
+#   at 75% -> close 80% of what is open, stop to 50% of target
+#
+# Entry 100, stop 99, target 102. One R is 1.00, the target span is 2.00, so
+# the rungs sit at 101.00 and 101.50 and the second stop lands at 101.00.
+LADDER = [
+    {"at_tp_frac": 0.5, "close_frac": 0.0, "stop_to_tp_frac": 0.0},
+    {"at_tp_frac": 0.75, "close_frac": 0.8, "stop_to_tp_frac": 0.5},
+]
+
+
+def test_ladder_first_rung_moves_the_stop_to_break_even(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    # Reaches 101.0 (rung one) then falls back through the old stop at 99.
+    res = run(cfg, [FLAT] * 3 + [FLAT,
+                                 (100.0, 101.1, 100.0, 100.5),
+                                 (100.5, 100.5, 98.0, 98.5)], SIG)
+    t = res.trades[0]
+    assert t.exit_reason is ExitReason.STOP_LOSS
+    assert t.r_multiple == pytest.approx(0.0)   # stopped at entry, not at -1R
+
+
+def test_ladder_second_rung_banks_most_of_the_position(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    # Reaches 101.5 (both rungs) then collapses; the remainder stops at 101.0.
+    res = run(cfg, [FLAT] * 3 + [FLAT,
+                                 (100.0, 101.6, 100.0, 101.2),
+                                 (101.2, 101.2, 98.0, 98.5)], SIG)
+    t = res.trades[0]
+    # 80% banked at +1.5R, the remaining 20% stopped at +1.0R.
+    assert t.r_multiple == pytest.approx(0.8 * 1.5 + 0.2 * 1.0)
+    assert t.net_pnl > 0
+
+
+def test_ladder_lets_the_remainder_reach_the_full_target(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    res = run(cfg, [FLAT] * 3 + [FLAT, (100.0, 102.5, 100.0, 102.0)], SIG)
+    # Both rungs cleared on the way, then 20% carried to +2R.
+    assert res.trades[0].r_multiple == pytest.approx(0.8 * 1.5 + 0.2 * 2.0)
+
+
+def test_ladder_does_nothing_to_a_trade_that_fails_immediately(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    res = run(cfg, [FLAT] * 3 + [FLAT, (100.0, 100.4, 98.5, 99.0)], SIG)
+    assert res.trades[0].r_multiple == pytest.approx(-1.0)
+
+
+def test_ladder_rungs_both_fire_when_one_bar_spans_them(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    # A single bar jumps past both rungs and closes back below the second stop.
+    res = run(cfg, [FLAT] * 3 + [FLAT,
+                                 (100.0, 101.9, 100.0, 100.2),
+                                 (100.2, 100.3, 100.0, 100.1)], SIG)
+    t = res.trades[0]
+    # Rung one moved the stop, rung two banked 80% at 101.5 and lifted the stop
+    # to 101.0. The next bar then *opens* at 100.2, already through that stop,
+    # so the remainder fills at the open and not at the level it was asking
+    # for: 0.2R, not 1.0R. A raised stop protects a level, it does not
+    # guarantee one, and this is the whole reason the engine fills gaps at the
+    # open.
+    assert t.r_multiple == pytest.approx(0.8 * 1.5 + 0.2 * 0.2)
+
+
+def test_a_raised_stop_pays_off_when_price_walks_rather_than_gaps(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    # Same rungs, but the next bar opens above the raised stop and drifts into
+    # it, so the fill lands where it was meant to.
+    res = run(cfg, [FLAT] * 3 + [FLAT,
+                                 (100.0, 101.9, 100.0, 101.8),
+                                 (101.8, 101.8, 100.5, 100.6)], SIG)
+    assert res.trades[0].r_multiple == pytest.approx(0.8 * 1.5 + 0.2 * 1.0)
+
+
+def test_the_stop_still_beats_the_ladder_inside_one_bar(cfg):
+    cfg = clean_cfg(cfg)
+    cfg.execution.exit_ladder = LADDER
+    res = run(cfg, [FLAT] * 3 + [FLAT, (100.0, 101.6, 98.5, 99.0)], SIG)
+    assert res.trades[0].r_multiple == pytest.approx(-1.0)
