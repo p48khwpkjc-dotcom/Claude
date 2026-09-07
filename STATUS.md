@@ -83,6 +83,25 @@ python -m daytrader fetch --interval 1h --days 900
 python -m daytrader -c configs/1h.yaml backtest
 ```
 
+## Zur Frage nach 70 % Trefferquote bei 2:1
+
+Vermessen statt gesucht: **[research/TREFFERQUOTE.md](research/TREFFERQUOTE.md)**.
+
+70 % Trefferquote ist erreichbar — sechs Strategien schneiden die Linie, alle
+bei einem Ziel von 0,5R oder darunter, keine bei 2R. Die beiden Größen lassen
+sich nicht unabhängig einstellen.
+
+Bei `donchian_breakout`: 70 % Treffer bei 0,5R bringen **+0,013 R** je Trade,
+41 % Treffer bei 3R bringen **+0,202 R**. Wer die Quote maximiert, minimiert
+den Gewinn, um das Fünfzehnfache.
+
+Der Münzwurf `random_entry` erreicht bei 2R schon 41,0 % — das ist der Anteil,
+der aus der Geometrie kommt. Die beste Strategie liegt bei 46,8 %, trägt also
+rund sechs Punkte Information. Für 70 % bräuchte es 29.
+
+Teilverkäufe verschieben das nicht, sie kosten: in 16 von 16 Kombinationen
+steigt die Trefferquote und fällt der Erwartungswert.
+
 ## Nächster Schritt
 
 Der Abstand ist jetzt beziffert statt behauptet, und das macht die Entscheidung
