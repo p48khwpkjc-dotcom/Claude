@@ -109,8 +109,13 @@ class Cell:
 
 
 def run_cell(strategy: str, interval: str, htf: str, hold_h: int,
-             data: dict[str, pd.DataFrame], split: str) -> Cell:
+             data: dict[str, pd.DataFrame], split: str,
+             overrides: dict | None = None) -> Cell:
     cfg = load_config(Path("config.yaml"))
+    if overrides:
+        # Only keys the strategy already declares; an unknown one is a typo,
+        # and Strategy.__init__ raises on it rather than silently ignoring it.
+        cfg.strategies[strategy] = {**cfg.strategies.get(strategy, {}), **overrides}
     cfg.data.interval = interval
     cfg.data.htf_interval = htf
     cfg.risk.max_hold_hours = float(hold_h)

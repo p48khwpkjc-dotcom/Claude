@@ -122,4 +122,8 @@ def entry(side: Side, price: float, stop: float, target: float | None,
         return None
     if side is Side.SHORT and stop <= price:
         return None
-    return Signal(side, stop, target, reason=reason, trail_atr_mult=trail_atr_mult)
+    # A trail of zero ATR would ratchet the stop onto the bar's own extreme and
+    # close the trade at once, which nobody wants and nobody means. Zero reads
+    # as "no trailing", so a sweep can switch it off from configuration.
+    return Signal(side, stop, target, reason=reason,
+                  trail_atr_mult=trail_atr_mult or None)
