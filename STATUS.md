@@ -102,6 +102,23 @@ rund sechs Punkte Information. Für 70 % bräuchte es 29.
 Teilverkäufe verschieben das nicht, sie kosten: in 16 von 16 Kombinationen
 steigt die Trefferquote und fällt der Erwartungswert.
 
+## Das Holdout ist ausgegeben
+
+**[research/HOLDOUT_ERGEBNIS.md](research/HOLDOUT_ERGEBNIS.md)** — einmal
+gelaufen, vorher angemeldet, Segment jetzt verbraucht.
+
+`donchian_breakout` auf 4h mit 3R-Ziel, 634 Trades ab dem 24. Januar 2026:
+Profitfaktor **1,059**, Erwartungswert **+0,0366 R**, 15 von 28 Symbolen
+profitabel. Auf train waren es 1,349 und +0,2015 R bei 23 von 28.
+
+Statistisch ist davon nichts übrig: t = 0,62, das 95-%-Intervall reicht von
+−0,079 bis +0,153 R und enthält die Null. Für einen Nachweis bräuchte es rund
+6.364 Trades statt 634. Der Train-Wert liegt 2,8 Standardfehler darüber — die
+Schätzung war überhöht, nicht bloß verrauscht.
+
+Nach der vorab festgelegten Regel (Bestätigung ab PF 1,15, Widerlegung unter
+1,0) ist das der mittlere Fall: **zu wenig Daten**. So wird es berichtet.
+
 ## Nächster Schritt
 
 Der Abstand ist jetzt beziffert statt behauptet, und das macht die Entscheidung
