@@ -1,0 +1,33 @@
+strategy,plan,trades,win_rate,pf,exp_r
+random_entry,A nichts tun,144486,39.2,0.718,-0.1625
+random_entry,B nur BE bei 50%,145573,33.41,0.689,-0.1663
+random_entry,C dein Schema,145889,36.95,0.675,-0.1736
+random_entry,"D wie C, ohne BE",145396,41.43,0.698,-0.1714
+donchian_breakout,A nichts tun,70327,36.37,0.74,-0.1691
+donchian_breakout,B nur BE bei 50%,70826,29.2,0.705,-0.1744
+donchian_breakout,C dein Schema,71057,34.13,0.681,-0.1824
+donchian_breakout,"D wie C, ohne BE",70608,39.51,0.71,-0.1789
+vol_expansion,A nichts tun,54429,37.74,0.769,-0.1462
+vol_expansion,B nur BE bei 50%,55493,31.13,0.742,-0.1489
+vol_expansion,C dein Schema,56056,35.59,0.715,-0.1629
+vol_expansion,"D wie C, ohne BE",55289,40.56,0.738,-0.1608
+keltner_trend,A nichts tun,65755,37.37,0.768,-0.1533
+keltner_trend,B nur BE bei 50%,67273,30.7,0.737,-0.1574
+keltner_trend,C dein Schema,70393,35.34,0.72,-0.1618
+keltner_trend,"D wie C, ohne BE",69218,40.33,0.743,-0.1602
+squeeze_breakout,A nichts tun,51135,34.23,0.674,-0.2561
+squeeze_breakout,B nur BE bei 50%,51403,26.03,0.622,-0.2612
+squeeze_breakout,C dein Schema,51509,33.22,0.609,-0.2667
+squeeze_breakout,"D wie C, ohne BE",51297,39.36,0.643,-0.2651
+fair_value_gap,A nichts tun,103210,36.12,0.669,-0.2639
+fair_value_gap,B nur BE bei 50%,105329,28.73,0.619,-0.2748
+fair_value_gap,C dein Schema,106646,34.47,0.587,-0.2926
+fair_value_gap,"D wie C, ohne BE",105347,40.08,0.622,-0.287
+opening_range,A nichts tun,24586,32.9,0.621,-0.3459
+opening_range,B nur BE bei 50%,24584,25.43,0.563,-0.3472
+opening_range,C dein Schema,24586,32.99,0.524,-0.3642
+opening_range,"D wie C, ohne BE",24588,38.78,0.564,-0.3637
+failed_breakout,A nichts tun,122266,37.76,0.738,-0.2033
+failed_breakout,B nur BE bei 50%,123964,30.66,0.702,-0.2056
+failed_breakout,C dein Schema,124272,35.47,0.68,-0.2157
+failed_breakout,"D wie C, ohne BE",123047,40.97,0.708,-0.2139
