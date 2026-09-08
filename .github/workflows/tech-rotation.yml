@@ -51,6 +51,11 @@ jobs:
     steps:
       - name: Auf 15 Uhr deutscher Zeit pruefen
         id: pruefen
+        # Dieser Job macht kein Checkout und braucht auch keins -- er
+        # schaut nur auf die Uhr. Das globale working-directory zeigt auf
+        # tech-rotation/, das hier gar nicht existiert, also hier zurueck
+        # auf das Arbeitsverzeichnis des Runners.
+        working-directory: .
         run: |
           # Nur der Cron-Lauf braucht die Pruefung -- von den beiden
           # UTC-Terminen ist je nach Jahreszeit genau einer der richtige.
