@@ -1,0 +1,21 @@
+{
+  "cash": 65233.780892937815,
+  "equity_history": [
+    {
+      "date": "2026-09-04",
+      "equity": 99979.1510406429
+    }
+  ],
+  "last_rebalance": "2026-09-04",
+  "positions": {
+    "AMAT": 8.0,
+    "AMD": 9.0,
+    "ARM": 14.0,
+    "CRWD": 21.0,
+    "KLAC": 20.0,
+    "LRCX": 12.0,
+    "PANW": 16.0,
+    "SNOW": 18.0
+  },
+  "version": 1
+}

@@ -1,0 +1,20 @@
+# Kurscache wird bei jedem Lauf neu geholt
+data/cache/
+
+# Demo-Setup aus scripts/make_demo.py
+demo/
+
+# Backtest-Ausgaben und CI-Report
+out/
+report.md
+
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# data/state.json und data/orders.jsonl werden bewusst versioniert:
+# sie sind der Zustand, den der CI-Lauf zwischen zwei Monaten mitnimmt.
+
+# Lokale Zugangsdaten -- gehoeren nie ins Repository
+.env
