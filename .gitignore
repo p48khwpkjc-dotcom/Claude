@@ -18,3 +18,7 @@ secrets.yaml
 
 # Suchläufe schreiben ihre Rohtabellen hierher; sie sind reproduzierbar.
 research/search_*.csv
+
+# data/exchange/ ist der Transportweg und bleibt versioniert -- siehe
+# FUNDING-HOLEN.md. Nur der abgeleitete Parquet-Cache daraus nicht.
+!data/exchange/
