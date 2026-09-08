@@ -1,20 +1,28 @@
 name: Tech-Rotation
 
-# Der Job laeuft an jedem US-Handelstag vor der Eroeffnung. Ob wirklich
+# Der Job laeuft werktags um 15:00 deutscher Zeit. Ob wirklich
 # rebalanciert wird, entscheidet die Strategie selbst: `techrot rebalance`
 # handelt nur, wenn seit dem letzten Lauf ein Kalendermonat vergangen ist.
 # Ein ausgefallener Lauf holt den Termin am naechsten Tag nach.
 #
-# 13:00 UTC liegt vor der Eroeffnung in beiden US-Zeitzonen (13:30 UTC im
-# Sommer, 14:30 UTC im Winter). Signale stammen damit vom Vortagesschluss,
-# die Marktorders werden zur Eroeffnung ausgefuehrt.
+# 15:00 deutscher Zeit liegt normalerweise eine halbe Stunde vor der
+# US-Eroeffnung (13:30 UTC im Sommer, 14:30 UTC im Winter). Signale stammen
+# damit vom Vortagesschluss, die Marktorders werden zur Eroeffnung
+# ausgefuehrt. Ausnahme sind die zwei bis drei Wochen im Jahr, in denen EU
+# und USA ihre Zeitumstellung nicht gleichzeitig machen -- dann laeuft der
+# Job rund 30 Minuten NACH der Eroeffnung und die Orders fuellen untertags
+# statt zum Open.
 #
 # Achtung: GitHub startet Cron-Workflows nur vom Default-Branch. Solange
 # diese Datei auf einem Feature-Branch liegt, laeuft nur der manuelle Start.
 
 on:
   schedule:
-    - cron: "0 13 * * 1-5"
+    # GitHub-Cron kennt nur UTC und keine Zeitumstellung. Die beiden
+    # Termine zusammen decken 15:00 deutscher Zeit ganzjaehrig ab; der
+    # Job "Zeitfenster" laesst dann jeweils nur den richtigen durch.
+    - cron: "0 13 * * 1-5" # 15:00 Berlin waehrend der Sommerzeit (MESZ)
+    - cron: "0 14 * * 1-5" # 15:00 Berlin waehrend der Winterzeit (MEZ)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -35,6 +43,32 @@ defaults:
     working-directory: tech-rotation
 
 jobs:
+  zeitfenster:
+    name: Zeitfenster
+    runs-on: ubuntu-latest
+    outputs:
+      weiter: ${{ steps.pruefen.outputs.weiter }}
+    steps:
+      - name: Auf 15 Uhr deutscher Zeit pruefen
+        id: pruefen
+        run: |
+          # Nur der Cron-Lauf braucht die Pruefung -- von den beiden
+          # UTC-Terminen ist je nach Jahreszeit genau einer der richtige.
+          # Ein manueller Start soll zu jeder Uhrzeit durchgehen.
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "weiter=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          STUNDE=$(TZ=Europe/Berlin date +%H)
+          if [ "$STUNDE" = "15" ]; then
+            echo "weiter=true" >> "$GITHUB_OUTPUT"
+            echo "15:00 Uhr in Berlin -- der Lauf geht weiter."
+          else
+            echo "weiter=false" >> "$GITHUB_OUTPUT"
+            echo "Es ist $STUNDE:00 Uhr in Berlin. Das ist der Zwillingstermin"
+            echo "aus der anderen Jahreszeit -- uebersprungen."
+          fi
+
   test:
     name: Tests
     runs-on: ubuntu-latest
@@ -52,8 +86,9 @@ jobs:
   rebalance:
     name: Rebalancing
     # Auf Push nur testen: gehandelt wird nach Zeitplan oder auf Zuruf.
-    if: github.event_name != 'push'
-    needs: test
+    # Beim Zeitplan zusaetzlich nur zum richtigen der beiden UTC-Termine.
+    if: github.event_name != 'push' && needs.zeitfenster.outputs.weiter == 'true'
+    needs: [zeitfenster, test]
     runs-on: ubuntu-latest
     permissions:
       contents: write

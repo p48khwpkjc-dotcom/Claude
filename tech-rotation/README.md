@@ -191,11 +191,25 @@ die Mechanik pruefbar ist. Es geht um die Kette, nicht um die Rendite.
 
 ## Automatisierung
 
-`.github/workflows/tech-rotation.yml` laeuft an jedem US-Handelstag um 13:00 UTC,
-also vor der Eroeffnung. Der Job entscheidet nicht selbst, wann rebalanciert
-wird: `techrot rebalance` handelt nur, wenn seit dem letzten Lauf ein
-Kalendermonat vergangen ist. Ein ausgefallener Lauf holt den Termin am naechsten
-Handelstag nach, statt den Monat zu ueberspringen.
+`.github/workflows/tech-rotation.yml` laeuft werktags um **15:00 deutscher
+Zeit**. Der Job entscheidet nicht selbst, wann rebalanciert wird: `techrot
+rebalance` handelt nur, wenn seit dem letzten Lauf ein Kalendermonat vergangen
+ist. Ein ausgefallener Lauf holt den Termin am naechsten Handelstag nach, statt
+den Monat zu ueberspringen.
+
+GitHub-Cron kennt nur UTC und keine Zeitumstellung. Deshalb stehen zwei Termine
+im Workflow -- 13:00 UTC fuer die Sommerzeit, 14:00 UTC fuer die Winterzeit --
+und der vorgeschaltete Job *Zeitfenster* laesst jeweils nur den durch, der
+tatsaechlich auf 15:00 Uhr in Berlin faellt. Der andere endet nach wenigen
+Sekunden mit einer Notiz im Log. Ein manueller Start ueber *Run workflow*
+umgeht die Pruefung und laeuft zu jeder Uhrzeit.
+
+15:00 deutscher Zeit liegt normalerweise eine halbe Stunde vor der
+US-Eroeffnung, die Signale stammen also vom Vortagesschluss und die Marktorders
+fuellen zur Eroeffnung. In den zwei bis drei Wochen im Jahr, in denen EU und USA
+ihre Uhren nicht am selben Wochenende umstellen, laeuft der Job rund 30 Minuten
+**nach** der Eroeffnung; die Orders fuellen dann untertags zu einem Kurs, der
+etwas vom Referenzkurs des Plans abweicht.
 
 Der Zustand (`data/state.json`) wird nach jedem Handel zurueck in den Branch
 committet -- so ueberlebt das Depot zwischen zwei Laeufen, obwohl der Runner
