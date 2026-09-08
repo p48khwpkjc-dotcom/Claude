@@ -123,20 +123,25 @@ jobs:
       - name: Zustand zurueckschreiben
         if: success()
         run: |
-          if git diff --quiet -- data/; then
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Erst stagen, dann vergleichen. "git diff" allein sieht nur
+          # verfolgte Dateien -- beim allerersten Lauf sind state.json und
+          # orders.jsonl aber neu, und der Zustand waere still verlorengegangen.
+          git add data/
+          if git diff --cached --quiet -- data/; then
             echo "Kein Zustandswechsel -- nichts zu committen."
             exit 0
           fi
+
           # An Handelstagen ohne Rebalancing aendert sich nur die
           # Equity-Kurve. Das ist beabsichtigt: die Drawdown-Bremse braucht
           # taegliche Punkte, genau wie im Backtest.
-          if git diff --quiet -- data/orders.jsonl; then
+          if git diff --cached --quiet -- data/orders.jsonl; then
             NACHRICHT="Tech-Rotation: Depotbewertung $(date -u +%Y-%m-%d)"
           else
             NACHRICHT="Tech-Rotation: Rebalancing $(date -u +%Y-%m-%d)"
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
           git commit -m "$NACHRICHT"
           git push
