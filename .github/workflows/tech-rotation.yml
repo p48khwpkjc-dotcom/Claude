@@ -64,15 +64,30 @@ jobs:
             echo "weiter=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          STUNDE=$(TZ=Europe/Berlin date +%H)
-          if [ "$STUNDE" = "15" ]; then
-            echo "weiter=true" >> "$GITHUB_OUTPUT"
-            echo "15:00 Uhr in Berlin -- der Lauf geht weiter."
+
+          # Entscheidend ist, WELCHER Cron-Eintrag gefeuert hat, nicht wann
+          # der Runner tatsaechlich startet. GitHub verzoegert geplante
+          # Laeufe regelmaessig um Stunden; eine Pruefung gegen die
+          # Wanduhr wuerde den Lauf dann stillschweigend ueberspringen.
+          OFFSET=$(TZ=Europe/Berlin date +%z)   # +0200 Sommer, +0100 Winter
+          TERMIN="${{ github.event.schedule }}"
+
+          case "$TERMIN|$OFFSET" in
+            "0 13 * * 1-5|+0200") WEITER=true  ;;  # 13 UTC = 15 Uhr MESZ
+            "0 14 * * 1-5|+0100") WEITER=true  ;;  # 14 UTC = 15 Uhr MEZ
+            *)                    WEITER=false ;;
+          esac
+
+          echo "weiter=$WEITER" >> "$GITHUB_OUTPUT"
+          if [ "$WEITER" = "true" ]; then
+            echo "Termin '$TERMIN' bei UTC-Offset $OFFSET entspricht 15 Uhr"
+            echo "deutscher Zeit -- der Lauf geht weiter."
           else
-            echo "weiter=false" >> "$GITHUB_OUTPUT"
-            echo "Es ist $STUNDE:00 Uhr in Berlin. Das ist der Zwillingstermin"
-            echo "aus der anderen Jahreszeit -- uebersprungen."
+            echo "Termin '$TERMIN' bei UTC-Offset $OFFSET ist der"
+            echo "Zwillingstermin aus der anderen Jahreszeit -- uebersprungen."
           fi
+          echo "(Runner-Start: $(TZ=Europe/Berlin date '+%H:%M') Berlin."
+          echo " Eine Verzoegerung durch GitHub aendert diese Entscheidung nicht.)"
 
   test:
     name: Tests

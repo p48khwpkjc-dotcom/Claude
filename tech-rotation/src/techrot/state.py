@@ -83,6 +83,24 @@ class PortfolioState:
     def equity(self, prices: pd.Series) -> float:
         return self.cash + self.market_value(prices)
 
+    def unpriced(self, prices: pd.Series) -> list[str]:
+        """Gehaltene Titel ohne Kurs in dieser Reihe.
+
+        ``market_value`` ueberspringt sie, bewertet sie also faktisch mit
+        null. Fuer eine Momentaufnahme ist das harmlos, fuer einen Punkt auf
+        der Equity-Kurve nicht: fehlen alle Kurse, sieht der Punkt wie ein
+        Totalverlust der Positionen aus und die Drawdown-Bremse rechnet
+        spaeter mit Unsinn.
+        """
+        fehlend = []
+        for ticker, shares in self.positions.items():
+            if not shares:
+                continue
+            price = prices.get(ticker)
+            if price is None or pd.isna(price):
+                fehlend.append(ticker)
+        return sorted(fehlend)
+
     def record_equity(self, on: date, value: float) -> None:
         """Haengt einen Equity-Punkt an; ersetzt den Eintrag desselben Tages."""
         stamp = on.isoformat()

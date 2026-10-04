@@ -238,9 +238,27 @@ def execute_plan(
     return fills
 
 
+class StaleValuationError(RuntimeError):
+    """Das Depot laesst sich zum Stichtag nicht vollstaendig bewerten."""
+
+
 def mark_to_market(state: PortfolioState, prices: PriceData, on: date | None = None) -> float:
-    """Bewertet das Depot zum letzten Kurs und haengt den Punkt an die Kurve."""
+    """Bewertet das Depot zum letzten Kurs und haengt den Punkt an die Kurve.
+
+    Fehlt fuer eine gehaltene Position der Kurs, wird **kein** Punkt
+    geschrieben. Ein unvollstaendig bewerteter Punkt sieht wie ein Einbruch
+    aus, bleibt dauerhaft in der Historie stehen und verfaelscht danach jede
+    Drawdown-Bremse. Lieber eine Luecke in der Kurve als ein falscher Wert.
+    """
     last_prices = prices.close.iloc[-1]
+
+    fehlend = state.unpriced(last_prices)
+    if fehlend:
+        raise StaleValuationError(
+            f"Keine Kurse fuer {', '.join(fehlend)} per {prices.last_date.date()} -- "
+            f"Depotwert waere unvollstaendig, kein Punkt geschrieben"
+        )
+
     equity = state.equity(last_prices)
     state.record_equity(on or prices.last_date.date(), equity)
     return equity
