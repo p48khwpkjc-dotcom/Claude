@@ -248,3 +248,40 @@ def test_fehlgeschlagener_sync_landet_im_journal(panel: PriceData, cfg, tmp_path
     sync_fehler = [e for e in entries if e["status"] == "account_sync_failed"]
     assert len(sync_fehler) == 1
     assert "Konto nicht abrufbar" in sync_fehler[0]["error"]
+
+
+def test_unpriced_meldet_gehaltene_titel_ohne_kurs():
+    state = PortfolioState(cash=1000.0, positions={"A": 5.0, "B": 3.0, "C": 0.0})
+    prices = pd.Series({"A": 10.0, "B": float("nan")})
+    # B hat NaN, C ist gar nicht in der Reihe -- aber C haelt nichts mehr.
+    assert state.unpriced(prices) == ["B"]
+    assert state.unpriced(pd.Series({"A": 10.0, "B": 20.0})) == []
+
+
+def test_mark_to_market_schreibt_keinen_punkt_ohne_kurse(cfg):
+    """Der Bug vom 22. September: fehlen alle Kurse, ergibt die Bewertung
+    genau den Cash-Bestand und sieht wie ein Totalverlust aus."""
+    from techrot.execution import StaleValuationError
+
+    index = pd.bdate_range(periods=3, end="2026-09-22")
+    close = pd.DataFrame({"T00": [100.0, 101.0, float("nan")]}, index=index)
+    prices = PriceData(close=close, volume=pd.DataFrame(1e9, index=index, columns=["T00"]))
+
+    state = PortfolioState(cash=65_000.0, positions={"T00": 18.0})
+    with pytest.raises(StaleValuationError, match="T00"):
+        mark_to_market(state, prices)
+
+    # Lieber eine Luecke in der Kurve als ein falscher Wert.
+    assert state.equity_history == []
+
+
+def test_mark_to_market_schreibt_bei_vollstaendigen_kursen(cfg):
+    index = pd.bdate_range(periods=3, end="2026-09-22")
+    close = pd.DataFrame({"T00": [100.0, 101.0, 102.0]}, index=index)
+    prices = PriceData(close=close, volume=pd.DataFrame(1e9, index=index, columns=["T00"]))
+
+    state = PortfolioState(cash=1_000.0, positions={"T00": 10.0})
+    equity = mark_to_market(state, prices)
+
+    assert equity == pytest.approx(1_000.0 + 10 * 102.0)
+    assert len(state.equity_history) == 1

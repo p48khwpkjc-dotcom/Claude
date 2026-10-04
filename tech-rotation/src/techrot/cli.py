@@ -20,7 +20,12 @@ from .backtest import run_backtest
 from .brokers import BrokerError, build_broker
 from .config import Config, ConfigError, load_config
 from .data import DataError, check_data_quality, load_prices
-from .execution import execute_plan, mark_to_market, plan_rebalance
+from .execution import (
+    StaleValuationError,
+    execute_plan,
+    mark_to_market,
+    plan_rebalance,
+)
 from .preflight import render_preflight, run_preflight
 from .report import plan_to_markdown, render_backtest, render_plan
 from .state import PortfolioState
@@ -76,7 +81,11 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         # braucht eine taegliche Equity-Kurve -- genau wie im Backtest. Nur
         # monatliche Punkte wuerden einen Einbruch zwischen zwei Terminen
         # schlicht nicht sehen.
-        mark_to_market(state, prices)
+        try:
+            mark_to_market(state, prices)
+        except StaleValuationError as exc:
+            print(f"\nWARNUNG: {exc}", file=sys.stderr)
+            return 1
         state.save(state_path)
         print("\nKein Rebalancing faellig -- nur Depotbewertung fortgeschrieben.")
         return 0
@@ -99,7 +108,13 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
             file=sys.stderr,
         )
 
-    mark_to_market(state, prices)
+    try:
+        mark_to_market(state, prices)
+    except StaleValuationError as exc:
+        # Die Orders sind durch -- der Zustand muss gespeichert werden,
+        # auch wenn der Equity-Punkt diesmal ausfaellt.
+        print(f"\nWARNUNG: {exc}", file=sys.stderr)
+        failed += 1
     state.save(state_path)
     print(f"\nZustand gespeichert: {state_path}")
     return 1 if failed else 0
