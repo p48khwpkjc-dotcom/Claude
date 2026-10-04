@@ -160,7 +160,10 @@ jobs:
           if [ "${{ inputs.force }}" = "true" ]; then
             ARGS="$ARGS --force"
           fi
-          techrot rebalance $ARGS --markdown report.md
+          # --json legt die vollstaendige Bewertung aller Ticker ab, nicht
+          # nur die Top 15 des Textreports. Die Datei wird mitcommittet und
+          # ist die Datengrundlage der interaktiven Ansicht.
+          techrot rebalance $ARGS --markdown report.md --json data/ranking.json
           cat report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Report sichern
@@ -170,6 +173,7 @@ jobs:
           name: rebalance-report-${{ github.run_id }}
           path: |
             tech-rotation/report.md
+            tech-rotation/data/ranking.json
             tech-rotation/data/state.json
             tech-rotation/data/orders.jsonl
           if-no-files-found: ignore
