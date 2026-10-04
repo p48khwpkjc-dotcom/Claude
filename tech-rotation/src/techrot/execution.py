@@ -29,7 +29,7 @@ from .portfolio import (
     weights_from_positions,
 )
 from .ranking import rank_universe
-from .risk import Eligibility, ExposureDecision, check_eligibility, decide_exposure
+from .risk import Check, Eligibility, ExposureDecision, check_eligibility, decide_exposure
 from .state import PortfolioState, is_rebalance_due
 
 
@@ -100,7 +100,10 @@ def plan_rebalance(
     eligibility = check_eligibility(panel, full_ranking, quality, cfg.risk.eligibility)
     for ticker, q in quality.items():
         if not q.ok and ticker not in eligibility:
-            eligibility[ticker] = Eligibility(ticker, False, (f"Datenqualitaet: {q.reason}",))
+            grund = f"Datenqualitaet: {q.reason}"
+            eligibility[ticker] = Eligibility(
+                ticker, False, (grund,), (Check("data", False, detail=grund),)
+            )
 
     eligible = {t for t, e in eligibility.items() if e.eligible}
 

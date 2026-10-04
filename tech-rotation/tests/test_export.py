@@ -140,3 +140,58 @@ def test_exposure_und_regeln_sind_vollstaendig(lauf):
     assert payload["rules"]["top_n"] == cfg.selection.top_n
     assert payload["rules"]["buffer_rank"] == cfg.selection.buffer_rank
     assert payload["rules"]["max_annual_vol"] == cfg.risk.eligibility.max_annual_vol
+
+
+def test_checks_nennen_regel_zahl_und_limit(lauf):
+    """Jede Sperre muss maschinenlesbar begruendet sein.
+
+    Eine Ansicht soll zeigen koennen, wie knapp eine Regel gegriffen hat,
+    ohne die deutschen Begruendungstexte zu zerlegen.
+    """
+    cfg, plan, state = lauf
+    payload = plan_to_dict(cfg, plan, state)
+
+    gesperrt = [t for t in payload["tickers"] if not t["eligible"]]
+    assert gesperrt
+
+    for entry in payload["tickers"]:
+        regeln = {c["rule"] for c in entry["checks"]}
+        assert "data" in regeln
+        # Die Checks muessen dasselbe Urteil tragen wie das Gesamtergebnis.
+        alle_ok = all(c["ok"] for c in entry["checks"])
+        assert alle_ok == entry["eligible"]
+        # Und so viele Fehlschlaege, wie Begruendungen genannt werden.
+        assert sum(1 for c in entry["checks"] if not c["ok"]) == len(entry["reasons"])
+
+
+def test_momentum_check_vergleicht_gegen_null(lauf):
+    cfg, plan, state = lauf
+    payload = plan_to_dict(cfg, plan, state)
+    fallend = [
+        t
+        for t in payload["tickers"]
+        if any(c["rule"] == "abs_momentum" and not c["ok"] for c in t["checks"])
+    ]
+    assert fallend, "Fixture sollte fallende Titel enthalten"
+    for entry in fallend:
+        check = next(c for c in entry["checks"] if c["rule"] == "abs_momentum")
+        assert check["limit"] == 0.0
+        assert check["value"] is not None and check["value"] <= 0
+
+
+def test_liquiditaetscheck_traegt_das_handelsvolumen(lauf):
+    """Das Volumen steht in keiner Kennzahl -- nur der Check kennt es."""
+    cfg, plan, state = lauf
+    payload = plan_to_dict(cfg, plan, state)
+    werte = [
+        c["value"]
+        for t in payload["tickers"]
+        for c in t["checks"]
+        if c["rule"] == "liquidity" and c["value"] is not None
+    ]
+    assert werte
+    assert all(v > 0 for v in werte)
+    limits = {
+        c["limit"] for t in payload["tickers"] for c in t["checks"] if c["rule"] == "liquidity"
+    }
+    assert limits == {cfg.risk.eligibility.min_avg_dollar_volume}

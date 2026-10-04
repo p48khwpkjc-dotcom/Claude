@@ -88,6 +88,18 @@ def plan_to_dict(
                 "signals": beitraege,
                 "eligible": bool(eligibility.eligible) if eligibility else False,
                 "reasons": list(eligibility.reasons) if eligibility else ["nicht geprueft"],
+                # Dieselbe Entscheidung maschinenlesbar: welche Regel hat
+                # gegriffen, mit welcher Zahl gegen welches Limit.
+                "checks": [
+                    {
+                        "rule": c.rule,
+                        "ok": bool(c.ok),
+                        "value": _num(c.value),
+                        "limit": _num(c.limit),
+                        "detail": c.detail,
+                    }
+                    for c in (eligibility.checks if eligibility else ())
+                ],
                 "data_ok": bool(quality.ok) if quality else None,
                 "data_reason": (None if quality is None or quality.ok else quality.reason),
                 "selected": ticker in plan.selected,
