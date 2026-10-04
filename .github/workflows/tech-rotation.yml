@@ -166,6 +166,14 @@ jobs:
           techrot rebalance $ARGS --markdown report.md --json data/ranking.json
           cat report.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Ansicht bauen
+        if: success()
+        # Muss direkt nach dem Lauf passieren: data/ranking.json und
+        # web/querschnitt.html werden zusammen committet. Liefe der Build
+        # nicht mit, zeigte die versionierte Seite dauerhaft den Stand des
+        # letzten manuellen Builds -- und der Drift-Test ginge rot.
+        run: python scripts/build_view.py
+
       - name: Report sichern
         if: always()
         uses: actions/upload-artifact@v4
@@ -174,6 +182,7 @@ jobs:
           path: |
             tech-rotation/report.md
             tech-rotation/data/ranking.json
+            tech-rotation/web/querschnitt.html
             tech-rotation/data/state.json
             tech-rotation/data/orders.jsonl
           if-no-files-found: ignore
@@ -188,8 +197,8 @@ jobs:
           # Erst stagen, dann vergleichen. "git diff" allein sieht nur
           # verfolgte Dateien -- beim allerersten Lauf sind state.json und
           # orders.jsonl aber neu, und der Zustand waere still verlorengegangen.
-          git add data/
-          if git diff --cached --quiet -- data/; then
+          git add data/ web/querschnitt.html
+          if git diff --cached --quiet -- data/ web/querschnitt.html; then
             echo "Kein Zustandswechsel -- nichts zu committen."
             exit 0
           fi
