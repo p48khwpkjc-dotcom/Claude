@@ -1,0 +1,964 @@
+<title>Tech-Rotation Querschnitt</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: eine Rangleiter als Rueckgrat der Seite. Jede Zeile traegt ihre
+   eigene Score-Zerlegung als Balken um die Nulllinie; Regelwerk und
+   Streudiagramm flankieren sie, das Detail klappt in der Zeile auf. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #eff1f6;
+  --ink: #121620;
+  --ink-2: #4b5466;
+  --ink-3: #7b8495;
+  --line: #dde1e9;
+  --line-2: #c6cdd9;
+  --accent: #243b5e;
+  --accent-soft: #e4eaf4;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --s4: #eda100;
+  --good: #0ca30c;
+  --critical: #d03b3b;
+  --grid: #e7eaf1;
+  --font-display: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1118;
+    --surface: #161a23;
+    --surface-2: #1d222d;
+    --ink: #eef1f6;
+    --ink-2: #a8b1c0;
+    --ink-3: #78818f;
+    --line: #262c38;
+    --line-2: #39414f;
+    --accent: #9bb4d8;
+    --accent-soft: #1e2736;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --s4: #c98500;
+    --grid: #232935;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1118;
+  --surface: #161a23;
+  --surface-2: #1d222d;
+  --ink: #eef1f6;
+  --ink-2: #a8b1c0;
+  --ink-3: #78818f;
+  --line: #262c38;
+  --line-2: #39414f;
+  --accent: #9bb4d8;
+  --accent-soft: #1e2736;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --grid: #232935;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+a { color: inherit; }
+
+/* ---------- Kopf ---------- */
+header.kopf {
+  border-bottom: 1px solid var(--line);
+  padding-block: 28px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 28px;
+}
+header.kopf h1 { font-size: clamp(27px, 5.2vw, 40px); font-weight: 700; letter-spacing: -0.015em; }
+header.kopf p { color: var(--ink-2); margin: 6px 0 0; max-width: 54ch; font-size: 14px; }
+.stand { margin-left: auto; text-align: right; font-size: 12px; color: var(--ink-3); }
+.stand b { display: block; font-family: var(--font-mono); font-size: 15px; color: var(--ink); font-weight: 500; }
+
+/* ---------- Kennzahlenzeile ---------- */
+.kennzahlen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  margin-block: 20px;
+  overflow: hidden;
+}
+.kennzahl { background: var(--surface); padding: 11px 13px; }
+.kennzahl dt { font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em; text-transform: uppercase; }
+.kennzahl dd {
+  margin: 3px 0 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+  font-weight: 500;
+}
+.kennzahl dd small { font-size: 11px; color: var(--ink-3); font-weight: 400; display: block; font-family: var(--font-body); }
+
+/* ---------- Abschnitte ---------- */
+section { margin-block: 44px; }
+section > h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+section > .lede { color: var(--ink-2); font-size: 14px; margin: 7px 0 0; max-width: 68ch; }
+
+/* ---------- Signal-Legende und Regler ---------- */
+.signale { display: grid; gap: 10px; margin-top: 18px; }
+.signal {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 11px 13px;
+}
+.swatch { width: 14px; height: 14px; border-radius: 3px; }
+.signal-name { font-weight: 600; font-size: 14px; min-width: 0; }
+.signal-name span { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-2); }
+.signal-wert { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 15px; min-width: 4ch; text-align: right; }
+.signal input[type="range"] { grid-column: 1 / -1; width: 100%; margin: 0; accent-color: var(--accent); }
+.regler-fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+button {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 3px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+button:hover { background: var(--surface-2); }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+:root[data-theme="dark"] button[aria-pressed="true"],
+:root:not([data-theme="light"]) button[aria-pressed="true"] { color: var(--bg); }
+:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }
+.hinweis {
+  border-left: 3px solid var(--s4);
+  background: var(--surface);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  border-radius: 0 3px 3px 0;
+}
+.hinweis strong { color: var(--ink); }
+
+/* ---------- Werkzeugleiste ---------- */
+.werkzeuge { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-block: 16px 10px; }
+.werkzeuge .gruppe { display: flex; flex-wrap: wrap; gap: 6px; }
+.werkzeuge label { font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* ---------- Rangleiste ---------- */
+.leiter { border: 1px solid var(--line); border-radius: 3px; overflow: hidden; background: var(--surface); }
+.leiter-kopf, .zeile-haupt {
+  display: grid;
+  grid-template-columns: 34px 62px minmax(120px, 1fr) 68px 70px 60px 72px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+}
+.leiter-kopf {
+  height: 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.leiter-kopf .r, .zeile-haupt .r { text-align: right; }
+.zeile { border-bottom: 1px solid var(--line); }
+.zeile:last-child { border-bottom: 0; }
+.zeile-haupt {
+  width: 100%;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding-block: 7px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.zeile-haupt:hover { background: var(--surface-2); }
+.zeile[data-offen="true"] .zeile-haupt { background: var(--accent-soft); }
+.zeile[data-gesperrt="true"] .tick { color: var(--ink-3); }
+.rang { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.rang-neu { color: var(--s1); font-weight: 600; }
+.tick { font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: 0.01em; }
+.tick em { font-style: normal; color: var(--accent); font-size: 11px; display: block; letter-spacing: 0.06em; text-transform: uppercase; }
+.zahl { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px; text-align: right; }
+.zahl.klein { font-size: 12px; color: var(--ink-2); }
+
+/* Balken um die Nulllinie */
+.balken { position: relative; height: 20px; min-width: 0; }
+.balken::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--line-2);
+}
+.seg { position: absolute; top: 3px; height: 14px; border-radius: 2px; }
+.seg:hover { filter: brightness(1.12); }
+.pfeil { position: absolute; top: 3px; height: 14px; width: 3px; background: var(--ink); border-radius: 1px; opacity: 0.75; }
+
+/* Status */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.chip .punkt { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.chip.halten .punkt { background: var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent); }
+.chip.frei .punkt { background: none; border: 1.5px solid var(--good); }
+.chip.sperre .punkt { background: var(--critical); border-radius: 1px; }
+
+/* Detail */
+.detail { padding: 2px 13px 18px; background: var(--accent-soft); border-top: 1px solid var(--line); }
+.detail-gitter { display: grid; grid-template-columns: repeat(auto-fit, minmax(262px, 1fr)); gap: 18px 26px; }
+.detail h3 { font-size: 12px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; font-weight: 600; }
+.paar { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-bottom: 1px dotted var(--line-2); font-size: 13px; }
+.paar:last-child { border-bottom: 0; }
+.paar dt { color: var(--ink-2); min-width: 0; }
+.paar dd { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.pruefung { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; padding: 5px 0; border-bottom: 1px dotted var(--line-2); font-size: 13px; }
+.pruefung:last-child { border-bottom: 0; }
+.pruefung .mark { font-family: var(--font-mono); font-weight: 600; flex: none; width: 1.2em; }
+.pruefung.ja .mark { color: var(--good); }
+.pruefung.nein .mark { color: var(--critical); }
+.pruefung .txt { min-width: 0; }
+.pruefung .txt b { font-weight: 600; }
+.pruefung .txt span { display: block; color: var(--ink-2); font-size: 12px; }
+.pruefung .zahl { flex: none; margin-left: auto; color: var(--ink-2); }
+.pruefung .txt { flex: 1 1 11ch; }
+
+/* ---------- Regelwerk ---------- */
+.regeln { display: grid; gap: 7px; margin-top: 18px; }
+.regel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(90px, 160px) 54px;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 10px 13px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.regel:hover { background: var(--surface-2); }
+.regel[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 2px 0 0 var(--accent); }
+.regel-name { font-size: 13.5px; min-width: 0; }
+.regel-name span { display: block; color: var(--ink-2); font-size: 12px; }
+.regel-spur { height: 9px; background: var(--surface-2); border-radius: 2px; overflow: hidden; border: 1px solid var(--line); }
+.regel-spur i { display: block; height: 100%; background: var(--critical); }
+.regel-zahl { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px; text-align: right; }
+
+/* ---------- Streudiagramm ---------- */
+.karte { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 14px; margin-top: 18px; }
+.streu-huelle { overflow-x: auto; }
+svg { display: block; max-width: 100%; }
+svg text { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-3); }
+svg .achse-titel { font-family: var(--font-body); font-size: 11px; fill: var(--ink-2); }
+svg .punkt-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; fill: var(--ink-2); }
+svg .regel-linie { stroke: var(--critical); stroke-width: 1.5; stroke-dasharray: 5 4; }
+svg .regel-text { fill: var(--critical); font-size: 9.5px; }
+svg .gitter { stroke: var(--grid); stroke-width: 1; }
+
+/* ---------- Tooltip ---------- */
+#tip {
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 7px 10px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.45;
+  max-width: 250px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.22);
+}
+#tip b { font-family: var(--font-display); }
+#tip .num { font-variant-numeric: tabular-nums; }
+
+footer {
+  margin-top: 52px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-3);
+  display: grid;
+  gap: 7px;
+}
+
+@media (max-width: 720px) {
+  .leiter-kopf, .zeile-haupt { grid-template-columns: 24px 46px minmax(70px, 1fr) 52px 58px; gap: 6px; padding-inline: 9px; }
+  .nur-breit { display: none; }
+  .detail { padding-inline: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<script id="lauf" type="application/json">/*__DATEN__*/</script>
+
+<div class="wrap">
+  <header class="kopf">
+    <div>
+      <p class="eyebrow">Monatliche Tech-Rotation &middot; Papierdepot</p>
+      <h1>Wie der Bot die Aktien gegeneinander stellt</h1>
+      <p>Jeder Titel bekommt vier Kennzahlen, jede wird gegen alle anderen Titel
+        des Universums normiert. Die gewichtete Summe ist der Score. Darunter
+        liegen fünf Regeln, die einen Titel ganz sperren können &ndash; unabhängig
+        davon, wie gut er bewertet ist.</p>
+    </div>
+    <div class="stand">
+      Signalstand<b id="stand-datum">&ndash;</b>
+      <span id="stand-quelle"></span>
+    </div>
+  </header>
+
+  <dl class="kennzahlen" id="kennzahlen"></dl>
+
+  <section>
+    <h2>Der Score, aufgeschlüsselt</h2>
+    <p class="lede">Die Balken in der Rangliste zeigen genau diese vier Beiträge.
+      Jeder Beitrag ist der querschnittliche z&#8209;Score der Kennzahl, gekappt bei
+      ±3, mal ihrem Gewicht. Links von der Nulllinie zieht ein Signal nach unten,
+      rechts nach oben. Die Summe aller vier Beiträge <em>ist</em> der Score.</p>
+
+    <div class="signale" id="signale"></div>
+
+    <div class="regler-fuss">
+      <button type="button" id="reset">Bot-Gewichtung wiederherstellen</button>
+      <span id="regler-status"></span>
+    </div>
+
+    <p class="hinweis" style="margin-top:14px">
+      <strong>Die Regler sind ein Gedankenspiel.</strong> Sie verschieben nur die
+      Gewichte und rechnen die Rangfolge neu &ndash; die z&#8209;Scores selbst stehen
+      fest, sie stammen aus den Kursen bis zum Signalstichtag. Der Bot handelt
+      davon nichts. Was er wirklich entschieden hat, steht in der Spalte
+      <em>Gewicht</em> und im Status jeder Zeile.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Rangliste</h2>
+    <p class="lede" id="leiter-lede"></p>
+
+    <div class="werkzeuge">
+      <label for="f-alle">Filter</label>
+      <span class="gruppe" role="group" aria-label="Filter">
+        <button type="button" id="f-alle" data-filter="alle" aria-pressed="true">Alle</button>
+        <button type="button" data-filter="zugelassen" aria-pressed="false">Zugelassen</button>
+        <button type="button" data-filter="gesperrt" aria-pressed="false">Gesperrt</button>
+        <button type="button" data-filter="depot" aria-pressed="false">Im Depot</button>
+      </span>
+      <label for="s-rang" style="margin-left:auto">Sortierung</label>
+      <span class="gruppe" role="group" aria-label="Sortierung">
+        <button type="button" id="s-rang" data-sort="rang" aria-pressed="true">Score</button>
+        <button type="button" data-sort="mom" aria-pressed="false">12&#8209;1</button>
+        <button type="button" data-sort="vol" aria-pressed="false">Volatilität</button>
+        <button type="button" data-sort="gewicht" aria-pressed="false">Gewicht</button>
+      </span>
+    </div>
+
+    <div class="leiter">
+      <div class="leiter-kopf" aria-hidden="true">
+        <div>#</div>
+        <div>Titel</div>
+        <div>Beiträge zum Score</div>
+        <div class="r">Score</div>
+        <div class="r nur-breit">12&#8209;1</div>
+        <div class="r nur-breit">Vol</div>
+        <div class="r">Status</div>
+      </div>
+      <div id="leiter"></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-3);margin-top:9px">
+      Zeile anklicken öffnet die vollständige Prüfung. Die schwarze Marke im
+      Balken ist der Score, also die Summe der Beiträge.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die fünf Sperrregeln</h2>
+    <p class="lede">Diese Prüfungen laufen vor der Auswahl und sind unabhängig
+      vom Score. Ein Titel auf Rang 1 wird gesperrt, wenn er eine davon reißt.
+      Balkenlänge und Zahl sagen, wie viele Titel die Regel aktuell aussortiert.</p>
+    <div class="regeln" id="regeln"></div>
+  </section>
+
+  <section>
+    <h2>Momentum gegen Volatilität</h2>
+    <p class="lede">Dieselben Titel, zwei Achsen. Die gestrichelten Linien sind
+      zwei der fünf Regeln: alles links der senkrechten Linie hat negatives
+      12&#8209;1&#8209;Momentum, alles über der waagerechten Linie ist zu
+      schwankungsfreudig. Beides sperrt.</p>
+    <div class="karte">
+      <div class="streu-huelle"><svg id="streu" viewBox="0 0 760 420" role="img"
+        aria-label="Streudiagramm: 12-1-Momentum auf der X-Achse, annualisierte Volatilität auf der Y-Achse"></svg></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:12px;color:var(--ink-2)">
+        <span class="chip halten"><span class="punkt"></span>Im Depot</span>
+        <span class="chip frei"><span class="punkt"></span>Zugelassen, nicht gewählt</span>
+        <span class="chip sperre"><span class="punkt"></span>Gesperrt</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div id="fuss-lauf"></div>
+    <div>Papierdepot. Es werden keine echten Orders ausgelöst; der Live-Handel
+      verlangt drei getrennte Schalter, von denen keiner gesetzt ist.</div>
+    <div>Die Seite ist eine Momentaufnahme eines Laufs, keine Live-Ansicht. Jeder
+      neue Lauf schreibt die Datengrundlage neu.</div>
+  </footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const D = JSON.parse(document.getElementById("lauf").textContent);
+
+  // ---------- Formatierung ----------
+  const nf = (min, max) => new Intl.NumberFormat("de-DE", { minimumFractionDigits: min, maximumFractionDigits: max });
+  const f2 = nf(2, 2), f0 = nf(0, 0);
+  const pct = (v, d = 1) => v == null ? "–" : nf(d, d).format(v * 100) + " %";
+  const sig = (v, d = 2) => v == null ? "–" : (v > 0 ? "+" : "") + nf(d, d).format(v);
+  const geld = (v) => v == null ? "–" : f2.format(v);
+  const mio = (v) => v == null ? "–"
+    : v >= 1e9 ? nf(1, 1).format(v / 1e9) + " Mrd"
+    : f0.format(v / 1e6) + " Mio";
+
+  const SIGNALE = [
+    { key: "mom_12_1",     farbe: "var(--s1)", name: "Momentum 12–1",   erklaer: "Rendite der letzten 12 Monate, ohne den jüngsten Monat" },
+    { key: "mom_6_1",      farbe: "var(--s2)", name: "Momentum 6–1",    erklaer: "Rendite der letzten 6 Monate, ohne den jüngsten Monat" },
+    { key: "mom_3_0",      farbe: "var(--s3)", name: "Momentum 3–0",    erklaer: "Rendite der letzten 3 Monate, bis zum Stichtag" },
+    { key: "risk_adj_mom", farbe: "var(--s4)", name: "Risikoadjustiert", erklaer: "Momentum 12–1 geteilt durch die Volatilität" },
+  ].filter(s => D.rules.signal_weights[s.key] != null);
+
+  const REGELN = {
+    data:         { name: "Datenqualität",     span: "Lücken, veraltete Kurse, zu kurze Historie" },
+    liquidity:    { name: "Liquidität",         span: () => `Handelsvolumen mindestens ${mio(D.rules.min_avg_dollar_volume)} USD pro Tag` },
+    volatility:   { name: "Volatilitätsdeckel", span: () => `annualisierte Schwankung höchstens ${pct(D.rules.max_annual_vol, 0)}` },
+    abs_momentum: { name: "Absolutes Momentum", span: "12–1-Rendite muss über null liegen" },
+    sma:          { name: "Trendfilter",        span: () => `Kurs über dem Schnitt der letzten ${D.rules.require_above_sma} Tage` },
+  };
+  const regelText = (r) => typeof REGELN[r]?.span === "function" ? REGELN[r].span() : (REGELN[r]?.span ?? "");
+  const regelName = (r) => REGELN[r]?.name ?? r;
+
+  // ---------- Zustand ----------
+  const botGewichte = { ...D.rules.signal_weights };
+  let gewichte = { ...botGewichte };
+  let filter = "alle";
+  let sortierung = "rang";
+  let offen = null;
+  let regelFilter = null;
+
+  // ---------- Score neu rechnen ----------
+  // Exakt wie der Bot: Gewichte werden auf Summe 1 normiert, ein fehlender
+  // z-Score zählt als null Beitrag, und ein Titel ohne jeden z-Score bekommt
+  // gar keinen Score.
+  function normiert() {
+    const summe = SIGNALE.reduce((a, s) => a + Math.abs(gewichte[s.key]), 0);
+    const out = {};
+    for (const s of SIGNALE) out[s.key] = summe === 0 ? 0 : gewichte[s.key] / summe;
+    return out;
+  }
+
+  function bewerte() {
+    const w = normiert();
+    const reihen = D.tickers.map(t => {
+      const beitraege = SIGNALE.map(s => {
+        const z = t.signals[s.key]?.z ?? null;
+        return { ...s, z, beitrag: z == null ? null : z * w[s.key], gewicht: w[s.key] };
+      });
+      const gueltig = beitraege.filter(b => b.beitrag != null);
+      return {
+        ...t,
+        beitraege,
+        score: gueltig.length ? gueltig.reduce((a, b) => a + b.beitrag, 0) : null,
+      };
+    });
+
+    // Rang über alle Titel mit Score, absteigend.
+    const mitScore = reihen.filter(r => r.score != null).sort((a, b) => b.score - a.score);
+    mitScore.forEach((r, i) => { r.neuerRang = i + 1; });
+    reihen.filter(r => r.score == null).forEach(r => { r.neuerRang = null; });
+
+    // Auswahl wie `select_holdings`: Rang zählt nur unter den zugelassenen
+    // Titeln, gehaltene Titel bleiben bis `buffer_rank` geschützt.
+    const zugelassen = mitScore.filter(r => r.eligible);
+    const rangUnterZugelassenen = new Map(zugelassen.map((r, i) => [r.ticker, i + 1]));
+    const gehalten = new Set(D.tickers.filter(t => t.shares).map(t => t.ticker));
+    const topN = D.rules.top_n;
+
+    const keepers = zugelassen
+      .filter(r => gehalten.has(r.ticker) && rangUnterZugelassenen.get(r.ticker) <= D.rules.buffer_rank)
+      .slice(0, topN)
+      .map(r => r.ticker);
+    const wahl = [...keepers];
+    for (const r of zugelassen) {
+      if (wahl.length >= topN) break;
+      if (!wahl.includes(r.ticker)) wahl.push(r.ticker);
+    }
+    const wahlSet = new Set(wahl);
+
+    for (const r of reihen) {
+      r.zugRang = rangUnterZugelassenen.get(r.ticker) ?? null;
+      r.wuerdeGewaehlt = wahlSet.has(r.ticker);
+    }
+    return reihen;
+  }
+
+  // ---------- Tooltip ----------
+  const tip = document.createElement("div");
+  tip.id = "tip";
+  tip.hidden = true;
+  document.body.appendChild(tip);
+  let tipZiel = null;
+
+  function zeigeTip(html, ev) {
+    tip.innerHTML = html;
+    tip.hidden = false;
+    const r = tip.getBoundingClientRect();
+    let x = ev.clientX + 12, y = ev.clientY - r.height - 10;
+    if (x + r.width > innerWidth - 8) x = ev.clientX - r.width - 12;
+    if (y < 8) y = ev.clientY + 16;
+    tip.style.left = Math.max(8, x) + "px";
+    tip.style.top = y + "px";
+  }
+  const verbergeTip = () => { tip.hidden = true; tipZiel = null; };
+  addEventListener("scroll", verbergeTip, { passive: true });
+
+  // ---------- Kennzahlen ----------
+  function zeichneKennzahlen(reihen) {
+    const zugelassen = reihen.filter(r => r.eligible).length;
+    const gehalten = reihen.filter(r => r.shares).length;
+    const werte = [
+      ["Universum", f0.format(reihen.length), "Tech-Titel geprüft"],
+      ["Zugelassen", `${zugelassen}`, `${reihen.length - zugelassen} gesperrt`],
+      ["Im Depot", `${gehalten}`, `Ziel ${D.rules.top_n} Titel`],
+      ["Depotwert", geld(D.portfolio.equity), "USD, Papierdepot"],
+      ["Investiert", pct(D.portfolio.invested_weight), `${pct(D.portfolio.cash_weight)} Cash`],
+      ["Erwartete Vol", pct(D.exposure.realized_vol), `Ziel ${pct(D.rules.vol_target, 0)}`],
+    ];
+    document.getElementById("kennzahlen").innerHTML = werte.map(([k, v, s]) => `
+      <div class="kennzahl"><dt>${k}</dt><dd>${v}<small>${s}</small></dd></div>`).join("");
+  }
+
+  // ---------- Signal-Regler ----------
+  function zeichneSignale() {
+    const w = normiert();
+    document.getElementById("signale").innerHTML = SIGNALE.map(s => `
+      <div class="signal">
+        <span class="swatch" style="background:${s.farbe}"></span>
+        <span class="signal-name">${s.name}<span>${s.erklaer}</span></span>
+        <span class="signal-wert" id="w-${s.key}">${pct(w[s.key], 0)}</span>
+        <input type="range" id="r-${s.key}" min="0" max="100" step="5"
+               value="${Math.round(gewichte[s.key] * 100)}"
+               aria-label="Gewicht ${s.name}">
+      </div>`).join("");
+
+    for (const s of SIGNALE) {
+      document.getElementById("r-" + s.key).addEventListener("input", (e) => {
+        gewichte[s.key] = Number(e.target.value) / 100;
+        zeichneAlles(false);
+      });
+    }
+  }
+
+  function aktualisiereReglerWerte() {
+    const w = normiert();
+    for (const s of SIGNALE) {
+      const el = document.getElementById("w-" + s.key);
+      if (el) el.textContent = pct(w[s.key], 0);
+    }
+    const geaendert = SIGNALE.some(s => Math.abs(gewichte[s.key] - botGewichte[s.key]) > 1e-9);
+    const summe = SIGNALE.reduce((a, s) => a + gewichte[s.key], 0);
+    const status = document.getElementById("regler-status");
+    if (summe === 0) {
+      status.textContent = "Alle Gewichte auf null – ohne Signal gibt es keine Rangfolge.";
+    } else if (!geaendert) {
+      status.textContent = "Aktuell genau die Gewichtung, mit der der Bot gerechnet hat.";
+    } else {
+      const reihen = bewerte();
+      const botWahl = new Set(D.tickers.filter(t => t.selected).map(t => t.ticker));
+      const neu = reihen.filter(r => r.wuerdeGewaehlt && !botWahl.has(r.ticker)).map(r => r.ticker);
+      status.textContent = neu.length
+        ? `Abweichende Gewichtung: ${neu.length} ${neu.length === 1 ? "anderer Titel" : "andere Titel"} im Korb (${neu.join(", ")}).`
+        : "Abweichende Gewichtung – der Korb bleibt derselbe.";
+    }
+  }
+
+  // ---------- Rangleiste ----------
+  function sortiere(reihen) {
+    const r = [...reihen];
+    const hinten = (v) => v == null ? -Infinity : v;
+    if (sortierung === "rang") r.sort((a, b) => hinten(b.score) - hinten(a.score));
+    if (sortierung === "mom") r.sort((a, b) => hinten(b.metrics.mom_12_1) - hinten(a.metrics.mom_12_1));
+    if (sortierung === "vol") r.sort((a, b) => hinten(b.metrics.volatility) - hinten(a.metrics.volatility));
+    if (sortierung === "gewicht") r.sort((a, b) => (b.target_weight ?? 0) - (a.target_weight ?? 0) || hinten(b.score) - hinten(a.score));
+    return r;
+  }
+
+  function sichtbar(reihen) {
+    let r = reihen;
+    if (filter === "zugelassen") r = r.filter(x => x.eligible);
+    if (filter === "gesperrt") r = r.filter(x => !x.eligible);
+    if (filter === "depot") r = r.filter(x => x.shares);
+    if (regelFilter) r = r.filter(x => x.checks.some(c => c.rule === regelFilter && !c.ok));
+    return r;
+  }
+
+  function statusChip(r) {
+    if (r.selected) return `<span class="chip halten"><span class="punkt"></span>Depot</span>`;
+    if (r.eligible) return `<span class="chip frei"><span class="punkt"></span>Frei</span>`;
+    return `<span class="chip sperre"><span class="punkt"></span>Sperre</span>`;
+  }
+
+  function balken(r, skala) {
+    const pos = r.beitraege.filter(b => b.beitrag != null && b.beitrag > 0);
+    const neg = r.beitraege.filter(b => b.beitrag != null && b.beitrag < 0);
+    const teile = [];
+    // Positive Beiträge wachsen von der Mitte nach rechts, negative nach links.
+    // 2px Lücke zwischen den Segmenten, damit die Farben sich nicht berühren.
+    let kante = 0;
+    for (const b of pos) {
+      const breite = (b.beitrag / skala) * 50;
+      teile.push(`<span class="seg" data-tick="${r.ticker}" data-sig="${b.key}"
+        style="left:calc(50% + ${kante}%);width:calc(${breite}% - 2px);background:${b.farbe}"></span>`);
+      kante += breite;
+    }
+    kante = 0;
+    for (const b of neg) {
+      const breite = (Math.abs(b.beitrag) / skala) * 50;
+      kante += breite;
+      teile.push(`<span class="seg" data-tick="${r.ticker}" data-sig="${b.key}"
+        style="left:calc(50% - ${kante}%);width:calc(${breite}% - 2px);background:${b.farbe}"></span>`);
+    }
+    if (r.score != null) {
+      const p = 50 + (r.score / skala) * 50;
+      teile.push(`<span class="pfeil" style="left:calc(${Math.min(99.6, Math.max(0.4, p))}% - 1.5px)"></span>`);
+    }
+    return `<div class="balken">${teile.join("")}</div>`;
+  }
+
+  function detail(r) {
+    const pruefungen = r.checks.map(c => {
+      let zahl = "";
+      if (c.rule === "liquidity" && c.value != null) zahl = mio(c.value) + " USD";
+      else if (c.rule === "volatility" && c.value != null) zahl = pct(c.value, 0);
+      else if (c.rule === "abs_momentum" && c.value != null) zahl = pct(c.value);
+      else if (c.rule === "sma" && c.value != null && c.limit != null) zahl = `${geld(c.value)} vs. ${geld(c.limit)}`;
+      return `<div class="pruefung ${c.ok ? "ja" : "nein"}">
+        <span class="mark">${c.ok ? "✓" : "✕"}</span>
+        <span class="txt"><b>${regelName(c.rule)}</b><span>${c.ok ? regelText(c.rule) : (c.detail ?? "")}</span></span>
+        <span class="zahl">${zahl}</span>
+      </div>`;
+    }).join("");
+
+    const kennzahlen = [
+      ["Kurs", geld(r.metrics.price) + " USD"],
+      ["Momentum 12–1", pct(r.metrics.mom_12_1)],
+      ["Momentum 6–1", pct(r.metrics.mom_6_1)],
+      ["Momentum 3–0", pct(r.metrics.mom_3_0)],
+      ["Volatilität p. a.", pct(r.metrics.volatility)],
+      ["Risikoadjustiert", sig(r.metrics.risk_adj_mom)],
+    ].map(([k, v]) => `<div class="paar"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+
+    const zerlegung = r.beitraege.map(b => `
+      <div class="paar">
+        <dt><span class="swatch" style="background:${b.farbe};display:inline-block;vertical-align:-2px;margin-right:7px;width:10px;height:10px"></span>${b.name}</dt>
+        <dd>${b.z == null ? "–" : `z ${sig(b.z)} × ${pct(b.gewicht, 0)} = <b>${sig(b.beitrag)}</b>`}</dd>
+      </div>`).join("") + `
+      <div class="paar"><dt><b>Score</b></dt><dd><b>${sig(r.score)}</b></dd></div>`;
+
+    const depot = [
+      ["Rang im Universum", r.neuerRang ?? "–"],
+      ["Rang unter zugelassenen", r.zugRang ?? "–"],
+      ["Stück im Depot", r.shares ? f0.format(r.shares) : "0"],
+      ["Gewicht aktuell", pct(r.current_weight, 2)],
+      ["Gewicht Ziel", pct(r.target_weight, 2)],
+    ].map(([k, v]) => `<div class="paar"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+
+    return `<div class="detail">
+      <div class="detail-gitter">
+        <div><h3>Die fünf Prüfungen</h3>${pruefungen}</div>
+        <div><h3>Kennzahlen</h3><dl style="margin:0">${kennzahlen}</dl></div>
+        <div><h3>Score-Zerlegung</h3><dl style="margin:0">${zerlegung}</dl></div>
+        <div><h3>Im Depot</h3><dl style="margin:0">${depot}</dl></div>
+      </div>
+    </div>`;
+  }
+
+  function zeichneLeiter(reihen) {
+    const skala = Math.max(0.1, ...reihen.flatMap(r => {
+      const p = r.beitraege.filter(b => b.beitrag > 0).reduce((a, b) => a + b.beitrag, 0);
+      const n = r.beitraege.filter(b => b.beitrag < 0).reduce((a, b) => a + Math.abs(b.beitrag), 0);
+      return [p, n];
+    }));
+
+    const liste = sichtbar(sortiere(reihen));
+    document.getElementById("leiter").innerHTML = liste.map(r => {
+      const rangGeaendert = r.neuerRang != null && r.rank != null && r.neuerRang !== r.rank;
+      return `<div class="zeile" data-tick="${r.ticker}" data-offen="${offen === r.ticker}"
+                   data-gesperrt="${!r.eligible}">
+        <button type="button" class="zeile-haupt" aria-expanded="${offen === r.ticker}">
+          <span class="rang ${rangGeaendert ? "rang-neu" : ""}">${r.neuerRang ?? "–"}</span>
+          <span class="tick">${r.ticker}${r.shares ? "<em>gehalten</em>" : ""}</span>
+          ${balken(r, skala)}
+          <span class="zahl">${sig(r.score)}</span>
+          <span class="zahl klein nur-breit">${pct(r.metrics.mom_12_1, 0)}</span>
+          <span class="zahl klein nur-breit">${pct(r.metrics.volatility, 0)}</span>
+          <span class="r">${statusChip(r)}</span>
+        </button>
+        ${offen === r.ticker ? detail(r) : ""}
+      </div>`;
+    }).join("");
+
+    document.getElementById("leiter-lede").textContent =
+      `${reihen.length} Titel im Universum, ${reihen.filter(r => r.eligible).length} davon zugelassen. `
+      + `Der Bot kauft die besten ${D.rules.top_n} – mit Bestandsschutz: ein gehaltener Titel bleibt, `
+      + `solange er unter den zugelassenen nicht schlechter als Rang ${D.rules.buffer_rank} steht.`;
+
+    // Zeilen aufklappen
+    for (const el of document.querySelectorAll(".zeile-haupt")) {
+      el.addEventListener("click", () => {
+        const tick = el.closest(".zeile").dataset.tick;
+        offen = offen === tick ? null : tick;
+        zeichneAlles(false);
+      });
+    }
+    // Segment-Tooltips
+    for (const seg of document.querySelectorAll(".seg")) {
+      const zeige = (ev) => {
+        const r = reihen.find(x => x.ticker === seg.dataset.tick);
+        const b = r.beitraege.find(x => x.key === seg.dataset.sig);
+        zeigeTip(`<b>${r.ticker} &middot; ${b.name}</b><br>
+          z&#8209;Score <span class="num">${sig(b.z)}</span> × Gewicht <span class="num">${pct(b.gewicht, 0)}</span><br>
+          Beitrag <span class="num">${sig(b.beitrag)}</span> von <span class="num">${sig(r.score)}</span>`, ev);
+      };
+      seg.addEventListener("mouseenter", zeige);
+      seg.addEventListener("mousemove", zeige);
+      seg.addEventListener("mouseleave", verbergeTip);
+    }
+  }
+
+  // ---------- Regelwerk ----------
+  function zeichneRegeln(reihen) {
+    const ordnung = ["abs_momentum", "sma", "volatility", "liquidity", "data"];
+    const zaehler = ordnung.map(rule => ({
+      rule,
+      anzahl: reihen.filter(r => r.checks.some(c => c.rule === rule && !c.ok)).length,
+    })).filter(x => reihen.some(r => r.checks.some(c => c.rule === x.rule)));
+    const max = Math.max(1, ...zaehler.map(x => x.anzahl));
+
+    document.getElementById("regeln").innerHTML = zaehler.map(x => `
+      <button type="button" class="regel" data-rule="${x.rule}" aria-pressed="${regelFilter === x.rule}">
+        <span class="regel-name">${regelName(x.rule)}<span>${regelText(x.rule)}</span></span>
+        <span class="regel-spur"><i style="width:${(x.anzahl / max) * 100}%"></i></span>
+        <span class="regel-zahl">${x.anzahl === 0 ? "keiner" : x.anzahl}</span>
+      </button>`).join("");
+
+    for (const el of document.querySelectorAll(".regel")) {
+      el.addEventListener("click", () => {
+        const r = el.dataset.rule;
+        regelFilter = regelFilter === r ? null : r;
+        if (regelFilter) { filter = "alle"; setzeDruck("[data-filter]", "alle", "filter"); }
+        zeichneAlles(false);
+      });
+    }
+  }
+
+  // ---------- Streudiagramm ----------
+  function zeichneStreu(reihen) {
+    const W = 760, H = 420, L = 54, R = 18, T = 16, B = 46;
+    const punkte = reihen.filter(r => r.metrics.mom_12_1 != null && r.metrics.volatility != null);
+    if (!punkte.length) return;
+
+    const xs = punkte.map(p => p.metrics.mom_12_1), ys = punkte.map(p => p.metrics.volatility);
+    const xMin = Math.min(-0.6, ...xs), xMax = Math.max(0.6, ...xs) * 1.04;
+    const yMax = Math.max(D.rules.max_annual_vol * 1.1, ...ys) * 1.04;
+    const px = (v) => L + ((v - xMin) / (xMax - xMin)) * (W - L - R);
+    const py = (v) => H - B - (v / yMax) * (H - T - B);
+
+    const teile = [];
+    // Gitter und Achsen
+    const yTicks = [];
+    for (let v = 0; v <= yMax; v += 0.2) yTicks.push(v);
+    for (const v of yTicks) {
+      teile.push(`<line class="gitter" x1="${L}" y1="${py(v).toFixed(1)}" x2="${W - R}" y2="${py(v).toFixed(1)}"/>`);
+      teile.push(`<text x="${L - 8}" y="${(py(v) + 3.5).toFixed(1)}" text-anchor="end">${f0.format(v * 100)} %</text>`);
+    }
+    const xTicks = [];
+    for (let v = Math.ceil(xMin * 2) / 2; v <= xMax; v += 0.5) xTicks.push(v);
+    for (const v of xTicks) {
+      teile.push(`<text x="${px(v).toFixed(1)}" y="${H - B + 16}" text-anchor="middle">${f0.format(v * 100)} %</text>`);
+    }
+    teile.push(`<line class="gitter" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/>`);
+
+    // Die zwei Regelgrenzen
+    teile.push(`<line class="regel-linie" x1="${px(0).toFixed(1)}" y1="${T}" x2="${px(0).toFixed(1)}" y2="${H - B}"/>`);
+    teile.push(`<text class="regel-text" x="${(px(0) - 6).toFixed(1)}" y="${T + 11}" text-anchor="end">Momentum null</text>`);
+    teile.push(`<line class="regel-linie" x1="${L}" y1="${py(D.rules.max_annual_vol).toFixed(1)}" x2="${W - R}" y2="${py(D.rules.max_annual_vol).toFixed(1)}"/>`);
+    teile.push(`<text class="regel-text" x="${W - R}" y="${(py(D.rules.max_annual_vol) - 6).toFixed(1)}" text-anchor="end">Volatilitätsdeckel ${f0.format(D.rules.max_annual_vol * 100)} %</text>`);
+
+    // Achsentitel
+    teile.push(`<text class="achse-titel" x="${((L + W - R) / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle">Momentum 12–1 (Rendite 12 Monate ohne den letzten)</text>`);
+    teile.push(`<text class="achse-titel" transform="translate(13 ${((T + H - B) / 2).toFixed(1)}) rotate(-90)" text-anchor="middle">Volatilität p. a.</text>`);
+
+    // Punkte: Form trägt die Bedeutung mit, nicht nur die Farbe.
+    for (const p of punkte) {
+      const x = px(p.metrics.mom_12_1), y = py(p.metrics.volatility);
+      let form;
+      if (p.selected) {
+        form = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/>`;
+      } else if (p.eligible) {
+        form = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="none" stroke="var(--good)" stroke-width="2"/>`;
+      } else {
+        form = `<path d="M${(x - 4.2).toFixed(1)} ${(y - 4.2).toFixed(1)} l8.4 8.4 M${(x + 4.2).toFixed(1)} ${(y - 4.2).toFixed(1)} l-8.4 8.4"
+                 stroke="var(--critical)" stroke-width="2" fill="none"/>`;
+      }
+      teile.push(`<g data-tick="${p.ticker}" class="streu-punkt">${form}</g>`);
+      if (p.selected || (p.rank != null && p.rank <= 3) || Math.abs(p.metrics.mom_12_1) > 1.2) {
+        teile.push(`<text class="punkt-label" x="${(x + 9).toFixed(1)}" y="${(y + 3.5).toFixed(1)}">${p.ticker}</text>`);
+      }
+    }
+
+    const svg = document.getElementById("streu");
+    svg.innerHTML = teile.join("");
+    for (const g of svg.querySelectorAll(".streu-punkt")) {
+      const p = punkte.find(x => x.ticker === g.dataset.tick);
+      const zeige = (ev) => zeigeTip(
+        `<b>${p.ticker}</b> &middot; ${p.selected ? "im Depot" : p.eligible ? "zugelassen" : "gesperrt"}<br>
+         12&#8209;1 <span class="num">${pct(p.metrics.mom_12_1)}</span> &middot;
+         Vol <span class="num">${pct(p.metrics.volatility)}</span><br>
+         Score <span class="num">${sig(p.score)}</span>${p.eligible ? "" : `<br>${p.reasons.join("; ")}`}`, ev);
+      g.addEventListener("mouseenter", zeige);
+      g.addEventListener("mousemove", zeige);
+      g.addEventListener("mouseleave", verbergeTip);
+    }
+  }
+
+  // ---------- Kopf und Fuss ----------
+  function zeichneRahmen() {
+    document.getElementById("stand-datum").textContent =
+      new Date(D.signal_date + "T00:00:00").toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" });
+    document.getElementById("stand-quelle").textContent = `Schlusskurse · ${D.benchmark} als Marktfilter`;
+
+    const regime = D.exposure.regime_ok ? "bestanden" : "gerissen";
+    document.getElementById("fuss-lauf").innerHTML =
+      `Lauf vom ${new Date(D.generated_at).toLocaleString("de-DE")} · Signalstand ${D.signal_date} · `
+      + `letztes Rebalancing ${D.portfolio.last_rebalance ?? "nie"} · Regimefilter ${regime} · `
+      + `Vol-Skalierung ${f2.format(D.exposure.vol_scalar)} · Drawdown ${pct(D.exposure.current_drawdown)}`;
+  }
+
+  // ---------- Schalter ----------
+  function setzeDruck(sel, wert, attr) {
+    for (const el of document.querySelectorAll(sel)) {
+      el.setAttribute("aria-pressed", String(el.dataset[attr] === wert));
+    }
+  }
+
+  function verdrahteSchalter() {
+    for (const el of document.querySelectorAll("[data-filter]")) {
+      el.addEventListener("click", () => {
+        filter = el.dataset.filter;
+        regelFilter = null;
+        setzeDruck("[data-filter]", filter, "filter");
+        zeichneAlles(false);
+      });
+    }
+    for (const el of document.querySelectorAll("[data-sort]")) {
+      el.addEventListener("click", () => {
+        sortierung = el.dataset.sort;
+        setzeDruck("[data-sort]", sortierung, "sort");
+        zeichneAlles(false);
+      });
+    }
+    document.getElementById("reset").addEventListener("click", () => {
+      gewichte = { ...botGewichte };
+      for (const s of SIGNALE) {
+        const r = document.getElementById("r-" + s.key);
+        if (r) r.value = String(Math.round(gewichte[s.key] * 100));
+      }
+      zeichneAlles(false);
+    });
+  }
+
+  // ---------- Zeichnen ----------
+  function zeichneAlles(erstmals) {
+    const reihen = bewerte();
+    if (erstmals) {
+      zeichneRahmen();
+      zeichneSignale();
+      verdrahteSchalter();
+    }
+    zeichneKennzahlen(reihen);
+    aktualisiereReglerWerte();
+    zeichneLeiter(reihen);
+    zeichneRegeln(reihen);
+    zeichneStreu(reihen);
+  }
+
+  zeichneAlles(true);
+})();
+</script>

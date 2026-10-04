@@ -349,3 +349,23 @@ exakt dieselbe Logik.
   abgewickelt.
 - **Statisches Universum.** Neue Titel kommen nur durch eine Aenderung an
   `config.yaml` hinzu.
+
+## Interaktive Ansicht
+
+Jeder Lauf legt `data/ranking.json` an: die vollständige Bewertung aller Ticker,
+nicht nur die Top 15 des Textreports. Daraus wird die Seite gebaut:
+
+```bash
+techrot rebalance --json data/ranking.json    # oder: techrot rank --json ...
+python scripts/build_view.py                  # -> web/querschnitt.html
+```
+
+`web/querschnitt.html` ist eine einzelne Datei ohne Netzaufruf: die Daten stecken
+im Dokument. Sie zeigt für jeden Titel die Zerlegung des Scores in die vier
+Signalbeiträge, die fünf Sperrregeln mit den Zahlen, an denen sie gegriffen
+haben, und ein Streudiagramm aus Momentum und Volatilität mit den Regelgrenzen.
+
+Die Gewichtsregler sind ein Gedankenspiel: sie rechnen die Rangfolge mit anderen
+Gewichten neu und zeigen, welche acht Titel dann im Korb landen. Die z-Scores
+selbst bleiben fest -- sie stammen aus den Kursen bis zum Signalstichtag. Der Bot
+handelt davon nichts.

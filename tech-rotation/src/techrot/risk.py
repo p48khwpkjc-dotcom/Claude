@@ -20,12 +20,30 @@ from .ranking import TRADING_DAYS_PER_YEAR, moving_average
 
 
 @dataclass(frozen=True)
+class Check:
+    """Eine einzelne Regel, angewandt auf einen Titel.
+
+    ``reasons`` auf ``Eligibility`` ist fuer Menschen geschrieben. Diese
+    Struktur ist fuer Maschinen: ``rule`` ist stabil, ``value`` und ``limit``
+    sind die Zahlen, an denen die Entscheidung haengt. So kann eine Ansicht
+    zeigen, welche Regel wie knapp gegriffen hat, ohne Prosa zu zerlegen.
+    """
+
+    rule: str
+    ok: bool
+    value: float | None = None
+    limit: float | None = None
+    detail: str | None = None
+
+
+@dataclass(frozen=True)
 class Eligibility:
     """Ergebnis der Eignungspruefung fuer einen Titel."""
 
     ticker: str
     eligible: bool
     reasons: tuple[str, ...] = ()
+    checks: tuple[Check, ...] = ()
 
     @property
     def reason_text(self) -> str:
@@ -62,42 +80,75 @@ def check_eligibility(
     results: dict[str, Eligibility] = {}
     for ticker in metrics.index:
         reasons: list[str] = []
+        checks: list[Check] = []
+
+        def fail(rule: str, text: str, value: float | None = None, limit: float | None = None):
+            reasons.append(text)
+            checks.append(Check(rule, False, value, limit, text))
 
         q = quality.get(ticker)
         if q is not None and not q.ok:
-            reasons.append(f"Datenqualitaet: {q.reason}")
+            fail("data", f"Datenqualitaet: {q.reason}")
+        else:
+            checks.append(Check("data", True))
 
         adv_value = float(adv.get(ticker, np.nan))
         if not np.isfinite(adv_value):
-            reasons.append("kein Handelsvolumen verfuegbar")
+            fail("liquidity", "kein Handelsvolumen verfuegbar", None, cfg.min_avg_dollar_volume)
         elif adv_value < cfg.min_avg_dollar_volume:
-            reasons.append(
+            fail(
+                "liquidity",
                 f"Liquiditaet {adv_value / 1e6:.0f} Mio USD unter "
-                f"{cfg.min_avg_dollar_volume / 1e6:.0f} Mio"
+                f"{cfg.min_avg_dollar_volume / 1e6:.0f} Mio",
+                adv_value,
+                cfg.min_avg_dollar_volume,
             )
+        else:
+            checks.append(Check("liquidity", True, adv_value, cfg.min_avg_dollar_volume))
 
         vol = float(metrics.at[ticker, "volatility"]) if "volatility" in metrics else np.nan
         if not np.isfinite(vol):
-            reasons.append("Volatilitaet nicht berechenbar")
+            fail("volatility", "Volatilitaet nicht berechenbar", None, cfg.max_annual_vol)
         elif vol > cfg.max_annual_vol:
-            reasons.append(f"Volatilitaet {vol:.0%} ueber Limit {cfg.max_annual_vol:.0%}")
+            fail(
+                "volatility",
+                f"Volatilitaet {vol:.0%} ueber Limit {cfg.max_annual_vol:.0%}",
+                vol,
+                cfg.max_annual_vol,
+            )
+        else:
+            checks.append(Check("volatility", True, vol, cfg.max_annual_vol))
 
         if cfg.require_positive_absolute_momentum:
             mom = float(metrics.at[ticker, "mom_12_1"]) if "mom_12_1" in metrics else np.nan
             if not np.isfinite(mom):
-                reasons.append("12-1-Momentum nicht berechenbar")
+                fail("abs_momentum", "12-1-Momentum nicht berechenbar", None, 0.0)
             elif mom <= 0:
-                reasons.append(f"absolutes Momentum negativ ({mom:.1%})")
+                fail("abs_momentum", f"absolutes Momentum negativ ({mom:.1%})", mom, 0.0)
+            else:
+                checks.append(Check("abs_momentum", True, mom, 0.0))
 
         if sma is not None:
             price = float(metrics.at[ticker, "price"]) if "price" in metrics else np.nan
             sma_value = float(sma.get(ticker, np.nan))
             if not np.isfinite(price) or not np.isfinite(sma_value):
-                reasons.append(f"SMA{cfg.require_above_sma} nicht berechenbar")
+                fail(
+                    "sma",
+                    f"SMA{cfg.require_above_sma} nicht berechenbar",
+                    None if not np.isfinite(price) else price,
+                    None if not np.isfinite(sma_value) else sma_value,
+                )
             elif price <= sma_value:
-                reasons.append(f"Kurs unter SMA{cfg.require_above_sma}")
+                fail(
+                    "sma",
+                    f"Kurs unter SMA{cfg.require_above_sma}",
+                    price,
+                    sma_value,
+                )
+            else:
+                checks.append(Check("sma", True, price, sma_value))
 
-        results[ticker] = Eligibility(ticker, not reasons, tuple(reasons))
+        results[ticker] = Eligibility(ticker, not reasons, tuple(reasons), tuple(checks))
     return results
 
 

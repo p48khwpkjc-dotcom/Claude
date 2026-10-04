@@ -150,3 +150,41 @@ def test_kaputte_konfiguration_meldet_sich_sauber(tmp_path, capsys):
 def test_fehlende_konfiguration_meldet_sich_sauber(tmp_path, capsys):
     assert main(["--config", str(tmp_path / "gibtsnicht.yaml"), "rank"]) == 2
     assert "nicht gefunden" in capsys.readouterr().err
+
+
+def test_rebalance_schreibt_json_mit_dem_stand_nach_der_ausfuehrung(projekt: Path) -> None:
+    """Der Export muss die Welt nach den Fills zeigen, nicht davor.
+
+    Sonst stehen in der interaktiven Ansicht Stueckzahlen, die es so nie
+    gegeben hat.
+    """
+    ziel = projekt.parent / "ranking.json"
+    assert lauf(projekt, "rebalance", "--execute", "--force", "--json", str(ziel)) == 0
+
+    payload = json.loads(ziel.read_text(encoding="utf-8"))
+    assert payload["executed"] is True
+    assert payload["orders"], "erster Lauf aus Cash muss Orders erzeugen"
+
+    state = zustand(projekt)
+    gehalten = {t: s for t, s in state.positions.items() if s}
+    aus_export = {
+        t["ticker"]: t["shares"] for t in payload["tickers"] if t["shares"]
+    }
+    assert aus_export == gehalten
+
+
+def test_trockenlauf_schreibt_json_ohne_etwas_zu_veraendern(projekt: Path) -> None:
+    ziel = projekt.parent / "ranking.json"
+    assert lauf(projekt, "rebalance", "--force", "--json", str(ziel)) == 0
+
+    payload = json.loads(ziel.read_text(encoding="utf-8"))
+    assert payload["executed"] is False
+    assert not (projekt.parent / "data" / "state.json").exists()
+
+
+def test_rank_schreibt_json(projekt: Path) -> None:
+    ziel = projekt.parent / "rang.json"
+    assert lauf(projekt, "rank", "--json", str(ziel)) == 0
+    payload = json.loads(ziel.read_text(encoding="utf-8"))
+    assert payload["tickers"]
+    assert payload["schema_version"] == 1

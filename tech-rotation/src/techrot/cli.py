@@ -26,6 +26,7 @@ from .execution import (
     mark_to_market,
     plan_rebalance,
 )
+from .export import write_plan_json
 from .preflight import render_preflight, run_preflight
 from .report import plan_to_markdown, render_backtest, render_plan
 from .state import PortfolioState
@@ -44,6 +45,9 @@ def cmd_rank(args: argparse.Namespace) -> int:
     prices = load_prices(cfg, refresh=args.refresh)
     plan = plan_rebalance(cfg, prices, state, force=True)
     print(render_plan(plan, top=args.top))
+    if args.json:
+        write_plan_json(Path(args.json), cfg, plan, state)
+        print(f"\nJSON geschrieben: {args.json}")
     return 0
 
 
@@ -70,7 +74,15 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         Path(args.markdown).write_text(plan_to_markdown(plan), encoding="utf-8")
         print(f"\nMarkdown-Report geschrieben: {args.markdown}")
 
+    def dump_json() -> None:
+        # Nach der Ausfuehrung, damit Stueckzahlen und Cash im Export den
+        # Stand nach den Fills zeigen und nicht den davor.
+        if args.json:
+            write_plan_json(Path(args.json), cfg, plan, state, executed=args.execute)
+            print(f"\nJSON geschrieben: {args.json}")
+
     if not args.execute:
+        dump_json()
         print("\n[Trockenlauf] Keine Orders gesendet. Mit --execute ausfuehren.")
         return 0
 
@@ -84,9 +96,13 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         try:
             mark_to_market(state, prices)
         except StaleValuationError as exc:
+            # Die Bewertung faellt aus, die Bewertung der Titel gegeneinander
+            # steht aber trotzdem -- der Export ist dann besonders nuetzlich.
             print(f"\nWARNUNG: {exc}", file=sys.stderr)
+            dump_json()
             return 1
         state.save(state_path)
+        dump_json()
         print("\nKein Rebalancing faellig -- nur Depotbewertung fortgeschrieben.")
         return 0
 
@@ -116,6 +132,7 @@ def cmd_rebalance(args: argparse.Namespace) -> int:
         print(f"\nWARNUNG: {exc}", file=sys.stderr)
         failed += 1
     state.save(state_path)
+    dump_json()
     print(f"\nZustand gespeichert: {state_path}")
     return 1 if failed else 0
 
@@ -221,6 +238,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_rank = sub.add_parser("rank", help="Rangliste anzeigen")
     add_common(p_rank)
     p_rank.add_argument("--top", type=int, default=15)
+    p_rank.add_argument("--json", help="Vollstaendige Bewertung als JSON speichern")
     p_rank.set_defaults(func=cmd_rank)
 
     p_reb = sub.add_parser("rebalance", help="Rebalancing planen und optional ausfuehren")
@@ -233,6 +251,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--force", action="store_true", help="Auch ausserhalb des Monatstermins"
     )
     p_reb.add_argument("--markdown", help="Report zusaetzlich als Markdown speichern")
+    p_reb.add_argument("--json", help="Vollstaendige Bewertung als JSON speichern")
     p_reb.set_defaults(func=cmd_rebalance)
 
     p_bt = sub.add_parser("backtest", help="Historische Simulation")
