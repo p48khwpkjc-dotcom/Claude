@@ -1,4 +1,6 @@
-"""Opening range breakout on Bitcoin with 1-, 5- and 15-minute signal candles.
+"""Opening range breakout with 1-, 5- and 15-minute signal candles.
+
+    python research/orb_timeframes.py BTCUSDT    # or SOLUSDT, ETHUSDT, XRPUSDT
 
 The follow-up asked for after the first run: the same breakout, but confirmed
 on a 5- or 15-minute close instead of a 1-minute one, stop at the opposite side
@@ -38,7 +40,11 @@ def halves(t: pd.DataFrame):
 
 
 def main() -> int:
-    df = read_cache(cache_path(Path("data/cache"), "BTCUSDT", "1m"))
+    symbol = sys.argv[1] if len(sys.argv) > 1 else "BTCUSDT"
+    df = read_cache(cache_path(Path("data/cache"), symbol, "1m"))
+    if df is None:
+        raise SystemExit(f"kein 1m-Cache für {symbol}")
+    print(f"{symbol}: {len(df):,} Minuten, {df.index[0].date()} .. {df.index[-1].date()}\n")
     weekdays = df[df.tz_convert("America/New_York").index.weekday < 5]
     rows = []
     for days, data in [("alle Tage", df), ("Werktage", weekdays)]:
@@ -61,7 +67,7 @@ def main() -> int:
                       f"Münzwurf {sc['exp_r']:+.3f}", flush=True)
 
     out = pd.DataFrame(rows)
-    out.to_csv("research/orb_btc_kerzen.csv", index=False)
+    out.to_csv(f"research/orb_{symbol}_kerzen.csv", index=False)
     pd.set_option("display.width", 250)
     for days in ["alle Tage", "Werktage"]:
         d = out[out.tage == days]
