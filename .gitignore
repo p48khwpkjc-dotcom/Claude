@@ -22,3 +22,6 @@ research/search_*.csv
 # data/exchange/ ist der Transportweg und bleibt versioniert -- siehe
 # FUNDING-HOLEN.md. Nur der abgeleitete Parquet-Cache daraus nicht.
 !data/exchange/
+
+# Per-trade dumps from research scripts: reproducible, regenerated on every run
+research/*_trades.parquet
