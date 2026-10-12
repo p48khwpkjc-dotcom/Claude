@@ -178,3 +178,65 @@ def test_one_minute_signals_are_unchanged_by_the_candle_grid():
     a = run(bars, OrbConfig(**FREE))
     b = run(bars, OrbConfig(signal_minutes=1, **FREE))
     assert a.equals(b)
+
+
+# ------------------------------------------------- stops and targets at levels
+
+def pre(date: str, high: float, low: float) -> pd.DataFrame:
+    """One bar at 08:00 New York, before the open, carrying a high and a low."""
+    idx = pd.DatetimeIndex([pd.Timestamp(f"{date} 08:00", tz="America/New_York")])
+    return pd.DataFrame({"open": [100.0], "high": [high], "low": [low],
+                         "close": [100.0], "volume": [1.0]}, index=idx).tz_convert("UTC")
+
+
+SIGNAL = {**RANGE, 7: (100, 101.6, 100, 101.5)}       # long, entry 101.5 at 09:38
+
+
+def test_a_stop_at_todays_low_reaches_below_the_range():
+    bars = pd.concat([pre("2025-03-03", 100.5, 97.0), day("2025-03-03", SIGNAL, later=101.5)])
+    t = run(bars, OrbConfig(stop="today", **FREE)).iloc[0]
+    assert t["risk"] == pytest.approx(101.5 - 97.0)
+
+
+def test_a_stop_at_yesterdays_low_uses_the_previous_new_york_day():
+    bars = pd.concat([pre("2025-03-02", 101.0, 96.0),
+                      pre("2025-03-03", 100.5, 98.5), day("2025-03-03", SIGNAL, later=101.5)])
+    t = run(bars, OrbConfig(stop="prev_day", **FREE)).iloc[0]
+    assert t["risk"] == pytest.approx(101.5 - 96.0)
+
+
+def test_a_target_at_todays_high_is_taken_when_it_lies_above_the_entry():
+    bars = pd.concat([pre("2025-03-03", 104.0, 99.5),
+                      day("2025-03-03", {**SIGNAL, 60: (101.5, 104.2, 101.5, 104.0)}, later=101.5)])
+    t = run(bars, OrbConfig(target_mode="today", **FREE)).iloc[0]
+    assert t["exit_reason"] == "target"
+    assert t["exit"] == pytest.approx(104.0)
+    assert t["r"] == pytest.approx((104.0 - 101.5) / 2.5)
+
+
+def test_a_target_below_the_entry_means_holding_to_the_close():
+    bars = pd.concat([pre("2025-03-03", 100.5, 99.5), day("2025-03-03", SIGNAL, later=101.5)])
+    t = run(bars, OrbConfig(target_mode="today", **FREE)).iloc[0]
+    assert not t["has_target"]
+    assert t["exit_reason"] == "session_end"
+
+
+def test_the_weekday_filter_keeps_only_the_named_days():
+    bars = pd.concat([day("2025-03-03", SIGNAL, later=101.5),     # Monday
+                      day("2025-03-04", SIGNAL, later=101.5)])    # Tuesday
+    t = run(bars, OrbConfig(weekdays=(0,), **FREE))
+    assert list(t["weekday"]) == [0]
+
+
+def test_after_a_stop_the_return_to_the_entry_is_recorded():
+    bars = day("2025-03-03", {**SIGNAL,
+                              8: (101.5, 101.5, 101.5, 101.5),     # entry 101.5
+                              30: (101.5, 101.5, 98.5, 98.8),      # stopped at 99
+                              40: (100.0, 101.6, 100.0, 101.0)},   # back above 101.5
+               later=100.0)
+    t = run(bars, OrbConfig(**FREE)).iloc[0]
+    assert t["exit_reason"] == "stop"
+    assert t["after_stop_back_to_entry"] is True or t["after_stop_back_to_entry"] == True
+    assert t["after_stop_minutes_to_entry"] == 10
+    assert t["after_stop_reached_2r"] == False
+    assert t["mae_r"] <= -1.0
