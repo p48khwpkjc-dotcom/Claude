@@ -3,6 +3,41 @@
 Kurznotiz für eine neue Sitzung. Wenn du diese Datei liest, weil du gerade neu
 gestartet bist: alles Wichtige liegt im Repo, es geht nichts verloren.
 
+## Als Nächstes: New York Open Range Breakout auf NQ und ES
+
+Das ist die offene Aufgabe, an der die letzte Session stehen geblieben ist.
+Regeln und Bewertungsmaßstab stehen in
+[research/ORB_ANMELDUNG.md](research/ORB_ANMELDUNG.md), das Bitcoin-Ergebnis in
+[research/ORB_ERGEBNIS.md](research/ORB_ERGEBNIS.md) (jede Variante verliert
+nach Kosten). NQ und ES fehlen, weil die Daten fehlten.
+
+Die neue Session soll den Databento-Schlüssel sehen, den die alte nicht sehen
+konnte (Secrets werden beim Sessionstart geladen). Ablauf:
+
+```bash
+pip install -r requirements.txt
+python research/fetch_databento.py              # zeigt nur den Preis
+```
+
+**Den Preis dem Nutzer nennen und erst nach seinem Ja** weitermachen:
+
+```bash
+python research/fetch_databento.py --confirm    # lädt NQ.v.0 und ES.v.0, 1m, 5 Jahre
+python research/orb_study.py --csv data/exchange/NQ_1m.parquet --name NQ --costs futures
+python research/orb_study.py --csv data/exchange/ES_1m.parquet --name ES --costs futures
+```
+
+Dann die Ergebnisse in ORB_ERGEBNIS.md unter "Nasdaq 100 und S&P 500"
+eintragen, wie beim Bitcoin-Teil: angemeldete Variante zuerst, ohne Kosten und
+Münzwurf daneben, erste gegen zweite Hälfte, Nachträgliches als nachträglich
+gekennzeichnet. `data/exchange/*_1m.parquet` committen, damit die Daten einen
+neuen Container überleben.
+
+Falls `DATABENTO_API_KEY` auch dort fehlt: der Host `hist.databento.com` ist
+freigegeben, nur der Schlüssel muss in den Umgebungseinstellungen stehen.
+Dukascopy (`daytrader/data/dukascopy.py`) funktioniert technisch, drosselt aber
+auf wenige Tage, bevor es minutenlang sperrt — dafür nicht geeignet.
+
 ## Der Stand in einem Satz
 
 Auf 5m verdient keine Strategie Geld und es gibt auch keine Kante

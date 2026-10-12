@@ -43,7 +43,15 @@ VARIANTS = [
 
 
 def load_csv(path: Path, tz: str) -> pd.DataFrame:
-    """Any one-minute export with a time column and OHLC, normalised to UTC."""
+    """Any one-minute export with a time column and OHLC, normalised to UTC.
+
+    A .parquet file from research/fetch_databento.py or fetch_indices.py is
+    already UTC-indexed and is read as it is.
+    """
+    if path.suffix == ".parquet":
+        df = pd.read_parquet(path)
+        df.index = pd.DatetimeIndex(df.index).tz_convert("UTC")
+        return df[["open", "high", "low", "close"]].astype(float).sort_index()
     raw = pd.read_csv(path)
     cols = {c.lower().strip(): c for c in raw.columns}
     tcol = next((cols[k] for k in ("time", "timestamp", "datetime", "date") if k in cols), None)
