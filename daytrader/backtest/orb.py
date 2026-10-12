@@ -41,6 +41,12 @@ NY = "America/New_York"
 @dataclass(frozen=True, slots=True)
 class OrbConfig:
     range_minutes: int = 5
+    # Size of the candle whose close is the signal. 1 checks every minute; 5 or
+    # 15 waits for a 5- or 15-minute candle on the grid from the end of the
+    # range to close beyond it. Stops and targets are still checked minute by
+    # minute after entry, so the order of stop and target inside a large
+    # candle never has to be guessed.
+    signal_minutes: int = 1
     open_time: time = time(9, 30)
     close_time: time = time(16, 0)
     stop: str = "range"          # "range" = opposite side, "none" = no stop
@@ -103,8 +109,18 @@ def run(df: pd.DataFrame, cfg: OrbConfig) -> pd.DataFrame:
         c = after["close"].to_numpy()
         n = len(after)
 
+        # Candle boundaries on the grid that starts where the range ends. A
+        # candle's close is only known at its last minute, so only those
+        # minutes can carry a signal.
+        start = range_end.hour * 60 + range_end.minute
+        mins = np.array([t.hour * 60 + t.minute for t in after.index.time]) - start
+        block = mins // cfg.signal_minutes
+        closes_candle = np.r_[block[1:] != block[:-1], True]
+
         signal = None
         for i in range(n - 1):            # the last bar has no next minute
+            if not closes_candle[i]:
+                continue
             if c[i] > hi:
                 signal = (i, 1)
                 break

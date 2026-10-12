@@ -146,3 +146,35 @@ def test_summary_reports_an_interval_that_contains_the_mean():
                   later=101.5) for d in range(3, 28)]
     s = summarise(run(pd.concat(frames), OrbConfig(stop="none", **FREE)))
     assert s["ci_low"] <= s["exp_r"] <= s["ci_high"]
+
+
+def test_a_five_minute_signal_waits_for_the_five_minute_close():
+    # 09:37 closes above the range, but the 09:35-09:39 candle closes back
+    # inside at 09:39, so it is no signal. The 09:40-09:44 candle closes above
+    # at 09:44, and the entry is the 09:45 open.
+    bars = day("2025-03-03", {**RANGE,
+                              7: (100, 101.6, 100, 101.5),
+                              9: (101.0, 101.0, 100.4, 100.5),
+                              14: (100.5, 101.7, 100.5, 101.6),
+                              15: (101.6, 101.8, 101.5, 101.6)})
+    t = run(bars, OrbConfig(signal_minutes=5, **FREE)).iloc[0]
+    assert t["entry_time"].strftime("%H:%M") == "09:45"
+    assert t["side"] == "long"
+
+
+def test_a_fifteen_minute_range_spans_the_first_fifteen_minutes():
+    # The low at 09:40 belongs to a 15-minute range but not to a 5-minute one.
+    bars = day("2025-03-03", {**RANGE,
+                              10: (100, 100, 98.0, 99.8),
+                              29: (100, 101.5, 100, 101.2),      # closes 09:59 candle above
+                              30: (101.2, 101.3, 101.1, 101.2)})
+    t = run(bars, OrbConfig(range_minutes=15, signal_minutes=15, **FREE)).iloc[0]
+    assert t["entry_time"].strftime("%H:%M") == "10:00"
+    assert t["risk"] == pytest.approx(101.2 - 98.0)     # down to the 15-minute low
+
+
+def test_one_minute_signals_are_unchanged_by_the_candle_grid():
+    bars = day("2025-03-03", {**RANGE, 7: (100, 101.6, 100, 101.5)}, later=101.5)
+    a = run(bars, OrbConfig(**FREE))
+    b = run(bars, OrbConfig(signal_minutes=1, **FREE))
+    assert a.equals(b)
