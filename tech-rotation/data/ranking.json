@@ -1,28 +1,28 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-05T20:57:18+00:00",
+  "generated_at": "2026-11-06T20:16:59+00:00",
   "strategy": "tech-rotation",
-  "signal_date": "2026-11-04",
+  "signal_date": "2026-11-05",
   "benchmark": "QQQ",
   "executed": true,
   "due": false,
   "portfolio": {
-    "equity": 96285.93187821828,
+    "equity": 90558.04282487356,
     "cash": 46098.32232011281,
-    "cash_weight": 0.39378407134891547,
+    "cash_weight": 1.0,
     "last_rebalance": "2026-11-02",
-    "invested_weight": 0.6062159286510845
+    "invested_weight": 0.0
   },
   "exposure": {
-    "exposure": 0.6062159286510844,
-    "regime_ok": true,
-    "vol_scalar": 0.6062159286510844,
+    "exposure": 0.0,
+    "regime_ok": false,
+    "vol_scalar": 0.6355981427181056,
     "drawdown_scalar": 1.0,
-    "realized_vol": 0.2969239036666774,
-    "current_drawdown": 0.07815789117006045
+    "realized_vol": 0.2831978067623648,
+    "current_drawdown": 0.0927102908437677
   },
   "turnover": {
-    "planned": 0.08169031442832471,
+    "planned": 0.2454763769063536,
     "alpha": 1.0,
     "limit": 0.6
   },
@@ -45,7 +45,8 @@
   },
   "notes": [
     "Kein Rebalancing faellig: letzter Lauf 2026-11-02, naechster im Folgemonat",
-    "Vol-Targeting: erwartete Portfoliovol 29.7% ueber Ziel 18.0%, Skalierung 0.61"
+    "Regime-Filter aktiv: QQQ unter SMA200, Exposure auf 0% gekappt",
+    "Vol-Targeting: erwartete Portfoliovol 28.3% ueber Ziel 18.0%, Skalierung 0.64"
   ],
   "orders": [],
   "equity_history": [
@@ -196,41 +197,45 @@
     {
       "date": "2026-11-04",
       "equity": 96285.93187821828
+    },
+    {
+      "date": "2026-11-05",
+      "equity": 90558.04282487356
     }
   ],
   "tickers": [
     {
       "ticker": "AAPL",
-      "rank": 15,
-      "score": 0.04542325897392773,
+      "rank": 13,
+      "score": 0.12600906292718375,
       "metrics": {
-        "mom_12_1": 0.24461043721139286,
-        "mom_6_1": 0.16248253732901796,
-        "mom_3_0": 0.11971905207450351,
-        "risk_adj_mom": 1.115156287948122,
-        "volatility": 0.2193508119489457,
-        "price": 349.510009765625
+        "mom_12_1": 0.2513465980725047,
+        "mom_6_1": 0.17336069897903172,
+        "mom_3_0": 0.09937397339728138,
+        "risk_adj_mom": 1.132159386291902,
+        "volatility": 0.22200637217320265,
+        "price": 344.1700134277344
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.22389734249204077,
+          "z": -0.2408301073539187,
           "weight": 0.4,
-          "contribution": -0.08955893699681632
+          "contribution": -0.09633204294156748
         },
         "mom_6_1": {
-          "z": -0.22741881981410017,
+          "z": -0.14629693319435397,
           "weight": 0.3,
-          "contribution": -0.06822564594423004
+          "contribution": -0.04388907995830619
         },
         "mom_3_0": {
-          "z": 1.1535214994779555,
+          "z": 1.5165381636931803,
           "weight": 0.15,
-          "contribution": 0.1730282249216933
+          "contribution": 0.22748072455397703
         },
         "risk_adj_mom": {
-          "z": 0.20119744662187186,
+          "z": 0.258329741820536,
           "weight": 0.15,
-          "contribution": 0.030179616993280776
+          "contribution": 0.0387494612730804
         }
       },
       "eligible": true,
@@ -246,71 +251,71 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 15896499243.914948,
+          "value": 16597426841.253052,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.2193508119489457,
+          "value": 0.22200637217320265,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.24461043721139286,
+          "value": 0.2513465980725047,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 349.510009765625,
-          "limit": 297.5759730529785,
+          "value": 344.1700134277344,
+          "limit": 298.0619342041016,
           "detail": null
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": false,
+      "selected": true,
       "current_weight": 0.0,
       "target_weight": 0.0,
       "shares": 0.0
     },
     {
       "ticker": "MSFT",
-      "rank": 19,
-      "score": -0.0837629994803607,
+      "rank": 18,
+      "score": -0.03600755594005331,
       "metrics": {
-        "mom_12_1": 0.03215454328620271,
-        "mom_6_1": 0.28380759816584766,
-        "mom_3_0": 0.114004563683757,
-        "risk_adj_mom": 0.12464728441182663,
-        "volatility": 0.25796425038804827,
-        "price": 555.7999877929688
+        "mom_12_1": 0.03847474319711419,
+        "mom_6_1": 0.2641273298805096,
+        "mom_3_0": 0.07389930597575822,
+        "risk_adj_mom": 0.14319203391213162,
+        "volatility": 0.26869332145057623,
+        "price": 535.9299926757812
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.48521822257185554,
+          "z": -0.4875596481988576,
           "weight": 0.4,
-          "contribution": -0.19408728902874223
+          "contribution": -0.19502385927954305
         },
         "mom_6_1": {
-          "z": 0.041665865840396867,
+          "z": 0.08752564085769718,
           "weight": 0.3,
-          "contribution": 0.012499759752119059
+          "contribution": 0.026257692257309152
         },
         "mom_3_0": {
-          "z": 1.1142204812446408,
+          "z": 1.349197533742446,
           "weight": 0.15,
-          "contribution": 0.16713307218669612
+          "contribution": 0.2023796300613669
         },
         "risk_adj_mom": {
-          "z": -0.46205694926955776,
+          "z": -0.46414012652790865,
           "weight": 0.15,
-          "contribution": -0.06930854239043366
+          "contribution": -0.0696210189791863
         }
       },
       "eligible": true,
@@ -326,125 +331,71 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 12795056967.009277,
+          "value": 13405533863.258362,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.25796425038804827,
+          "value": 0.26869332145057623,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.03215454328620271,
+          "value": 0.03847474319711419,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 555.7999877929688,
-          "limit": 437.96151443481443,
+          "value": 535.9299926757812,
+          "limit": 438.43461318969725,
           "detail": null
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": false,
+      "selected": true,
       "current_weight": 0.0,
       "target_weight": 0.0,
       "shares": 0.0
     },
     {
       "ticker": "NVDA",
-      "rank": null,
-      "score": null,
+      "rank": 24,
+      "score": -0.2884415382471799,
       "metrics": {
-        "mom_12_1": null,
-        "mom_6_1": null,
-        "mom_3_0": null,
-        "risk_adj_mom": null,
-        "volatility": null,
-        "price": null
+        "mom_12_1": 0.19804182005763415,
+        "mom_6_1": 0.12535600257251756,
+        "mom_3_0": -0.18823360255938237,
+        "risk_adj_mom": 0.5002142984648259,
+        "volatility": 0.395913952610773,
+        "price": 181.6000061035156
       },
       "signals": {
         "mom_12_1": {
-          "z": null,
+          "z": -0.30261311484520564,
           "weight": 0.4,
-          "contribution": null
+          "contribution": -0.12104524593808226
         },
         "mom_6_1": {
-          "z": null,
+          "z": -0.2699611208906237,
           "weight": 0.3,
-          "contribution": null
+          "contribution": -0.0809883362671871
         },
         "mom_3_0": {
-          "z": null,
+          "z": -0.37272822565048536,
           "weight": 0.15,
-          "contribution": null
+          "contribution": -0.0559092338475728
         },
         "risk_adj_mom": {
-          "z": null,
+          "z": -0.2033248146289182,
           "weight": 0.15,
-          "contribution": null
-        }
-      },
-      "eligible": false,
-      "reasons": [
-        "Datenqualitaet: Kursreihe ist leer"
-      ],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": false,
-          "value": null,
-          "limit": null,
-          "detail": "Datenqualitaet: Kursreihe ist leer"
-        }
-      ],
-      "data_ok": false,
-      "data_reason": "Kursreihe ist leer",
-      "selected": false,
-      "current_weight": 0.0,
-      "target_weight": 0.0,
-      "shares": 0.0
-    },
-    {
-      "ticker": "GOOGL",
-      "rank": 28,
-      "score": -0.520030722094022,
-      "metrics": {
-        "mom_12_1": 0.22862037036837335,
-        "mom_6_1": -0.1254364842491058,
-        "mom_3_0": -0.19184988555914695,
-        "risk_adj_mom": 0.6711513963626615,
-        "volatility": 0.34063904449486787,
-        "price": 288.92999267578125
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": -0.24356513453467654,
-          "weight": 0.4,
-          "contribution": -0.09742605381387062
-        },
-        "mom_6_1": {
-          "z": -0.8659892757522638,
-          "weight": 0.3,
-          "contribution": -0.25979678272567913
-        },
-        "mom_3_0": {
-          "z": -0.9892733863604501,
-          "weight": 0.15,
-          "contribution": -0.1483910079540675
-        },
-        "risk_adj_mom": {
-          "z": -0.09611251733603104,
-          "weight": 0.15,
-          "contribution": -0.014416877600404656
+          "contribution": -0.030498722194337725
         }
       },
       "eligible": false,
@@ -462,29 +413,111 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 11356787118.240967,
+          "value": 23683229232.966385,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.34063904449486787,
+          "value": 0.395913952610773,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.22862037036837335,
+          "value": 0.19804182005763415,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 288.92999267578125,
-          "limit": 339.66788040161134,
+          "value": 181.6000061035156,
+          "limit": 204.37979484558105,
+          "detail": "Kurs unter SMA200"
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": false,
+      "current_weight": 0.0,
+      "target_weight": 0.0,
+      "shares": 0.0
+    },
+    {
+      "ticker": "GOOGL",
+      "rank": 28,
+      "score": -0.4282718390470041,
+      "metrics": {
+        "mom_12_1": 0.266165287209863,
+        "mom_6_1": -0.11823215634886863,
+        "mom_3_0": -0.20194283105923305,
+        "risk_adj_mom": 0.7771420772749186,
+        "volatility": 0.3424924412060955,
+        "price": 282.57000732421875
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": -0.2236544766491243,
+          "weight": 0.4,
+          "contribution": -0.08946179065964972
+        },
+        "mom_6_1": {
+          "z": -0.8974649707296869,
+          "weight": 0.3,
+          "contribution": -0.26923949121890606
+        },
+        "mom_3_0": {
+          "z": -0.4627828236298613,
+          "weight": 0.15,
+          "contribution": -0.06941742354447919
+        },
+        "risk_adj_mom": {
+          "z": -0.001020890826461017,
+          "weight": 0.15,
+          "contribution": -0.00015313362396915254
+        }
+      },
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 11701995821.606293,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.3424924412060955,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.266165287209863,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": false,
+          "value": 282.57000732421875,
+          "limit": 339.44201858520506,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -498,35 +531,35 @@
     {
       "ticker": "AMZN",
       "rank": 27,
-      "score": -0.48004250437014306,
+      "score": -0.3951461524974649,
       "metrics": {
-        "mom_12_1": 0.00901578167292083,
-        "mom_6_1": -0.06800240864591134,
-        "mom_3_0": -0.02288257828129525,
-        "risk_adj_mom": 0.02908473213828953,
-        "volatility": 0.30998331461515216,
-        "price": 266.0299987792969
+        "mom_12_1": 0.04251566577940635,
+        "mom_6_1": -0.04148688808837664,
+        "mom_3_0": -0.05198928504837752,
+        "risk_adj_mom": 0.13604585555643142,
+        "volatility": 0.31250981961571755,
+        "price": 260.2099914550781
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.513678913574709,
+          "z": -0.48287600895541455,
           "weight": 0.4,
-          "contribution": -0.2054715654298836
+          "contribution": -0.19315040358216584
         },
         "mom_6_1": {
-          "z": -0.7386072652018866,
+          "z": -0.6997626213887547,
           "weight": 0.3,
-          "contribution": -0.22158217956056597
+          "contribution": -0.2099287864166264
         },
         "mom_3_0": {
-          "z": 0.1727881614264083,
+          "z": 0.5222475376145024,
           "weight": 0.15,
-          "contribution": 0.025918224213961245
+          "contribution": 0.07833713064217536
         },
         "risk_adj_mom": {
-          "z": -0.5260465572910314,
+          "z": -0.4693606209389867,
           "weight": 0.15,
-          "contribution": -0.07890698359365471
+          "contribution": -0.070404093140848
         }
       },
       "eligible": true,
@@ -542,29 +575,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 11558630519.32312,
+          "value": 12183920074.084778,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.30998331461515216,
+          "value": 0.31250981961571755,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.00901578167292083,
+          "value": 0.04251566577940635,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 266.0299987792969,
-          "limit": 243.67085006713867,
+          "value": 260.2099914550781,
+          "limit": 243.81535003662108,
           "detail": null
         }
       ],
@@ -577,36 +610,36 @@
     },
     {
       "ticker": "META",
-      "rank": 20,
-      "score": -0.0920772722521507,
+      "rank": 19,
+      "score": -0.08248193872850328,
       "metrics": {
-        "mom_12_1": 0.1625759153052171,
-        "mom_6_1": 0.20765641845143623,
-        "mom_3_0": 0.06882036709842643,
-        "risk_adj_mom": 0.37155116833258256,
-        "volatility": 0.4375599625613134,
-        "price": 630.0
+        "mom_12_1": 0.15372813258272622,
+        "mom_6_1": 0.17142763401006444,
+        "mom_3_0": 0.022728548207857857,
+        "risk_adj_mom": 0.3453541477266807,
+        "volatility": 0.44513185550152806,
+        "price": 605.0800170898438
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.3247998548459564,
+          "z": -0.35397498121420184,
           "weight": 0.4,
-          "contribution": -0.12991994193838258
+          "contribution": -0.14158999248568074
         },
         "mom_6_1": {
-          "z": -0.12722847564466574,
+          "z": -0.151276673241601,
           "weight": 0.3,
-          "contribution": -0.03816854269339972
+          "contribution": -0.0453830019724803
         },
         "mom_3_0": {
-          "z": 0.803469139666402,
+          "z": 1.0130617680326188,
           "weight": 0.15,
-          "contribution": 0.12052037094996029
+          "contribution": 0.1519592652048928
         },
         "risk_adj_mom": {
-          "z": -0.2967277238021913,
+          "z": -0.3164547298349003,
           "weight": 0.15,
-          "contribution": -0.044509158570328694
+          "contribution": -0.04746820947523504
         }
       },
       "eligible": false,
@@ -624,29 +657,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 16188255364.81018,
+          "value": 16477631703.414917,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.4375599625613134,
+          "value": 0.44513185550152806,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.1625759153052171,
+          "value": 0.15372813258272622,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 630.0,
-          "limit": 631.3619732666016,
+          "value": 605.0800170898438,
+          "limit": 631.330443725586,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -659,36 +692,36 @@
     },
     {
       "ticker": "AVGO",
-      "rank": 29,
-      "score": -0.6925004961619937,
+      "rank": 30,
+      "score": -0.6682451317105647,
       "metrics": {
-        "mom_12_1": 0.044281559294587325,
-        "mom_6_1": -0.11364660715198283,
-        "mom_3_0": -0.22468868376263218,
-        "risk_adj_mom": 0.11617533467048866,
-        "volatility": 0.38116145238732774,
-        "price": 325.4800109863281
+        "mom_12_1": 0.07776745798294371,
+        "mom_6_1": -0.08427238708067497,
+        "mom_3_0": -0.317231946396641,
+        "risk_adj_mom": 0.1814585585597841,
+        "volatility": 0.42856869689793176,
+        "price": 291.5299987792969
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.4703019854296233,
+          "z": -0.44201735007149895,
           "weight": 0.4,
-          "contribution": -0.18812079417184935
+          "contribution": -0.1768069400285996
         },
         "mom_6_1": {
-          "z": -0.8398407178970062,
+          "z": -0.8099817118972441,
           "weight": 0.3,
-          "contribution": -0.25195221536910184
+          "contribution": -0.24299451356917323
         },
         "mom_3_0": {
-          "z": -1.2151200621617664,
+          "z": -1.220105887668166,
           "weight": 0.15,
-          "contribution": -0.18226800932426496
+          "contribution": -0.1830158831502249
         },
         "risk_adj_mom": {
-          "z": -0.4677298486451844,
+          "z": -0.43618529975044634,
           "weight": 0.15,
-          "contribution": -0.07015947729677766
+          "contribution": -0.06542779496256695
         }
       },
       "eligible": false,
@@ -706,29 +739,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 7367681414.09729,
+          "value": 7663610940.279694,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.38116145238732774,
+          "value": 0.42856869689793176,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.044281559294587325,
+          "value": 0.07776745798294371,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 325.4800109863281,
-          "limit": 366.4285659790039,
+          "value": 291.5299987792969,
+          "limit": 366.2512272644043,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -741,116 +774,36 @@
     },
     {
       "ticker": "AMD",
-      "rank": 5,
-      "score": 0.9336006146589342,
+      "rank": 4,
+      "score": 0.9284888361010041,
       "metrics": {
-        "mom_12_1": 1.5011361377850174,
-        "mom_6_1": 0.5411375693179687,
-        "mom_3_0": -0.0010219097474808425,
-        "risk_adj_mom": 2.5346990966871323,
-        "volatility": 0.5922344548696181,
-        "price": 488.7799987792969
+        "mom_12_1": 1.582923325211382,
+        "mom_6_1": 0.5812074593910217,
+        "mom_3_0": -0.16335649174113598,
+        "risk_adj_mom": 2.307711968783035,
+        "volatility": 0.6859275969548886,
+        "price": 404.3999938964844
       },
       "signals": {
         "mom_12_1": {
-          "z": 1.321630041334863,
+          "z": 1.3025365095203496,
           "weight": 0.4,
-          "contribution": 0.5286520165339452
+          "contribution": 0.5210146038081399
         },
         "mom_6_1": {
-          "z": 0.6123934131364586,
+          "z": 0.9043510680720342,
           "weight": 0.3,
-          "contribution": 0.18371802394093756
+          "contribution": 0.27130532042161026
         },
         "mom_3_0": {
-          "z": 0.32313347213368104,
+          "z": -0.20931288731470934,
           "weight": 0.15,
-          "contribution": 0.048470020820052154
+          "contribution": -0.0313969330972064
         },
         "risk_adj_mom": {
-          "z": 1.1517370224266619,
+          "z": 1.1171056331230684,
           "weight": 0.15,
-          "contribution": 0.1727605533639993
-        }
-      },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 12638688898.327179,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.5922344548696181,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 1.5011361377850174,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 488.7799987792969,
-          "limit": 414.2279498291016,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": true,
-      "current_weight": 0.055839725302472255,
-      "target_weight": 0.05833656743915983,
-      "shares": 11.0
-    },
-    {
-      "ticker": "TSM",
-      "rank": 11,
-      "score": 0.11768614339804154,
-      "metrics": {
-        "mom_12_1": 0.5987814708136505,
-        "mom_6_1": 0.15548590927728223,
-        "mom_3_0": -0.051143806129167135,
-        "risk_adj_mom": 1.9009939066409136,
-        "volatility": 0.31498337197287857,
-        "price": 395.75
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": 0.2117332464729755,
-          "weight": 0.4,
-          "contribution": 0.08469329858919021
-        },
-        "mom_6_1": {
-          "z": -0.24293651621546256,
-          "weight": 0.3,
-          "contribution": -0.07288095486463876
-        },
-        "mom_3_0": {
-          "z": -0.02157657518651823,
-          "weight": 0.15,
-          "contribution": -0.0032364862779777344
-        },
-        "risk_adj_mom": {
-          "z": 0.7274019063431189,
-          "weight": 0.15,
-          "contribution": 0.10911028595146782
+          "contribution": 0.16756584496846025
         }
       },
       "eligible": false,
@@ -868,29 +821,111 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 5292501845.140228,
+          "value": 13350176314.388885,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.31498337197287857,
+          "value": 0.6859275969548886,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.5987814708136505,
+          "value": 1.582923325211382,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 395.75,
-          "limit": 399.6284223937988,
+          "value": 404.3999938964844,
+          "limit": 415.0009497833252,
+          "detail": "Kurs unter SMA200"
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": false,
+      "current_weight": 0.049122085616005465,
+      "target_weight": 0.0,
+      "shares": 11.0
+    },
+    {
+      "ticker": "TSM",
+      "rank": 15,
+      "score": 0.0795055238230325,
+      "metrics": {
+        "mom_12_1": 0.6228451982900032,
+        "mom_6_1": 0.14590263924823477,
+        "mom_3_0": -0.1571105798808119,
+        "risk_adj_mom": 1.6359548242062754,
+        "volatility": 0.3807227370060125,
+        "price": 353.1000061035156
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": 0.18975607375422288,
+          "weight": 0.4,
+          "contribution": 0.07590242950168916
+        },
+        "mom_6_1": {
+          "z": -0.21703123434626972,
+          "weight": 0.3,
+          "contribution": -0.06510937030388092
+        },
+        "mom_3_0": {
+          "z": -0.16828409553388612,
+          "weight": 0.15,
+          "contribution": -0.02524261433008292
+        },
+        "risk_adj_mom": {
+          "z": 0.6263671930353812,
+          "weight": 0.15,
+          "contribution": 0.09395507895530718
+        }
+      },
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 5744858654.17572,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.3807227370060125,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.6228451982900032,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": false,
+          "value": 353.1000061035156,
+          "limit": 399.77604446411135,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -903,41 +938,41 @@
     },
     {
       "ticker": "ORCL",
-      "rank": 34,
-      "score": -1.0113655557422767,
+      "rank": 36,
+      "score": -1.0264271826418483,
       "metrics": {
-        "mom_12_1": -0.433134041116748,
-        "mom_6_1": -0.25128247778049717,
-        "mom_3_0": -0.13440008292232453,
-        "risk_adj_mom": -0.7354801672817861,
-        "volatility": 0.5889132846607411,
-        "price": 123.7300033569336
+        "mom_12_1": -0.41594588385698017,
+        "mom_6_1": -0.2596771073881685,
+        "mom_3_0": -0.2138082017800952,
+        "risk_adj_mom": -0.6912975812253166,
+        "volatility": 0.6016886145033534,
+        "price": 115.16000366210938
       },
       "signals": {
         "mom_12_1": {
-          "z": -1.057523467302248,
+          "z": -1.0142567671259106,
           "weight": 0.4,
-          "contribution": -0.42300938692089923
+          "contribution": -0.40570270685036425
         },
         "mom_6_1": {
-          "z": -1.1451008572895278,
+          "z": -1.2618392149888396,
           "weight": 0.3,
-          "contribution": -0.3435302571868583
+          "contribution": -0.37855176449665184
         },
         "mom_3_0": {
-          "z": -0.5941661455116971,
+          "z": -0.5407252979386916,
           "weight": 0.15,
-          "contribution": -0.08912492182675456
+          "contribution": -0.08110879469080375
         },
         "risk_adj_mom": {
-          "z": -1.0380065987184308,
+          "z": -1.0737594440268559,
           "weight": 0.15,
-          "contribution": -0.15570098980776462
+          "contribution": -0.16106391660402838
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-43.3%)",
+        "absolutes Momentum negativ (-41.6%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -951,29 +986,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 5463139886.015778,
+          "value": 5503943353.752747,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5889132846607411,
+          "value": 0.6016886145033534,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.433134041116748,
+          "value": -0.41594588385698017,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-43.3%)"
+          "detail": "absolutes Momentum negativ (-41.6%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 123.7300033569336,
-          "limit": 154.9935404205322,
+          "value": 115.16000366210938,
+          "limit": 154.70915199279784,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -986,41 +1021,41 @@
     },
     {
       "ticker": "CRM",
-      "rank": 21,
-      "score": -0.11710934097981114,
+      "rank": 20,
+      "score": -0.10233719831927858,
       "metrics": {
-        "mom_12_1": -0.13178872210246273,
-        "mom_6_1": 0.247130299763201,
-        "mom_3_0": 0.21812681141954737,
-        "risk_adj_mom": -0.23074906423819064,
-        "volatility": 0.5711343729065955,
-        "price": 227.1100006103516
+        "mom_12_1": -0.10994860213967772,
+        "mom_6_1": 0.21034490160454467,
+        "mom_3_0": 0.15596801897277413,
+        "risk_adj_mom": -0.19280420495916362,
+        "volatility": 0.5702603953215911,
+        "price": 222.41000366210935
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.6868685397412635,
+          "z": -0.6595900176765562,
           "weight": 0.4,
-          "contribution": -0.2747474158965054
+          "contribution": -0.2638360070706225
         },
         "mom_6_1": {
-          "z": -0.03968005925751512,
+          "z": -0.05102247636729924,
           "weight": 0.3,
-          "contribution": -0.011904017777254534
+          "contribution": -0.01530674291018977
         },
         "mom_3_0": {
-          "z": 1.8303143949857847,
+          "z": 1.8882989832303985,
           "weight": 0.15,
-          "contribution": 0.2745471592478677
+          "contribution": 0.28324484748455975
         },
         "risk_adj_mom": {
-          "z": -0.700033777026126,
+          "z": -0.7095953054868402,
           "weight": 0.15,
-          "contribution": -0.1050050665539189
+          "contribution": -0.10643929582302604
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-13.2%)"
+        "absolutes Momentum negativ (-11.0%)"
       ],
       "checks": [
         {
@@ -1033,29 +1068,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1704669251.7294312,
+          "value": 1725232570.7341766,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5711343729065955,
+          "value": 0.5702603953215911,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.13178872210246273,
+          "value": -0.10994860213967772,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-13.2%)"
+          "detail": "absolutes Momentum negativ (-11.0%)"
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 227.1100006103516,
-          "limit": 197.6396393585205,
+          "value": 222.41000366210935,
+          "limit": 197.65133361816407,
           "detail": null
         }
       ],
@@ -1068,41 +1103,41 @@
     },
     {
       "ticker": "ADBE",
-      "rank": 30,
-      "score": -0.712351712463088,
+      "rank": 31,
+      "score": -0.7095421778931186,
       "metrics": {
-        "mom_12_1": -0.2943965559728119,
-        "mom_6_1": -0.04816725882381856,
-        "mom_3_0": -0.04518903684343356,
-        "risk_adj_mom": -0.6998592573324984,
-        "volatility": 0.4206510850408685,
-        "price": 248.47999572753903
+        "mom_12_1": -0.30588936920845133,
+        "mom_6_1": -0.09255001594228429,
+        "mom_3_0": -0.07077406439587774,
+        "risk_adj_mom": -0.7299561667130968,
+        "volatility": 0.4190516953721121,
+        "price": 246.44000244140625
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.8868762753225343,
+          "z": -0.8866955479965843,
           "weight": 0.4,
-          "contribution": -0.35475051012901376
+          "contribution": -0.35467821919863374
         },
         "mom_6_1": {
-          "z": -0.694615240652516,
+          "z": -0.83130558905613,
           "weight": 0.3,
-          "contribution": -0.2083845721957548
+          "contribution": -0.24939167671683898
         },
         "mom_3_0": {
-          "z": 0.019376959105853454,
+          "z": 0.3988521363131935,
           "weight": 0.15,
-          "contribution": 0.002906543865878018
+          "contribution": 0.05982782044697902
         },
         "risk_adj_mom": {
-          "z": -1.0141544933613167,
+          "z": -1.1020006828308326,
           "weight": 0.15,
-          "contribution": -0.1521231740041975
+          "contribution": -0.1653001024246249
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-29.4%)",
+        "absolutes Momentum negativ (-30.6%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -1116,29 +1151,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1056444965.1221466,
+          "value": 1059313557.6580048,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.4206510850408685,
+          "value": 0.4190516953721121,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.2943965559728119,
+          "value": -0.30588936920845133,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-29.4%)"
+          "detail": "absolutes Momentum negativ (-30.6%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 248.47999572753903,
-          "limit": 249.71334983825685,
+          "value": 246.44000244140625,
+          "limit": 249.47439979553224,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -1151,41 +1186,41 @@
     },
     {
       "ticker": "NFLX",
-      "rank": 33,
-      "score": -0.9574948547458192,
+      "rank": 34,
+      "score": -0.9006361716855686,
       "metrics": {
-        "mom_12_1": -0.37559653515129243,
-        "mom_6_1": -0.22181936044287998,
-        "mom_3_0": -0.09906368313072489,
-        "risk_adj_mom": -1.039090359538663,
-        "volatility": 0.3614666729446421,
-        "price": 66.38999938964844
+        "mom_12_1": -0.3622822567500451,
+        "mom_6_1": -0.2101983348641112,
+        "mom_3_0": -0.1157270286173302,
+        "risk_adj_mom": -1.0012999653734944,
+        "volatility": 0.36181191379039984,
+        "price": 65.55999755859375
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.9867522996085674,
+          "z": -0.9520578348907465,
           "weight": 0.4,
-          "contribution": -0.394700919843427
+          "contribution": -0.38082313395629863
         },
         "mom_6_1": {
-          "z": -1.079755135535827,
+          "z": -1.1343776816300795,
           "weight": 0.3,
-          "contribution": -0.3239265406607481
+          "contribution": -0.3403133044890238
         },
         "mom_3_0": {
-          "z": -0.35114237898201617,
+          "z": 0.10356045589600138,
           "weight": 0.15,
-          "contribution": -0.052671356847302425
+          "contribution": 0.015534068384400206
         },
         "risk_adj_mom": {
-          "z": -1.2413069159622778,
+          "z": -1.3002253441643086,
           "weight": 0.15,
-          "contribution": -0.18619603739434168
+          "contribution": -0.19503380162464629
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-37.6%)",
+        "absolutes Momentum negativ (-36.2%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -1199,29 +1234,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 3062960361.3282585,
+          "value": 3061965334.1718483,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.3614666729446421,
+          "value": 0.36181191379039984,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.37559653515129243,
+          "value": -0.3622822567500451,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-37.6%)"
+          "detail": "absolutes Momentum negativ (-36.2%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 66.38999938964844,
-          "limit": 81.2405498123169,
+          "value": 65.55999755859375,
+          "limit": 81.1415497970581,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -1235,39 +1270,41 @@
     {
       "ticker": "CSCO",
       "rank": 12,
-      "score": 0.10907936593600114,
+      "score": 0.1538350589533347,
       "metrics": {
-        "mom_12_1": 0.6072475186830464,
-        "mom_6_1": 0.2918072202369397,
-        "mom_3_0": -0.14286893642842202,
-        "risk_adj_mom": 1.812878666788208,
-        "volatility": 0.33496313338988004,
-        "price": 103.61000061035156
+        "mom_12_1": 0.6468687957613193,
+        "mom_6_1": 0.27852807431920135,
+        "mom_3_0": -0.21172691278809797,
+        "risk_adj_mom": 1.7683773263716591,
+        "volatility": 0.36579794714319197,
+        "price": 95.72000122070312
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.22214649055462654,
+          "z": 0.21760067151474485,
           "weight": 0.4,
-          "contribution": 0.08885859622185062
+          "contribution": 0.08704026860589795
         },
         "mom_6_1": {
-          "z": 0.05940808476456116,
+          "z": 0.1246231854010834,
           "weight": 0.3,
-          "contribution": 0.017822425429368346
+          "contribution": 0.03738695562032502
         },
         "mom_3_0": {
-          "z": -0.652410128752151,
+          "z": -0.5270535115609789,
           "weight": 0.15,
-          "contribution": -0.09786151931282265
+          "contribution": -0.07905802673414683
         },
         "risk_adj_mom": {
-          "z": 0.6683990906506988,
+          "z": 0.7231057430750574,
           "weight": 0.15,
-          "contribution": 0.10025986359760482
+          "contribution": 0.1084658614612586
         }
       },
-      "eligible": true,
-      "reasons": [],
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
       "checks": [
         {
           "rule": "data",
@@ -1279,75 +1316,77 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1805185113.983345,
+          "value": 1909909854.6157455,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.33496313338988004,
+          "value": 0.36579794714319197,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.6072475186830464,
+          "value": 0.6468687957613193,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
-          "ok": true,
-          "value": 103.61000061035156,
-          "limit": 101.30151790618896,
-          "detail": null
+          "ok": false,
+          "value": 95.72000122070312,
+          "limit": 101.41501945495605,
+          "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": true,
+      "selected": false,
       "current_weight": 0.0,
-      "target_weight": 0.10314247083449135,
+      "target_weight": 0.0,
       "shares": 0.0
     },
     {
       "ticker": "QCOM",
-      "rank": 25,
-      "score": -0.3483849650362412,
+      "rank": 29,
+      "score": -0.46606197753689327,
       "metrics": {
-        "mom_12_1": 0.02257591435310391,
-        "mom_6_1": -0.05131889583075455,
-        "mom_3_0": 0.08568231564426187,
-        "risk_adj_mom": 0.04788317722059883,
-        "volatility": 0.4714790384333977,
-        "price": 173.19000244140625
+        "mom_12_1": 0.04610331172046278,
+        "mom_6_1": -0.11754274157455757,
+        "mom_3_0": -0.06110384254192247,
+        "risk_adj_mom": 0.0920565085551919,
+        "volatility": 0.5008153409687685,
+        "price": 156.75
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.4969999420455301,
+          "z": -0.4787177408918924,
           "weight": 0.4,
-          "contribution": -0.19879997681821204
+          "contribution": -0.19148709635675698
         },
         "mom_6_1": {
-          "z": -0.7016052000843024,
+          "z": -0.8956889795364708,
           "weight": 0.3,
-          "contribution": -0.2104815600252907
+          "contribution": -0.2687066938609412
         },
         "mom_3_0": {
-          "z": 0.919436082275331,
+          "z": 0.4623748897226069,
           "weight": 0.15,
-          "contribution": 0.13791541234129964
+          "contribution": 0.06935623345839102
         },
         "risk_adj_mom": {
-          "z": -0.5134589368935875,
+          "z": -0.5014961385172408,
           "weight": 0.15,
-          "contribution": -0.07701884053403811
+          "contribution": -0.07522442077758612
         }
       },
-      "eligible": true,
-      "reasons": [],
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
       "checks": [
         {
           "rule": "data",
@@ -1359,30 +1398,30 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1975436236.9978333,
+          "value": 2206419067.7752686,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.4714790384333977,
+          "value": 0.5008153409687685,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.02257591435310391,
+          "value": 0.04610331172046278,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
-          "ok": true,
-          "value": 173.19000244140625,
-          "limit": 168.53438243865966,
-          "detail": null
+          "ok": false,
+          "value": 156.75,
+          "limit": 168.548318939209,
+          "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
@@ -1395,35 +1434,35 @@
     {
       "ticker": "TXN",
       "rank": 8,
-      "score": 0.4461854590273423,
+      "score": 0.28500782623446297,
       "metrics": {
-        "mom_12_1": 0.8718554123375108,
-        "mom_6_1": 0.03217196948656387,
-        "mom_3_0": 0.12431874642623097,
-        "risk_adj_mom": 2.84866820147438,
-        "volatility": 0.3060571996016476,
-        "price": 311.489990234375
+        "mom_12_1": 0.8438816815081032,
+        "mom_6_1": 0.018299077022560173,
+        "mom_3_0": -0.022973851977374005,
+        "risk_adj_mom": 2.2699315327648506,
+        "volatility": 0.37176525781825137,
+        "price": 278.1499938964844
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.547614362348284,
+          "z": 0.4459488430909955,
           "weight": 0.4,
-          "contribution": 0.2190457449393136
+          "contribution": 0.1783795372363982
         },
         "mom_6_1": {
-          "z": -0.5164323009818879,
+          "z": -0.5457488818064281,
           "weight": 0.3,
-          "contribution": -0.15492969029456635
+          "contribution": -0.16372466454192844
         },
         "mom_3_0": {
-          "z": 1.1851555949951746,
+          "z": 0.7128471151498225,
           "weight": 0.15,
-          "contribution": 0.17777333924927619
+          "contribution": 0.10692706727247336
         },
         "risk_adj_mom": {
-          "z": 1.3619737675554588,
+          "z": 1.0895059084501322,
           "weight": 0.15,
-          "contribution": 0.20429606513331883
+          "contribution": 0.16342588626751983
         }
       },
       "eligible": true,
@@ -1439,76 +1478,76 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 2378037814.5103455,
+          "value": 2559834360.106201,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.3060571996016476,
+          "value": 0.37176525781825137,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.8718554123375108,
+          "value": 0.8438816815081032,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 311.489990234375,
-          "limit": 258.918846206665,
+          "value": 278.1499938964844,
+          "limit": 259.35827041625976,
           "detail": null
         }
       ],
       "data_ok": true,
       "data_reason": null,
       "selected": true,
-      "current_weight": 0.10999176578945859,
-      "target_weight": 0.11288388334358122,
+      "current_weight": 0.10443136244418579,
+      "target_weight": 0.0,
       "shares": 34.0
     },
     {
       "ticker": "INTU",
-      "rank": 32,
-      "score": -0.8761493269512497,
+      "rank": 33,
+      "score": -0.8449645681830089,
       "metrics": {
-        "mom_12_1": -0.5673832243217997,
-        "mom_6_1": -0.2508203016484498,
-        "mom_3_0": 0.11305493070348782,
-        "risk_adj_mom": -1.2762827405631465,
-        "volatility": 0.44455919232398905,
-        "price": 356.6400146484375
+        "mom_12_1": -0.5456969008996614,
+        "mom_6_1": -0.26604880879820236,
+        "mom_3_0": 0.09606486838479755,
+        "risk_adj_mom": -1.2277745759649523,
+        "volatility": 0.44446017337570176,
+        "price": 354.8399963378906
       },
       "signals": {
         "mom_12_1": {
-          "z": -1.2226500451391211,
+          "z": -1.1646449378770152,
           "weight": 0.4,
-          "contribution": -0.48906001805564847
+          "contribution": -0.46585797515080607
         },
         "mom_6_1": {
-          "z": -1.1440758051003825,
+          "z": -1.2782532606572565,
           "weight": 0.3,
-          "contribution": -0.3432227415301147
+          "contribution": -0.38347597819717694
         },
         "mom_3_0": {
-          "z": 1.1076894428523063,
+          "z": 1.4948009724592597,
           "weight": 0.15,
-          "contribution": 0.16615341642784595
+          "contribution": 0.22422014586888894
         },
         "risk_adj_mom": {
-          "z": -1.4001332252888836,
+          "z": -1.4656717380260993,
           "weight": 0.15,
-          "contribution": -0.21001998379333253
+          "contribution": -0.21985076070391488
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-56.7%)"
+        "absolutes Momentum negativ (-54.6%)"
       ],
       "checks": [
         {
@@ -1521,29 +1560,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1050111376.4900208,
+          "value": 1040922578.1285095,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.44455919232398905,
+          "value": 0.44446017337570176,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.5673832243217997,
+          "value": -0.5456969008996614,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-56.7%)"
+          "detail": "absolutes Momentum negativ (-54.6%)"
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 356.6400146484375,
-          "limit": 354.82983245849607,
+          "value": 354.8399963378906,
+          "limit": 354.0111521911621,
           "detail": null
         }
       ],
@@ -1556,36 +1595,36 @@
     },
     {
       "ticker": "AMAT",
-      "rank": 10,
-      "score": 0.2837757078614557,
+      "rank": 7,
+      "score": 0.293023871397801,
       "metrics": {
-        "mom_12_1": 1.2430817374003822,
-        "mom_6_1": 0.24001910566613738,
-        "mom_3_0": -0.29894025264215773,
-        "risk_adj_mom": 2.3836516253930284,
-        "volatility": 0.5215031106718108,
-        "price": 369.3999938964844
+        "mom_12_1": 1.2743375531594174,
+        "mom_6_1": 0.27083254188706096,
+        "mom_3_0": -0.4072201032770898,
+        "risk_adj_mom": 2.195966168434732,
+        "volatility": 0.580308372449907,
+        "price": 319.25
       },
       "signals": {
         "mom_12_1": {
-          "z": 1.0042229702901457,
+          "z": 0.9448695652724551,
           "weight": 0.4,
-          "contribution": 0.4016891881160583
+          "contribution": 0.3779478261089821
         },
         "mom_6_1": {
-          "z": -0.05545184964474573,
+          "z": 0.10479883823612975,
           "weight": 0.3,
-          "contribution": -0.016635554893423717
+          "contribution": 0.03143965147083892
         },
         "mom_3_0": {
-          "z": -1.725780345786078,
+          "z": -1.8112293991671604,
           "weight": 0.15,
-          "contribution": -0.2588670518679117
+          "contribution": -0.27168440987507403
         },
         "risk_adj_mom": {
-          "z": 1.0505941767115519,
+          "z": 1.0354720246203601,
           "weight": 0.15,
-          "contribution": 0.15758912650673276
+          "contribution": 0.155320803693054
         }
       },
       "eligible": false,
@@ -1603,29 +1642,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 3156557139.501648,
+          "value": 3256276357.7233887,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5215031106718108,
+          "value": 0.580308372449907,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 1.2430817374003822,
+          "value": 1.2743375531594174,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 369.3999938964844,
-          "limit": 444.737159576416,
+          "value": 319.25,
+          "limit": 444.7129840087891,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -1638,36 +1677,36 @@
     },
     {
       "ticker": "LRCX",
-      "rank": 13,
-      "score": 0.1035359360552255,
+      "rank": 14,
+      "score": 0.08372877387425252,
       "metrics": {
-        "mom_12_1": 1.0803286266159948,
-        "mom_6_1": 0.12555154135297353,
-        "mom_3_0": -0.2750589029415802,
-        "risk_adj_mom": 1.899400414549622,
-        "volatility": 0.5687735025961642,
-        "price": 221.42999267578125
+        "mom_12_1": 1.1249968141925923,
+        "mom_6_1": 0.15207463155089096,
+        "mom_3_0": -0.40453913019587906,
+        "risk_adj_mom": 1.7312791748287708,
+        "volatility": 0.6498067039383514,
+        "price": 185.1999969482422
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.804036544015337,
+          "z": 0.771775888908815,
           "weight": 0.4,
-          "contribution": 0.3216146176061348
+          "contribution": 0.308710355563526
         },
         "mom_6_1": {
-          "z": -0.3093274162292008,
+          "z": -0.20113165635264585,
           "weight": 0.3,
-          "contribution": -0.09279822486876023
+          "contribution": -0.06033949690579375
         },
         "mom_3_0": {
-          "z": -1.561537933195237,
+          "z": -1.7936183459248434,
           "weight": 0.15,
-          "contribution": -0.23423068997928553
+          "contribution": -0.2690427518887265
         },
         "risk_adj_mom": {
-          "z": 0.7263348886475763,
+          "z": 0.696004447368312,
           "weight": 0.15,
-          "contribution": 0.10895023329713645
+          "contribution": 0.1044006671052468
         }
       },
       "eligible": false,
@@ -1685,29 +1724,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 2946655289.5436096,
+          "value": 3093698638.79158,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5687735025961642,
+          "value": 0.6498067039383514,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 1.0803286266159948,
+          "value": 1.1249968141925923,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 221.42999267578125,
-          "limit": 283.9397383880615,
+          "value": 185.1999969482422,
+          "limit": 283.7271675872803,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -1720,36 +1759,36 @@
     },
     {
       "ticker": "KLAC",
-      "rank": 22,
-      "score": -0.1550650196813812,
+      "rank": 23,
+      "score": -0.16023613719854926,
       "metrics": {
-        "mom_12_1": 0.6284037546279133,
-        "mom_6_1": 0.08977911253592108,
-        "mom_3_0": -0.22389353104738308,
-        "risk_adj_mom": 1.24991684639433,
-        "volatility": 0.5027564485115047,
-        "price": 149.7899932861328
+        "mom_12_1": 0.6580937216308498,
+        "mom_6_1": 0.11897898624169789,
+        "mom_3_0": -0.3440678884873317,
+        "risk_adj_mom": 1.1699855669946249,
+        "volatility": 0.562480205051857,
+        "price": 129.8000030517578
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.24816867376708923,
+          "z": 0.23061094385642636,
           "weight": 0.4,
-          "contribution": 0.0992674695068357
+          "contribution": 0.09224437754257055
         },
         "mom_6_1": {
-          "z": -0.38866644723352234,
+          "z": -0.28638885824778876,
           "weight": 0.3,
-          "contribution": -0.1165999341700567
+          "contribution": -0.08591665747433662
         },
         "mom_3_0": {
-          "z": -1.209651451636478,
+          "z": -1.3963885994488683,
           "weight": 0.15,
-          "contribution": -0.1814477177454717
+          "contribution": -0.20945828991733023
         },
         "risk_adj_mom": {
-          "z": 0.29143441818207655,
+          "z": 0.28596288433698025,
           "weight": 0.15,
-          "contribution": 0.043715162727311484
+          "contribution": 0.042894432650547036
         }
       },
       "eligible": false,
@@ -1767,29 +1806,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 2069566281.835556,
+          "value": 2194218411.892853,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5027564485115047,
+          "value": 0.562480205051857,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.6284037546279133,
+          "value": 0.6580937216308498,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 149.7899932861328,
-          "limit": 181.8100431060791,
+          "value": 129.8000030517578,
+          "limit": 181.70185333251953,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -1803,14 +1842,14 @@
     {
       "ticker": "MU",
       "rank": 1,
-      "score": 1.8008390726989305,
+      "score": 1.8811797615305115,
       "metrics": {
-        "mom_12_1": 3.4592361641622276,
-        "mom_6_1": 0.5687614981992146,
-        "mom_3_0": -0.09769454846492642,
-        "risk_adj_mom": 6.161964573183943,
-        "volatility": 0.5613852730047113,
-        "price": 795.22998046875
+        "mom_12_1": 3.9950203203970123,
+        "mom_6_1": 0.682828490740802,
+        "mom_3_0": -0.2519191741424591,
+        "risk_adj_mom": 6.052343922457889,
+        "volatility": 0.6600782063248337,
+        "price": 656.3900146484375
       },
       "signals": {
         "mom_12_1": {
@@ -1819,14 +1858,14 @@
           "contribution": 1.2000000000000002
         },
         "mom_6_1": {
-          "z": 0.6736600316593137,
+          "z": 1.1661355024179711,
           "weight": 0.3,
-          "contribution": 0.20209800949779408
+          "contribution": 0.34984065072539133
         },
         "mom_3_0": {
-          "z": -0.34172624532575735,
+          "z": -0.7910725946325334,
           "weight": 0.15,
-          "contribution": -0.0512589367988636
+          "contribution": -0.11866088919488
         },
         "risk_adj_mom": {
           "z": 3.0,
@@ -1834,249 +1873,8 @@
           "contribution": 0.44999999999999996
         }
       },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 24546703123.128357,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.5613852730047113,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 3.4592361641622276,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 795.22998046875,
-          "limit": 753.7264921569824,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": true,
-      "current_weight": 0.057813324903183735,
-      "target_weight": 0.061542272085939806,
-      "shares": 7.0
-    },
-    {
-      "ticker": "PANW",
-      "rank": 4,
-      "score": 1.0029533084786635,
-      "metrics": {
-        "mom_12_1": 0.9153857220522743,
-        "mom_6_1": 1.286095494370497,
-        "mom_3_0": -0.031850627278907306,
-        "risk_adj_mom": 1.4761396028742846,
-        "volatility": 0.6201213762369555,
-        "price": 348.0400085449219
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": 0.6011566700463439,
-          "weight": 0.4,
-          "contribution": 0.24046266801853755
-        },
-        "mom_6_1": {
-          "z": 2.264622290715021,
-          "weight": 0.3,
-          "contribution": 0.6793866872145063
-        },
-        "mom_3_0": {
-          "z": 0.11111099401048716,
-          "weight": 0.15,
-          "contribution": 0.01666664910157307
-        },
-        "risk_adj_mom": {
-          "z": 0.44291536096030965,
-          "weight": 0.15,
-          "contribution": 0.06643730414404644
-        }
-      },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 2096281392.873993,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.6201213762369555,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 0.9153857220522743,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 348.0400085449219,
-          "limit": 272.26529998779296,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": true,
-      "current_weight": 0.05421976010760122,
-      "target_weight": 0.055713166067499015,
-      "shares": 15.0
-    },
-    {
-      "ticker": "SNOW",
-      "rank": 6,
-      "score": 0.5692827039652327,
-      "metrics": {
-        "mom_12_1": 0.21220319856443837,
-        "mom_6_1": 1.4041076213029458,
-        "mom_3_0": -0.08616350281913321,
-        "risk_adj_mom": 0.3790253797806363,
-        "volatility": 0.5598654071325053,
-        "price": 290.6000061035156
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": -0.26375826594168966,
-          "weight": 0.4,
-          "contribution": -0.10550330637667588
-        },
-        "mom_6_1": {
-          "z": 2.5263592794295313,
-          "weight": 0.3,
-          "contribution": 0.7579077838288594
-        },
-        "mom_3_0": {
-          "z": -0.2624222369549746,
-          "weight": 0.15,
-          "contribution": -0.03936333554324618
-        },
-        "risk_adj_mom": {
-          "z": -0.29172291962469754,
-          "weight": 0.15,
-          "contribution": -0.04375843794370463
-        }
-      },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 1528866813.4658813,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.5598654071325053,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 0.21220319856443837,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 290.6000061035156,
-          "limit": 240.39784980773925,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": true,
-      "current_weight": 0.06036188266237363,
-      "target_weight": 0.061709340809689865,
-      "shares": 20.0
-    },
-    {
-      "ticker": "NOW",
-      "rank": 24,
-      "score": -0.2819211975385339,
-      "metrics": {
-        "mom_12_1": -0.24510856842494033,
-        "mom_6_1": 0.5493542559511417,
-        "mom_3_0": -0.072773762476108,
-        "risk_adj_mom": -0.3308089793985732,
-        "volatility": 0.7409368659537586,
-        "price": 108.80999755859376
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": -0.8262520203517212,
-          "weight": 0.4,
-          "contribution": -0.3305008081406885
-        },
-        "mom_6_1": {
-          "z": 0.6306170556762503,
-          "weight": 0.3,
-          "contribution": 0.18918511670287508
-        },
-        "mom_3_0": {
-          "z": -0.17033517799573186,
-          "weight": 0.15,
-          "contribution": -0.02555027669935978
-        },
-        "risk_adj_mom": {
-          "z": -0.7670348626757381,
-          "weight": 0.15,
-          "contribution": -0.1150552294013607
-        }
-      },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-24.5%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -2090,29 +1888,272 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 2456387556.598282,
+          "value": 25553555052.69806,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.7409368659537586,
+          "value": 0.6600782063248337,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 3.9950203203970123,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": false,
+          "value": 656.3900146484375,
+          "limit": 755.0643109130859,
+          "detail": "Kurs unter SMA200"
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": false,
+      "current_weight": 0.050737957217390627,
+      "target_weight": 0.0,
+      "shares": 7.0
+    },
+    {
+      "ticker": "PANW",
+      "rank": 5,
+      "score": 0.9056840067111309,
+      "metrics": {
+        "mom_12_1": 0.8905929481947341,
+        "mom_6_1": 1.0636544539934274,
+        "mom_3_0": -0.13518928682498743,
+        "risk_adj_mom": 1.372978224980391,
+        "volatility": 0.6486577368752179,
+        "price": 314.6700134277344
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": 0.5000896283471037,
+          "weight": 0.4,
+          "contribution": 0.2000358513388415
+        },
+        "mom_6_1": {
+          "z": 2.147175628168974,
+          "weight": 0.3,
+          "contribution": 0.6441526884506922
+        },
+        "mom_3_0": {
+          "z": -0.02428523860682721,
+          "weight": 0.15,
+          "contribution": -0.0036427857910240813
+        },
+        "risk_adj_mom": {
+          "z": 0.43425501808414196,
+          "weight": 0.15,
+          "contribution": 0.06513825271262129
+        }
+      },
+      "eligible": true,
+      "reasons": [],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 2218229527.934723,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.6486577368752179,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.8905929481947341,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": true,
+          "value": 314.6700134277344,
+          "limit": 272.9313000488281,
+          "detail": null
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": true,
+      "current_weight": 0.05212182213946391,
+      "target_weight": 0.0,
+      "shares": 15.0
+    },
+    {
+      "ticker": "SNOW",
+      "rank": 6,
+      "score": 0.5388476818441867,
+      "metrics": {
+        "mom_12_1": 0.25405014416571237,
+        "mom_6_1": 1.165300568958668,
+        "mom_3_0": -0.1844230793381335,
+        "risk_adj_mom": 0.44429333670047094,
+        "volatility": 0.5718072345005373,
+        "price": 269.5400085449219
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": -0.2376965569528066,
+          "weight": 0.4,
+          "contribution": -0.09507862278112264
+        },
+        "mom_6_1": {
+          "z": 2.4090246800453317,
+          "weight": 0.3,
+          "contribution": 0.7227074040135995
+        },
+        "mom_3_0": {
+          "z": -0.34769726663011596,
+          "weight": 0.15,
+          "contribution": -0.05215458999451739
+        },
+        "risk_adj_mom": {
+          "z": -0.24417672929181758,
+          "weight": 0.15,
+          "contribution": -0.036626509393772634
+        }
+      },
+      "eligible": true,
+      "reasons": [],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 1569159336.7318726,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.5718072345005373,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.25405014416571237,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": true,
+          "value": 269.5400085449219,
+          "limit": 240.71304985046388,
+          "detail": null
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": true,
+      "current_weight": 0.05952867357484175,
+      "target_weight": 0.0,
+      "shares": 20.0
+    },
+    {
+      "ticker": "NOW",
+      "rank": 25,
+      "score": -0.2951925136003287,
+      "metrics": {
+        "mom_12_1": -0.22332892482248334,
+        "mom_6_1": 0.4731274763536857,
+        "mom_3_0": -0.18033309687993304,
+        "risk_adj_mom": -0.3023639877011243,
+        "volatility": 0.738609536540561,
+        "price": 102.36000061035156
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": -0.7910037030261532,
+          "weight": 0.4,
+          "contribution": -0.3164014812104613
+        },
+        "mom_6_1": {
+          "z": 0.6259278239095094,
+          "weight": 0.3,
+          "contribution": 0.18777834717285283
+        },
+        "mom_3_0": {
+          "z": -0.3208305668723612,
+          "weight": 0.15,
+          "contribution": -0.048124585030854185
+        },
+        "risk_adj_mom": {
+          "z": -0.7896319635457737,
+          "weight": 0.15,
+          "contribution": -0.11844479453186604
+        }
+      },
+      "eligible": false,
+      "reasons": [
+        "absolutes Momentum negativ (-22.3%)",
+        "Kurs unter SMA200"
+      ],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 2502043379.5635986,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.738609536540561,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.24510856842494033,
+          "value": -0.22332892482248334,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-24.5%)"
+          "detail": "absolutes Momentum negativ (-22.3%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 108.80999755859376,
-          "limit": 114.68760013580322,
+          "value": 102.36000061035156,
+          "limit": 114.57290012359618,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -2125,42 +2166,40 @@
     },
     {
       "ticker": "SHOP",
-      "rank": 16,
-      "score": -0.04056430042981504,
+      "rank": 17,
+      "score": -0.0007988782034243636,
       "metrics": {
-        "mom_12_1": -0.04914999352379379,
-        "mom_6_1": 0.559559926345665,
-        "mom_3_0": 0.03791370215225087,
-        "risk_adj_mom": -0.0921836514597407,
-        "volatility": 0.5331747305026101,
-        "price": 153.02999877929688
+        "mom_12_1": 0.031626669943314756,
+        "mom_6_1": 0.4858600496996277,
+        "mom_3_0": -0.05159336904623357,
+        "risk_adj_mom": 0.05809634814713729,
+        "volatility": 0.5443830972510648,
+        "price": 143.75
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.5852228528089028,
+          "z": -0.4954969209330643,
           "weight": 0.4,
-          "contribution": -0.23408914112356116
+          "contribution": -0.19819876837322573
         },
         "mom_6_1": {
-          "z": 0.6532520297785674,
+          "z": 0.6587280175983801,
           "weight": 0.3,
-          "contribution": 0.19597560893357022
+          "contribution": 0.19761840527951402
         },
         "mom_3_0": {
-          "z": 0.5909105833225831,
+          "z": 0.5248482715950515,
           "weight": 0.15,
-          "contribution": 0.08863658749838746
+          "contribution": 0.07872724073925773
         },
         "risk_adj_mom": {
-          "z": -0.6072490382547437,
+          "z": -0.526305038993136,
           "weight": 0.15,
-          "contribution": -0.09108735573821156
+          "contribution": -0.07894575584897039
         }
       },
-      "eligible": false,
-      "reasons": [
-        "absolutes Momentum negativ (-4.9%)"
-      ],
+      "eligible": true,
+      "reasons": [],
       "checks": [
         {
           "rule": "data",
@@ -2172,76 +2211,76 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1532189091.67099,
+          "value": 1560686454.5524597,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5331747305026101,
+          "value": 0.5443830972510648,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
-          "ok": false,
-          "value": -0.04914999352379379,
+          "ok": true,
+          "value": 0.031626669943314756,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-4.9%)"
+          "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 153.02999877929688,
-          "limit": 129.85264991760255,
+          "value": 143.75,
+          "limit": 129.87869995117188,
           "detail": null
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": false,
+      "selected": true,
       "current_weight": 0.0,
       "target_weight": 0.0,
       "shares": 0.0
     },
     {
       "ticker": "UBER",
-      "rank": 31,
-      "score": -0.7571288293368397,
+      "rank": 32,
+      "score": -0.7403670944159728,
       "metrics": {
-        "mom_12_1": -0.3072603190390574,
-        "mom_6_1": -0.12744722206964076,
-        "mom_3_0": -0.0085142395874519,
-        "risk_adj_mom": -0.9341483306685419,
-        "volatility": 0.3289202677471579,
-        "price": 69.87000274658203
+        "mom_12_1": -0.27696209705118713,
+        "mom_6_1": -0.10791093505071758,
+        "mom_3_0": -0.08317779449469298,
+        "risk_adj_mom": -0.9137776577174663,
+        "volatility": 0.30309571996213314,
+        "price": 68.77999877929688
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.9026987117986583,
+          "z": -0.8531673364749799,
           "weight": 0.4,
-          "contribution": -0.3610794847194634
+          "contribution": -0.34126693458999197
         },
         "mom_6_1": {
-          "z": -0.8704488552541437,
+          "z": -0.8708766253507109,
           "weight": 0.3,
-          "contribution": -0.26113465657624313
+          "contribution": -0.26126298760521327
         },
         "mom_3_0": {
-          "z": 0.2716054662097346,
+          "z": 0.31737323124529293,
           "weight": 0.15,
-          "contribution": 0.040740819931460184
+          "contribution": 0.04760598468679394
         },
         "risk_adj_mom": {
-          "z": -1.1710367198172889,
+          "z": -1.2362877127170766,
           "weight": 0.15,
-          "contribution": -0.17565550797259333
+          "contribution": -0.1854431569075615
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-30.7%)",
+        "absolutes Momentum negativ (-27.7%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -2255,29 +2294,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1217147391.4683533,
+          "value": 1269652814.1828537,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.3289202677471579,
+          "value": 0.30309571996213314,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.3072603190390574,
+          "value": -0.27696209705118713,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-30.7%)"
+          "detail": "absolutes Momentum negativ (-27.7%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 69.87000274658203,
-          "limit": 73.08864994049073,
+          "value": 68.77999877929688,
+          "limit": 73.01124992370606,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -2290,36 +2329,36 @@
     },
     {
       "ticker": "ARM",
-      "rank": 18,
-      "score": -0.07990550003054059,
+      "rank": 16,
+      "score": 0.044217906240252,
       "metrics": {
-        "mom_12_1": 0.7936922616551352,
-        "mom_6_1": 0.275010508502193,
-        "mom_3_0": -0.3309613228968068,
-        "risk_adj_mom": 1.0611886549854073,
-        "volatility": 0.7479275790656181,
-        "price": 191.8000030517578
+        "mom_12_1": 0.831456498114937,
+        "mom_6_1": 0.38001030653205814,
+        "mom_3_0": -0.40998691687256883,
+        "risk_adj_mom": 1.0540891890355075,
+        "volatility": 0.7887914104078048,
+        "price": 166.72000122070312
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.4514736389785579,
+          "z": 0.43154740991278323,
           "weight": 0.4,
-          "contribution": 0.18058945559142317
+          "contribution": 0.1726189639651133
         },
         "mom_6_1": {
-          "z": 0.022154957784867087,
+          "z": 0.38605006134533315,
           "weight": 0.3,
-          "contribution": 0.006646487335460126
+          "contribution": 0.11581501840359994
         },
         "mom_3_0": {
-          "z": -1.946003151377221,
+          "z": -1.8294043304572363,
           "weight": 0.15,
-          "contribution": -0.29190047270658315
+          "contribution": -0.2744106495685854
         },
         "risk_adj_mom": {
-          "z": 0.16506019832772834,
+          "z": 0.2012971562674943,
           "weight": 0.15,
-          "contribution": 0.02475902974915925
+          "contribution": 0.030194573440124144
         }
       },
       "eligible": false,
@@ -2337,29 +2376,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1202884386.3905334,
+          "value": 1246060539.583435,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.7479275790656181,
+          "value": 0.7887914104078048,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.7936922616551352,
+          "value": 0.831456498114937,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 191.8000030517578,
-          "limit": 230.29127487182618,
+          "value": 166.72000122070312,
+          "limit": 230.55527488708495,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -2372,36 +2411,36 @@
     },
     {
       "ticker": "MRVL",
-      "rank": 3,
-      "score": 1.1293704252485348,
+      "rank": 2,
+      "score": 1.2109695732417216,
       "metrics": {
-        "mom_12_1": 2.180604001492765,
-        "mom_6_1": 0.6676203967889756,
-        "mom_3_0": -0.24083346532622296,
-        "risk_adj_mom": 2.7806880275287353,
-        "volatility": 0.7841958464613236,
-        "price": 159.8000030517578
+        "mom_12_1": 2.254912458202705,
+        "mom_6_1": 0.779577768071823,
+        "mom_3_0": -0.3892685617926519,
+        "risk_adj_mom": 2.6748077684421454,
+        "volatility": 0.8430185095192861,
+        "price": 133.5500030517578
       },
       "signals": {
         "mom_12_1": {
-          "z": 2.157375931220988,
+          "z": 2.081406831915917,
           "weight": 0.4,
-          "contribution": 0.8629503724883952
+          "contribution": 0.8325627327663668
         },
         "mom_6_1": {
-          "z": 0.8929174172950144,
+          "z": 1.415369883363213,
           "weight": 0.3,
-          "contribution": 0.2678752251885043
+          "contribution": 0.42461096500896384
         },
         "mom_3_0": {
-          "z": -1.326154735997314,
+          "z": -1.6933074569142648,
           "weight": 0.15,
-          "contribution": -0.1989232103995971
+          "contribution": -0.2539961185371397
         },
         "risk_adj_mom": {
-          "z": 1.3164535864748832,
+          "z": 1.3852799600235381,
           "weight": 0.15,
-          "contribution": 0.19746803797123247
+          "contribution": 0.2077919940035307
         }
       },
       "eligible": false,
@@ -2419,29 +2458,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 5666778144.150238,
+          "value": 5710890255.158463,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.7841958464613236,
+          "value": 0.8430185095192861,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 2.180604001492765,
+          "value": 2.254912458202705,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 159.8000030517578,
-          "limit": 184.43786239624023,
+          "value": 133.5500030517578,
+          "limit": 184.69326042175294,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -2455,39 +2494,41 @@
     {
       "ticker": "ADI",
       "rank": 9,
-      "score": 0.3316980431618045,
+      "score": 0.1921944594418858,
       "metrics": {
-        "mom_12_1": 0.8227378932923304,
-        "mom_6_1": 0.017700220184692306,
-        "mom_3_0": 0.07995472061445996,
-        "risk_adj_mom": 2.5009432942156065,
-        "volatility": 0.32897103072877676,
-        "price": 406.239990234375
+        "mom_12_1": 0.8101353698269618,
+        "mom_6_1": 0.00963501668687039,
+        "mom_3_0": -0.0713463174186113,
+        "risk_adj_mom": 2.0617815207826475,
+        "volatility": 0.39292978507220117,
+        "price": 361.010009765625
       },
       "signals": {
         "mom_12_1": {
-          "z": 0.487199783740532,
+          "z": 0.4068351143588803,
           "weight": 0.4,
-          "contribution": 0.1948799134962128
+          "contribution": 0.16273404574355213
         },
         "mom_6_1": {
-          "z": -0.5485289353038109,
+          "z": -0.5680682393645181,
           "weight": 0.3,
-          "contribution": -0.16455868059114326
+          "contribution": -0.17042047180935543
         },
         "mom_3_0": {
-          "z": 0.8800449239935516,
+          "z": 0.39509306147500584,
           "weight": 0.15,
-          "contribution": 0.13200673859903272
+          "contribution": 0.05926395922125087
         },
         "risk_adj_mom": {
-          "z": 1.129133811051348,
+          "z": 0.9374461752429214,
           "weight": 0.15,
-          "contribution": 0.1693700716577022
+          "contribution": 0.1406169262864382
         }
       },
-      "eligible": true,
-      "reasons": [],
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
       "checks": [
         {
           "rule": "data",
@@ -2499,75 +2540,77 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1673494188.492279,
+          "value": 1834797814.995575,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.32897103072877676,
+          "value": 0.39292978507220117,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.8227378932923304,
+          "value": 0.8101353698269618,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
-          "ok": true,
-          "value": 406.239990234375,
-          "limit": 372.39319091796875,
-          "detail": null
+          "ok": false,
+          "value": 361.010009765625,
+          "limit": 372.6869087219238,
+          "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": true,
-      "current_weight": 0.10125840375057514,
-      "target_weight": 0.10502117812549801,
+      "selected": false,
+      "current_weight": 0.0956760986004348,
+      "target_weight": 0.0,
       "shares": 24.0
     },
     {
       "ticker": "SNPS",
-      "rank": 23,
-      "score": -0.1825810225430211,
+      "rank": 22,
+      "score": -0.15548768434987192,
       "metrics": {
-        "mom_12_1": 0.13337972728218217,
-        "mom_6_1": 0.0014868561516887535,
-        "mom_3_0": 0.1403271089192164,
-        "risk_adj_mom": 0.244823417028124,
-        "volatility": 0.5447997127940594,
-        "price": 462.9500122070313
+        "mom_12_1": 0.20732558198343654,
+        "mom_6_1": -0.0049882004819844505,
+        "mom_3_0": 0.05846296279993779,
+        "risk_adj_mom": 0.37522874076993207,
+        "volatility": 0.5525311881974314,
+        "price": 440.30999755859375
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.36071118405502867,
+          "z": -0.2918527523792151,
           "weight": 0.4,
-          "contribution": -0.14428447362201147
+          "contribution": -0.11674110095168605
         },
         "mom_6_1": {
-          "z": -0.5844882658339656,
+          "z": -0.6057388926143361,
           "weight": 0.3,
-          "contribution": -0.1753464797501897
+          "contribution": -0.18172166778430082
         },
         "mom_3_0": {
-          "z": 1.2952520556409093,
+          "z": 1.247797686261216,
           "weight": 0.15,
-          "contribution": 0.19428780834613638
+          "contribution": 0.1871696529391824
         },
         "risk_adj_mom": {
-          "z": -0.38158585011304214,
+          "z": -0.29463045702044954,
           "weight": 0.15,
-          "contribution": -0.05723787751695632
+          "contribution": -0.04419456855306743
         }
       },
-      "eligible": true,
-      "reasons": [],
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
       "checks": [
         {
           "rule": "data",
@@ -2579,30 +2622,30 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1046994131.4518738,
+          "value": 1022975243.0128479,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5447997127940594,
+          "value": 0.5525311881974314,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.13337972728218217,
+          "value": 0.20732558198343654,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
-          "ok": true,
-          "value": 462.9500122070313,
-          "limit": 442.75080184936525,
-          "detail": null
+          "ok": false,
+          "value": 440.30999755859375,
+          "limit": 442.34260177612305,
+          "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
@@ -2615,195 +2658,35 @@
     {
       "ticker": "CDNS",
       "rank": 26,
-      "score": -0.3838795800460275,
+      "score": -0.3792960841776152,
       "metrics": {
-        "mom_12_1": 0.07197156872869503,
-        "mom_6_1": 0.013102265360536158,
-        "mom_3_0": -0.0262987532088228,
-        "risk_adj_mom": 0.17592308583878485,
-        "volatility": 0.40910815306326237,
-        "price": 329.5199890136719
+        "mom_12_1": 0.06872334737588859,
+        "mom_6_1": -0.002185482747649181,
+        "mom_3_0": -0.08197735632341074,
+        "risk_adj_mom": 0.1622809203332329,
+        "volatility": 0.4234838404586925,
+        "price": 311.42999267578125
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.4362432568104619,
+          "z": -0.4524999442065281,
           "weight": 0.4,
-          "contribution": -0.17449730272418476
+          "contribution": -0.18099997768261125
         },
         "mom_6_1": {
-          "z": -0.5587266571922475,
+          "z": -0.598518852953561,
           "weight": 0.3,
-          "contribution": -0.16761799715767423
+          "contribution": -0.17955565588606828
         },
         "mom_3_0": {
-          "z": 0.14929364294381609,
+          "z": 0.3252587936542276,
           "weight": 0.15,
-          "contribution": 0.02239404644157241
+          "contribution": 0.04878881904813414
         },
         "risk_adj_mom": {
-          "z": -0.4277221773716061,
+          "z": -0.45019513104713205,
           "weight": 0.15,
-          "contribution": -0.06415832660574092
-        }
-      },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 803074100.1940918,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.40910815306326237,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 0.07197156872869503,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 329.5199890136719,
-          "limit": 327.72670028686525,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": false,
-      "current_weight": 0.0,
-      "target_weight": 0.0,
-      "shares": 0.0
-    },
-    {
-      "ticker": "CRWD",
-      "rank": 2,
-      "score": 1.31330481312435,
-      "metrics": {
-        "mom_12_1": 1.0210174951897435,
-        "mom_6_1": 1.3830621999961146,
-        "mom_3_0": 0.16206181932236974,
-        "risk_adj_mom": 1.4146053786398132,
-        "volatility": 0.7217684243301007,
-        "price": 241.0
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": 0.731083815915004,
-          "weight": 0.4,
-          "contribution": 0.2924335263660016
-        },
-        "mom_6_1": {
-          "z": 2.4796830153687095,
-          "weight": 0.3,
-          "contribution": 0.7439049046106129
-        },
-        "mom_3_0": {
-          "z": 1.4447310975851269,
-          "weight": 0.15,
-          "contribution": 0.21670966463776903
-        },
-        "risk_adj_mom": {
-          "z": 0.40171145006644304,
-          "weight": 0.15,
-          "contribution": 0.06025671750996645
-        }
-      },
-      "eligible": true,
-      "reasons": [],
-      "checks": [
-        {
-          "rule": "data",
-          "ok": true,
-          "value": null,
-          "limit": null,
-          "detail": null
-        },
-        {
-          "rule": "liquidity",
-          "ok": true,
-          "value": 2280197518.7434387,
-          "limit": 50000000.0,
-          "detail": null
-        },
-        {
-          "rule": "volatility",
-          "ok": true,
-          "value": 0.7217684243301007,
-          "limit": 0.9,
-          "detail": null
-        },
-        {
-          "rule": "abs_momentum",
-          "ok": true,
-          "value": 1.0210174951897435,
-          "limit": 0.0,
-          "detail": null
-        },
-        {
-          "rule": "sma",
-          "ok": true,
-          "value": 241.0,
-          "limit": 169.18997486114503,
-          "detail": null
-        }
-      ],
-      "data_ok": true,
-      "data_reason": null,
-      "selected": true,
-      "current_weight": 0.042550348945906806,
-      "target_weight": 0.047867049945225365,
-      "shares": 17.0
-    },
-    {
-      "ticker": "DDOG",
-      "rank": 7,
-      "score": 0.47503469101628876,
-      "metrics": {
-        "mom_12_1": 0.7166830398015454,
-        "mom_6_1": 0.9361211971019026,
-        "mom_3_0": -0.17693747330177667,
-        "risk_adj_mom": 1.002007263964548,
-        "volatility": 0.715247349571013,
-        "price": 188.72000122070312
-      },
-      "signals": {
-        "mom_12_1": {
-          "z": 0.35675224877731504,
-          "weight": 0.4,
-          "contribution": 0.14270089951092602
-        },
-        "mom_6_1": {
-          "z": 1.4884205470841128,
-          "weight": 0.3,
-          "contribution": 0.4465261641252338
-        },
-        "mom_3_0": {
-          "z": -0.8867142514117041,
-          "weight": 0.15,
-          "contribution": -0.13300713771175562
-        },
-        "risk_adj_mom": {
-          "z": 0.12543176727923047,
-          "weight": 0.15,
-          "contribution": 0.01881476509188457
+          "contribution": -0.0675292696570698
         }
       },
       "eligible": false,
@@ -2821,71 +2704,71 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 952303767.2611237,
+          "value": 827415208.2667542,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.715247349571013,
+          "value": 0.4234838404586925,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.7166830398015454,
+          "value": 0.06872334737588859,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 188.72000122070312,
-          "limit": 199.68247524261474,
+          "value": 311.42999267578125,
+          "limit": 327.7146502685547,
           "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
       "data_reason": null,
       "selected": false,
-      "current_weight": 0.03919991166713633,
+      "current_weight": 0.0,
       "target_weight": 0.0,
-      "shares": 20.0
+      "shares": 0.0
     },
     {
-      "ticker": "ANET",
-      "rank": 14,
-      "score": 0.0698800666157409,
+      "ticker": "CRWD",
+      "rank": 3,
+      "score": 1.1193344645990257,
       "metrics": {
-        "mom_12_1": 0.3665842097527281,
-        "mom_6_1": 0.4644363129718181,
-        "mom_3_0": -0.07196345190101716,
-        "risk_adj_mom": 0.7296470005161755,
-        "volatility": 0.5024130976943574,
-        "price": 178.47999572753906
+        "mom_12_1": 0.9886126081635895,
+        "mom_6_1": 1.0995017147883348,
+        "mom_3_0": 0.012965202887029514,
+        "risk_adj_mom": 1.3229774798730949,
+        "volatility": 0.7472633685785952,
+        "price": 217.1999969482422
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.07386952731464484,
+          "z": 0.6136995074551219,
           "weight": 0.4,
-          "contribution": -0.02954781092585794
+          "contribution": 0.24547980298204877
         },
         "mom_6_1": {
-          "z": 0.4422790665138218,
+          "z": 2.239521225978796,
           "weight": 0.3,
-          "contribution": 0.13268371995414655
+          "contribution": 0.6718563677936388
         },
         "mom_3_0": {
-          "z": -0.1647623202858691,
+          "z": 0.9489272955631728,
           "weight": 0.15,
-          "contribution": -0.024714348042880363
+          "contribution": 0.14233909433447592
         },
         "risk_adj_mom": {
-          "z": -0.05694329579778236,
+          "z": 0.3977279965924148,
           "weight": 0.15,
-          "contribution": -0.008541494369667354
+          "contribution": 0.05965919948886222
         }
       },
       "eligible": true,
@@ -2901,30 +2784,194 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1312011074.7698212,
+          "value": 2350433815.789795,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5024130976943574,
+          "value": 0.7472633685785952,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": true,
-          "value": 0.3665842097527281,
+          "value": 0.9886126081635895,
           "limit": 0.0,
           "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 178.47999572753906,
-          "limit": 165.79150005340577,
+          "value": 217.1999969482422,
+          "limit": 169.7186248397827,
           "detail": null
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": true,
+      "current_weight": 0.04077384882600319,
+      "target_weight": 0.0,
+      "shares": 17.0
+    },
+    {
+      "ticker": "DDOG",
+      "rank": 10,
+      "score": 0.1856772064868661,
+      "metrics": {
+        "mom_12_1": 0.7226843108429826,
+        "mom_6_1": 0.4377152677394849,
+        "mom_3_0": -0.253622829179048,
+        "risk_adj_mom": 0.9922289447424805,
+        "volatility": 0.7283443147594787,
+        "price": 174.60000610351562
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": 0.3054747929479013,
+          "weight": 0.4,
+          "contribution": 0.12218991717916053
+        },
+        "mom_6_1": {
+          "z": 0.5347029575813946,
+          "weight": 0.3,
+          "contribution": 0.16041088727441838
+        },
+        "mom_3_0": {
+          "z": -0.8022637400290247,
+          "weight": 0.15,
+          "contribution": -0.1203395610043537
+        },
+        "risk_adj_mom": {
+          "z": 0.15610642025093896,
+          "weight": 0.15,
+          "contribution": 0.023415963037640843
+        }
+      },
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 1000384699.1532135,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.7283443147594787,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.7226843108429826,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": false,
+          "value": 174.60000610351562,
+          "limit": 199.93817527770997,
+          "detail": "Kurs unter SMA200"
+        }
+      ],
+      "data_ok": true,
+      "data_reason": null,
+      "selected": false,
+      "current_weight": 0.038560905394381666,
+      "target_weight": 0.0,
+      "shares": 20.0
+    },
+    {
+      "ticker": "ANET",
+      "rank": 11,
+      "score": 0.1728155330276876,
+      "metrics": {
+        "mom_12_1": 0.4056007654933349,
+        "mom_6_1": 0.5226102421943892,
+        "mom_3_0": -0.15641063652532128,
+        "risk_adj_mom": 0.7435437414515464,
+        "volatility": 0.5454968455541309,
+        "price": 159.16000366210938
+      },
+      "signals": {
+        "mom_12_1": {
+          "z": -0.06204151210520191,
+          "weight": 0.4,
+          "contribution": -0.024816604842080765
+        },
+        "mom_6_1": {
+          "z": 0.7533996443921602,
+          "weight": 0.3,
+          "contribution": 0.22601989331764805
+        },
+        "mom_3_0": {
+          "z": -0.16368623523213907,
+          "weight": 0.15,
+          "contribution": -0.02455293528482086
+        },
+        "risk_adj_mom": {
+          "z": -0.02556546775372564,
+          "weight": 0.15,
+          "contribution": -0.0038348201630588456
+        }
+      },
+      "eligible": false,
+      "reasons": [
+        "Kurs unter SMA200"
+      ],
+      "checks": [
+        {
+          "rule": "data",
+          "ok": true,
+          "value": null,
+          "limit": null,
+          "detail": null
+        },
+        {
+          "rule": "liquidity",
+          "ok": true,
+          "value": 1378817295.0426483,
+          "limit": 50000000.0,
+          "detail": null
+        },
+        {
+          "rule": "volatility",
+          "ok": true,
+          "value": 0.5454968455541309,
+          "limit": 0.9,
+          "detail": null
+        },
+        {
+          "rule": "abs_momentum",
+          "ok": true,
+          "value": 0.4056007654933349,
+          "limit": 0.0,
+          "detail": null
+        },
+        {
+          "rule": "sma",
+          "ok": false,
+          "value": 159.16000366210938,
+          "limit": 165.95085006713867,
+          "detail": "Kurs unter SMA200"
         }
       ],
       "data_ok": true,
@@ -2937,40 +2984,40 @@
     {
       "ticker": "APP",
       "rank": 35,
-      "score": -1.2633343632686362,
+      "score": -0.9778465654052466,
       "metrics": {
-        "mom_12_1": -0.5589901092808697,
-        "mom_6_1": -0.40537080228692746,
-        "mom_3_0": -0.19042515229468227,
-        "risk_adj_mom": -1.031437252483909,
-        "volatility": 0.5419526082994469,
-        "price": 271.75
+        "mom_12_1": -0.5378688113135444,
+        "mom_6_1": -0.4361456666103055,
+        "mom_3_0": 0.026816662739038932,
+        "risk_adj_mom": -0.6512370612122006,
+        "volatility": 0.8259186145093851,
+        "price": 356.1000061035156
       },
       "signals": {
         "mom_12_1": {
-          "z": -1.2123265084812995,
+          "z": -1.1555717752909782,
           "weight": 0.4,
-          "contribution": -0.4849306033925198
+          "contribution": -0.46222871011639133
         },
         "mom_6_1": {
-          "z": -1.4868506003092683,
+          "z": -1.7164372577581573,
           "weight": 0.3,
-          "contribution": -0.4460551800927805
+          "contribution": -0.5149311773274472
         },
         "mom_3_0": {
-          "z": -0.979474876996951,
+          "z": 1.0399161975581874,
           "weight": 0.15,
-          "contribution": -0.14692123154954265
+          "contribution": 0.1559874296337281
         },
         "risk_adj_mom": {
-          "z": -1.2361823215586216,
+          "z": -1.0444940506342417,
           "weight": 0.15,
-          "contribution": -0.18542734823379323
+          "contribution": -0.15667410759513625
         }
       },
       "eligible": false,
       "reasons": [
-        "absolutes Momentum negativ (-55.9%)",
+        "absolutes Momentum negativ (-53.8%)",
         "Kurs unter SMA200"
       ],
       "checks": [
@@ -2984,29 +3031,29 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 1134062403.9068604,
+          "value": 1443982124.884491,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.5419526082994469,
+          "value": 0.8259186145093851,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
           "ok": false,
-          "value": -0.5589901092808697,
+          "value": -0.5378688113135444,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-55.9%)"
+          "detail": "absolutes Momentum negativ (-53.8%)"
         },
         {
           "rule": "sma",
           "ok": false,
-          "value": 271.75,
-          "limit": 410.8400005340576,
+          "value": 356.1000061035156,
+          "limit": 409.9577005767822,
           "detail": "Kurs unter SMA200"
         }
       ],
@@ -3019,42 +3066,40 @@
     },
     {
       "ticker": "PLTR",
-      "rank": 17,
-      "score": -0.0751261109479523,
+      "rank": 21,
+      "score": -0.10994454711598224,
       "metrics": {
-        "mom_12_1": -0.07293168204329614,
-        "mom_6_1": 0.43560816924061085,
-        "mom_3_0": 0.10120573989616544,
-        "risk_adj_mom": -0.14874517837561668,
-        "volatility": 0.4903129152806986,
-        "price": 171.6999969482422
+        "mom_12_1": 0.017720402257954904,
+        "mom_6_1": 0.4164172987568402,
+        "mom_3_0": -0.09894767488638856,
+        "risk_adj_mom": 0.03645522324912516,
+        "volatility": 0.4860867847896159,
+        "price": 154.99000549316406
       },
       "signals": {
         "mom_12_1": {
-          "z": -0.6144743443014791,
+          "z": -0.511615007764619,
           "weight": 0.4,
-          "contribution": -0.24578973772059165
+          "contribution": -0.2046460031058476
         },
         "mom_6_1": {
-          "z": 0.3783416413816206,
+          "z": 0.4798375750047495,
           "weight": 0.3,
-          "contribution": 0.11350249241448616
+          "contribution": 0.14395127250142484
         },
         "mom_3_0": {
-          "z": 1.0261974120481687,
+          "z": 0.21378241000597545,
           "weight": 0.15,
-          "contribution": 0.1539296118072253
+          "contribution": 0.03206736150089631
         },
         "risk_adj_mom": {
-          "z": -0.6451231829938142,
+          "z": -0.5421145200830386,
           "weight": 0.15,
-          "contribution": -0.09676847744907213
+          "contribution": -0.08131717801245579
         }
       },
-      "eligible": false,
-      "reasons": [
-        "absolutes Momentum negativ (-7.3%)"
-      ],
+      "eligible": true,
+      "reasons": [],
       "checks": [
         {
           "rule": "data",
@@ -3066,35 +3111,35 @@
         {
           "rule": "liquidity",
           "ok": true,
-          "value": 5161551849.534149,
+          "value": 5133037473.076248,
           "limit": 50000000.0,
           "detail": null
         },
         {
           "rule": "volatility",
           "ok": true,
-          "value": 0.4903129152806986,
+          "value": 0.4860867847896159,
           "limit": 0.9,
           "detail": null
         },
         {
           "rule": "abs_momentum",
-          "ok": false,
-          "value": -0.07293168204329614,
+          "ok": true,
+          "value": 0.017720402257954904,
           "limit": 0.0,
-          "detail": "absolutes Momentum negativ (-7.3%)"
+          "detail": null
         },
         {
           "rule": "sma",
           "ok": true,
-          "value": 171.6999969482422,
-          "limit": 153.61207447052,
+          "value": 154.99000549316406,
+          "limit": 153.56037448883058,
           "detail": null
         }
       ],
       "data_ok": true,
       "data_reason": null,
-      "selected": false,
+      "selected": true,
       "current_weight": 0.0,
       "target_weight": 0.0,
       "shares": 0.0
