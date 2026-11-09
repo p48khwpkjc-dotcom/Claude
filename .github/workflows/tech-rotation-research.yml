@@ -43,7 +43,9 @@ jobs:
           cache: pip
 
       - name: Abhaengigkeiten installieren
-        run: pip install -e . lxml
+        # html5lib: Rueckfallparser von pandas.read_html, wenn lxml eine Seite
+        # nicht verarbeitet -- beim Listenartikel ist das der Fall.
+        run: pip install -e . lxml html5lib
 
       - name: Indexzusammensetzung (Wikipedia-Versionsgeschichte)
         run: python research/fetch_snapshots.py
