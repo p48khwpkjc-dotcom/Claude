@@ -35,7 +35,7 @@ KONFIG = HIER.parent / "config.yaml"
 START = "2017-01-01"
 # Zusaetzlich zum historischen Index: der Benchmark und die Live-Liste, damit
 # die verzerrte Vergleichsvariante auf demselben Datensatz laeuft.
-EXTRA = ["QQQ", "SPY"]
+EXTRA = ["QQQ", "SPY", "BIL"]  # BIL: 1-3-Monats-T-Bills, Verzinsung des Cash
 # Liefert Yahoo unter dem Indexsymbol nichts, werden diese Symbole versucht.
 # Nur Faelle, in denen dasselbe Unternehmen unter anderem Ticker weiterhandelt;
 # die Kurse werden unter dem urspruenglichen Symbol abgelegt.
