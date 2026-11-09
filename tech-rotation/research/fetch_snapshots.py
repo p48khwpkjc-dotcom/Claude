@@ -30,8 +30,15 @@ import httpx
 import pandas as pd
 
 API = "https://en.wikipedia.org/w/api.php"
-TITEL = "Nasdaq-100"
-ZIEL = Path(__file__).resolve().parent / "sources" / "nasdaq100"
+QUELLEN_DIR = Path(__file__).resolve().parent / "sources"
+# (Artikel, Unterordner, erster Monat). Im Sommer 2026 wurde die
+# Bestandteilliste aus dem Hauptartikel in einen eigenen Listenartikel
+# ausgelagert; ab dann kommt sie von dort. Zwei Monate Ueberlappung zum
+# Abgleich beider Quellen.
+QUELLEN = [
+    ("Nasdaq-100", "nasdaq100", "2017-12"),
+    ("List of NASDAQ-100 companies", "nasdaq100_liste", "2026-06"),
+]
 # Wikimedia verlangt einen User-Agent mit Kontaktangabe (URL oder E-Mail),
 # sonst antwortet die API mit 403 "Please respect our robot policy". Als
 # Kontakt dient das Repository, keine personenbezogene Adresse.
@@ -56,14 +63,14 @@ def monate(von: str, bis: str) -> list[date]:
     return out
 
 
-def revision_am(client: httpx.Client, stichtag: date) -> tuple[int, str] | None:
+def revision_am(client: httpx.Client, titel: str, stichtag: date) -> tuple[int, str] | None:
     """Letzte Revision vor Mitternacht UTC des Stichtags."""
     r = client.get(
         API,
         params={
             "action": "query",
             "prop": "revisions",
-            "titles": TITEL,
+            "titles": titel,
             "redirects": 1,
             "rvlimit": 1,
             "rvstart": f"{stichtag.isoformat()}T00:00:00Z",
@@ -116,88 +123,103 @@ def wikitext_der_revision(client: httpx.Client, revid: int) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--von", default="2017-12")
     p.add_argument("--bis", default=date.today().strftime("%Y-%m"))
     args = p.parse_args(argv)
+    fehler = 0
+    with httpx.Client(headers=KOPF, timeout=60.0, follow_redirects=True) as client:
+        for titel, ordner, von in QUELLEN:
+            print(f"\n== {titel} ==")
+            fehler += hole_artikel(client, titel, QUELLEN_DIR / ordner, von, args.bis)
+    return 1 if fehler else 0
 
+
+def hole_artikel(client: httpx.Client, titel: str, ZIEL: Path, von: str, bis: str) -> int:
+    """Holt die Monatsstaende eines Artikels; liefert die Zahl der Fehler."""
     ZIEL.mkdir(parents=True, exist_ok=True)
     index_pfad = ZIEL / "index.json"
     index = json.loads(index_pfad.read_text()) if index_pfad.exists() else {}
 
     fehler = 0
     abgelehnt_in_folge = 0
-    with httpx.Client(headers=KOPF, timeout=60.0, follow_redirects=True) as client:
-        for stichtag in monate(args.von, args.bis):
-            if abgelehnt_in_folge >= 3:
-                # Drei 403 hintereinander: die Gegenseite lehnt grundsaetzlich
-                # ab. Weiterzufragen waere genau das, was die Richtlinie verbietet.
-                print("Abbruch: drei Ablehnungen in Folge (403).", file=sys.stderr)
-                fehler += 1
-                break
-            schluessel = stichtag.strftime("%Y-%m")
-            if schluessel in index and index[schluessel].get("ok"):
-                continue  # schon vorhanden -- Lauf ist wiederholbar
+    for stichtag in monate(von, bis):
+        if abgelehnt_in_folge >= 3:
+            # Drei 403 hintereinander: die Gegenseite lehnt grundsaetzlich
+            # ab. Weiterzufragen waere genau das, was die Richtlinie verbietet.
+            print("Abbruch: drei Ablehnungen in Folge (403).", file=sys.stderr)
+            return fehler + 1
+        schluessel = stichtag.strftime("%Y-%m")
+        if schluessel in index and index[schluessel].get("ok"):
+            continue  # schon vorhanden -- Lauf ist wiederholbar
 
-            try:
-                treffer = revision_am(client, stichtag)
-                if treffer is None:
-                    print(f"{schluessel}: keine Revision gefunden", file=sys.stderr)
-                    fehler += 1
-                    continue
-                revid, zeit = treffer
-                time.sleep(0.4)
+        try:
+            eintrag = hole_monat(client, titel, stichtag, ZIEL)
+        except httpx.HTTPStatusError as exc:
+            print(f"{schluessel}: HTTP {exc.response.status_code}: {exc.response.text[:160]}",
+                  file=sys.stderr)
+            fehler += 1
+            abgelehnt_in_folge = abgelehnt_in_folge + 1 if exc.response.status_code == 403 else 0
+            time.sleep(3)
+            continue
+        except httpx.HTTPError as exc:
+            print(f"{schluessel}: Netzfehler {exc}", file=sys.stderr)
+            fehler += 1
+            time.sleep(3)
+            continue
+        abgelehnt_in_folge = 0
 
-                html = html_der_revision(client, revid)
-                time.sleep(0.4)
-                try:
-                    tabellen = pd.read_html(StringIO(html))
-                except ValueError:
-                    tabellen = []
+        if eintrag is None:
+            # Kein Fehler: der Artikel existierte damals schlicht noch nicht.
+            print(f"{schluessel}: Artikel existierte noch nicht")
+            continue
 
-                gesichert = []
-                for i, t in enumerate(tabellen):
-                    if len(t) < 20:
-                        continue
-                    # Mehrstufige Kopfzeilen flachklopfen, damit die CSV lesbar bleibt.
-                    if isinstance(t.columns, pd.MultiIndex):
-                        t.columns = [" / ".join(str(x) for x in c if "Unnamed" not in str(x)) for c in t.columns]
-                    datei = ZIEL / f"{schluessel}_r{revid}_t{i}.csv"
-                    t.to_csv(datei, index=False)
-                    gesichert.append({"datei": datei.name, "zeilen": len(t), "spalten": [str(c) for c in t.columns]})
+        index[schluessel] = eintrag
+        groesste = max((g["zeilen"] for g in eintrag["tabellen"]), default=0)
+        print(f"{schluessel}: Revision {eintrag['revid']} vom {eintrag['zeit']}, "
+              f"{len(eintrag['tabellen'])} Tabellen, groesste {groesste} Zeilen"
+              + (" -- Wikitext gesichert" if "wikitext" in eintrag else ""))
+        # Zwischenstand sichern: ein Abbruch kostet so keine fertigen Monate.
+        index_pfad.write_text(json.dumps(index, indent=1, sort_keys=True))
 
-                eintrag = {"ok": True, "revid": revid, "zeit": zeit, "tabellen": gesichert}
-                if not any(g["zeilen"] >= 80 for g in gesichert):
-                    # Keine Tabelle in Indexgroesse: Wikitext als Rueckfallebene sichern.
-                    text = wikitext_der_revision(client, revid)
-                    time.sleep(0.4)
-                    wt = ZIEL / f"{schluessel}_r{revid}.wiki.gz"
-                    wt.write_bytes(gzip.compress(text.encode("utf-8")))
-                    eintrag["wikitext"] = wt.name
+    print(f"{sum(1 for v in index.values() if v.get('ok'))} Monate gesichert, {fehler} Fehler")
+    return fehler
 
-                index[schluessel] = eintrag
-                groesste = max((g["zeilen"] for g in gesichert), default=0)
-                print(f"{schluessel}: Revision {revid} vom {zeit}, {len(gesichert)} Tabellen, groesste {groesste} Zeilen"
-                      + (" -- Wikitext gesichert" if "wikitext" in eintrag else ""))
-            except httpx.HTTPStatusError as exc:
-                print(f"{schluessel}: HTTP {exc.response.status_code}: {exc.response.text[:160]}",
-                      file=sys.stderr)
-                fehler += 1
-                abgelehnt_in_folge = abgelehnt_in_folge + 1 if exc.response.status_code == 403 else 0
-                time.sleep(3)
-                continue
-            except httpx.HTTPError as exc:
-                print(f"{schluessel}: Netzfehler {exc}", file=sys.stderr)
-                fehler += 1
-                time.sleep(3)
-                continue
-            abgelehnt_in_folge = 0
 
-            # Zwischenstand sichern: ein Abbruch kostet so keine fertigen Monate.
-            index_pfad.write_text(json.dumps(index, indent=1, sort_keys=True))
+def hole_monat(client: httpx.Client, titel: str, stichtag: date, ZIEL: Path) -> dict | None:
+    """Ein Monatsstand: Revision ermitteln, Tabellen sichern, notfalls Wikitext."""
+    schluessel = stichtag.strftime("%Y-%m")
+    treffer = revision_am(client, titel, stichtag)
+    if treffer is None:
+        return None
+    revid, zeit = treffer
+    time.sleep(0.4)
 
-    print(f"\n{sum(1 for v in index.values() if v.get('ok'))} Monate gesichert, {fehler} Fehler")
-    return 1 if fehler else 0
+    html = html_der_revision(client, revid)
+    time.sleep(0.4)
+    try:
+        tabellen = pd.read_html(StringIO(html))
+    except ValueError:
+        tabellen = []
 
+    gesichert = []
+    for i, t in enumerate(tabellen):
+        if len(t) < 20:
+            continue
+        # Mehrstufige Kopfzeilen flachklopfen, damit die CSV lesbar bleibt.
+        if isinstance(t.columns, pd.MultiIndex):
+            t.columns = [" / ".join(str(x) for x in c if "Unnamed" not in str(x)) for c in t.columns]
+        datei = ZIEL / f"{schluessel}_r{revid}_t{i}.csv"
+        t.to_csv(datei, index=False)
+        gesichert.append({"datei": datei.name, "zeilen": len(t), "spalten": [str(c) for c in t.columns]})
+
+    eintrag = {"ok": True, "revid": revid, "zeit": zeit, "tabellen": gesichert}
+    if not any(g["zeilen"] >= 80 for g in gesichert):
+        # Keine Tabelle in Indexgroesse: Wikitext als Rueckfallebene sichern.
+        text = wikitext_der_revision(client, revid)
+        time.sleep(0.4)
+        wt = ZIEL / f"{schluessel}_r{revid}.wiki.gz"
+        wt.write_bytes(gzip.compress(text.encode("utf-8")))
+        eintrag["wikitext"] = wt.name
+    return eintrag
 
 if __name__ == "__main__":
     raise SystemExit(main())
