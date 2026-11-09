@@ -63,7 +63,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/sources research/data
+          # -A auf den Elternordner: leere Unterordner sind in git nicht
+          # verfolgt, ein expliziter Pfad darauf liesse den Schritt scheitern.
+          git add -A research
           if git diff --cached --quiet; then
             echo "Nichts Neues."
             exit 0

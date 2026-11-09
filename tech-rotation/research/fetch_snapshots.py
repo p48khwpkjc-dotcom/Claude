@@ -32,9 +32,16 @@ import pandas as pd
 API = "https://en.wikipedia.org/w/api.php"
 TITEL = "Nasdaq-100"
 ZIEL = Path(__file__).resolve().parent / "sources" / "nasdaq100"
-# Wikipedia verlangt einen aussagekraeftigen User-Agent. Bewusst generisch:
-# Projekt und Zweck, keine personenbezogenen Daten.
-KOPF = {"User-Agent": "techrot-research/1.0 (point-in-time index study; python-httpx)"}
+# Wikimedia verlangt einen User-Agent mit Kontaktangabe (URL oder E-Mail),
+# sonst antwortet die API mit 403 "Please respect our robot policy". Als
+# Kontakt dient das Repository, keine personenbezogene Adresse.
+KOPF = {
+    "User-Agent": (
+        "techrot-research/1.0 "
+        "(https://github.com/p48khwpkjc-dotcom/Claude; point-in-time index study) "
+        f"httpx/{httpx.__version__}"
+    )
+}
 
 
 def monate(von: str, bis: str) -> list[date]:
@@ -118,8 +125,15 @@ def main(argv: list[str] | None = None) -> int:
     index = json.loads(index_pfad.read_text()) if index_pfad.exists() else {}
 
     fehler = 0
+    abgelehnt_in_folge = 0
     with httpx.Client(headers=KOPF, timeout=60.0, follow_redirects=True) as client:
         for stichtag in monate(args.von, args.bis):
+            if abgelehnt_in_folge >= 3:
+                # Drei 403 hintereinander: die Gegenseite lehnt grundsaetzlich
+                # ab. Weiterzufragen waere genau das, was die Richtlinie verbietet.
+                print("Abbruch: drei Ablehnungen in Folge (403).", file=sys.stderr)
+                fehler += 1
+                break
             schluessel = stichtag.strftime("%Y-%m")
             if schluessel in index and index[schluessel].get("ok"):
                 continue  # schon vorhanden -- Lauf ist wiederholbar
@@ -164,10 +178,19 @@ def main(argv: list[str] | None = None) -> int:
                 groesste = max((g["zeilen"] for g in gesichert), default=0)
                 print(f"{schluessel}: Revision {revid} vom {zeit}, {len(gesichert)} Tabellen, groesste {groesste} Zeilen"
                       + (" -- Wikitext gesichert" if "wikitext" in eintrag else ""))
+            except httpx.HTTPStatusError as exc:
+                print(f"{schluessel}: HTTP {exc.response.status_code}: {exc.response.text[:160]}",
+                      file=sys.stderr)
+                fehler += 1
+                abgelehnt_in_folge = abgelehnt_in_folge + 1 if exc.response.status_code == 403 else 0
+                time.sleep(3)
+                continue
             except httpx.HTTPError as exc:
-                print(f"{schluessel}: HTTP-Fehler {exc}", file=sys.stderr)
+                print(f"{schluessel}: Netzfehler {exc}", file=sys.stderr)
                 fehler += 1
                 time.sleep(3)
+                continue
+            abgelehnt_in_folge = 0
 
             # Zwischenstand sichern: ein Abbruch kostet so keine fertigen Monate.
             index_pfad.write_text(json.dumps(index, indent=1, sort_keys=True))
