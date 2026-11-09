@@ -109,13 +109,24 @@ def run_backtest(
     prices: PriceData,
     *,
     universe_at: Callable[[pd.Timestamp], Sequence[str]] | None = None,
+    cash_return: pd.Series | None = None,
 ) -> BacktestResult:
     """Simuliert die Strategie ueber den konfigurierten Zeitraum.
 
     ``universe_at`` liefert zu einem Signaltag die Ticker, aus denen der Plan
     waehlen darf. Ohne sie gilt die Liste aus der Konfiguration -- fuer jeden
     Tag dieselbe, und damit mit dem Wissen von heute ausgewaehlt.
+
+    ``cash_return`` ist die Tagesrendite, die nicht investiertes Geld
+    verdient (etwa aus einem T-Bill-ETF). Ohne sie liegt Cash zinslos -- das
+    benachteiligt eine Strategie, die oft zur Haelfte in Cash steht,
+    gegenueber einer, die immer voll investiert ist.
     """
+    tageszins = (
+        cash_return.reindex(prices.close.index).fillna(0.0)
+        if cash_return is not None
+        else None
+    )
     raw_close = prices.close
     close = fill_inner_gaps(raw_close)
     last_valid = raw_close.apply(lambda s: s.last_valid_index())
@@ -158,6 +169,11 @@ def run_backtest(
 
     for position, day in enumerate(sim_dates):
         day_prices = close.loc[day]
+
+        # Zinsen auf das Cash, das ueber Nacht lag -- vor allem anderen, denn
+        # sie gehoeren zum Vortagesbestand.
+        if tageszins is not None and position > 0:
+            state.cash *= 1.0 + float(tageszins.loc[day])
 
         # (0) Endete die Kursreihe eines gehaltenen Titels, wird er zum letzten
         #     Kurs zu Cash. Bei einer Uebernahme ist das ziemlich genau der

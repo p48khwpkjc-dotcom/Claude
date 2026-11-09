@@ -23,6 +23,17 @@ qqq             QQQ kaufen und halten
 qqq_regeln      QQQ durch dieselben Regeln (Regime, Vol-Ziel, Bremse, Trend) --
                 also alles ausser der Einzeltitelauswahl
 gleichgewichtet alle Tech-Mitglieder zu gleichen Teilen, monatlich neu gewichtet
+tech_ohne_zins  wie tech, aber Cash bringt nichts -- zeigt, was die Verzinsung
+                ausmacht
+
+Cash verdient in allen Strategievarianten die Rendite von BIL (1-3-Monats-
+T-Bills). Die Sharpe-Ratio ist die Ueberrendite gegenueber BIL je Einheit
+Schwankung.
+
+Robustheit: Fuer 21 uebernommene Titel fuehrt keine freie Quelle mehr Kurse.
+Wie stark das Ergebnis davon abhaengt, wird gemessen statt geschaetzt: die
+Variante tech laeuft wiederholt mit zufaellig entfernten Titeln, im selben
+Umfang wie die echte Luecke.
 
     python research/run_backtests.py
 """
@@ -54,6 +65,7 @@ from techrot.data import PriceData  # noqa: E402
 DATEN = HIER / "data"
 ERGEBNIS = HIER / "results"
 TEILPERIODEN = {"2019–2022": ("2019-01-01", "2022-12-31"), "2023–heute": ("2023-01-01", None)}
+ZIEHUNGEN = 20
 
 
 # --------------------------------------------------------------------------
@@ -143,11 +155,23 @@ def jahresrenditen(equity: pd.Series) -> dict[str, float]:
     return {str(j): float(v) for j, v in r.items()}
 
 
-def kennzahlen(equity: pd.Series) -> dict[str, object]:
-    out: dict[str, object] = {"gesamt": performance_metrics(equity)}
+def mit_rf(m: dict[str, float], equity: pd.Series, rf: pd.Series | None) -> dict[str, float]:
+    """Ergaenzt die Sharpe-Ratio der Ueberrendite gegenueber dem Geldmarkt."""
+    if rf is None or not m:
+        return m
+    r = equity.pct_change(fill_method=None).dropna()
+    ueber = r - rf.reindex(r.index).fillna(0.0)
+    vol = float(r.std(ddof=1))
+    m = dict(m)
+    m["sharpe_rf"] = float(ueber.mean() / vol * np.sqrt(252)) if vol > 0 else float("nan")
+    return m
+
+
+def kennzahlen(equity: pd.Series, rf: pd.Series | None = None) -> dict[str, object]:
+    out: dict[str, object] = {"gesamt": mit_rf(performance_metrics(equity), equity, rf)}
     for name, (von, bis) in TEILPERIODEN.items():
         teil = equity.loc[von:bis] if bis else equity.loc[von:]
-        out[name] = performance_metrics(teil) if len(teil) > 20 else {}
+        out[name] = mit_rf(performance_metrics(teil), teil, rf) if len(teil) > 20 else {}
     out["jahre"] = jahresrenditen(equity)
     return out
 
@@ -179,6 +203,8 @@ def main() -> int:
     tech = stichtagsfunktion(lade_universum(nur_tech=True))
     ndx = stichtagsfunktion(lade_universum(nur_tech=False))
     universum = tech  # Hauptfall: der gleichgewichtete Vergleich bezieht sich darauf
+    # Geldmarktrendite: Tagesrendite des T-Bill-ETFs BIL (inkl. Ausschuettungen).
+    rf = prices.close["BIL"].pct_change(fill_method=None).fillna(0.0)
 
     # ---- Datenabdeckung zum Signaltag ------------------------------------
     signaltage = [
@@ -197,6 +223,14 @@ def main() -> int:
     ab = pd.DataFrame(abdeckung)
     gesamt_mm = int(ab["mitglieder"].sum())
     fehl_mm = int((ab["mitglieder"] - ab["mit_kurs"]).sum())
+    # Dieselbe Zahl nur fuer das Tech-Universum -- das ist die Luecke, die den
+    # Hauptfall trifft, und der Massstab fuer das Robustheitsexperiment.
+    tech_mm = tech_fehl = 0
+    for tag in signaltage:
+        alle = tech(tag)
+        tech_mm += len(alle)
+        tech_fehl += sum(1 for x in alle if x not in prices.close.columns or pd.isna(prices.close.at[tag, x]))
+    print(f"   davon Tech: {tech_mm - tech_fehl}/{tech_mm} ({1 - tech_fehl / tech_mm:.1%})")
     print(f"Abdeckung: {gesamt_mm - fehl_mm}/{gesamt_mm} Mitglieder-Monate mit Kurs "
           f"({1 - fehl_mm / gesamt_mm:.1%}); {len(fehl_monate)} Symbole betroffen")
 
@@ -210,6 +244,7 @@ def main() -> int:
             tech,
         ),
         "tech_monatsende": (ersetze(basis, **{"backtest.rebalance": "month_end"}), tech),
+        "tech_ohne_zins": (basis, tech),
         "qqq_regeln": (
             ersetze(
                 basis,
@@ -228,9 +263,10 @@ def main() -> int:
     details: dict[str, object] = {}
     for name, (cfg, uni) in varianten.items():
         print(f"\n== {name} ==")
-        res = run_backtest(cfg, prices, universe_at=uni)
+        zins = None if name == "tech_ohne_zins" else rf
+        res = run_backtest(cfg, prices, universe_at=uni, cash_return=zins)
         kurven[name] = res.equity
-        ergebnisse[name] = kennzahlen(res.equity)
+        ergebnisse[name] = kennzahlen(res.equity, rf)
         ergebnisse[name]["betrieb"] = {
             k: res.metrics.get(k)
             for k in ("avg_exposure", "avg_turnover", "total_costs", "n_trades", "n_rebalances", "n_delistings")
@@ -241,17 +277,55 @@ def main() -> int:
             ergebnisse[name]["betrieb"]["mittel_titel"] = float(reb["n_selected"].mean())
             ergebnisse[name]["betrieb"]["mittel_zugelassen"] = float(reb["n_eligible"].mean())
         g = ergebnisse[name]["gesamt"]
-        print(f"   CAGR {g['cagr']:+.1%}  Vol {g['volatility']:.1%}  Sharpe {g['sharpe']:.2f}  "
+        print(f"   CAGR {g['cagr']:+.1%}  Vol {g['volatility']:.1%}  Sharpe(rf) {g['sharpe_rf']:.2f}  "
               f"MaxDD {g['max_drawdown']:.1%}")
         details[name] = res
         if name == "tech":
             kurven["qqq"] = res.benchmark
-            ergebnisse["qqq"] = kennzahlen(res.benchmark)
+            ergebnisse["qqq"] = kennzahlen(res.benchmark, rf)
 
     kurven["gleichgewichtet"] = gleichgewichtet(
         prices, universum, signaltage, basis.execution.starting_cash
     )
-    ergebnisse["gleichgewichtet"] = kennzahlen(kurven["gleichgewichtet"])
+    ergebnisse["gleichgewichtet"] = kennzahlen(kurven["gleichgewichtet"], rf)
+
+    # ---- Rechenbeispiel: QQQ bei gleichem Risiko ---------------------------
+    # Nachtraeglich auf die Schwankung der Tech-Variante skaliert, Rest im
+    # Geldmarkt. Das ist KEINE handelbare Strategie (der Faktor ist erst im
+    # Rueckblick bekannt), sondern die Frage: was haette dasselbe Risiko im
+    # Index gebracht?
+    r_qqq = kurven["qqq"].pct_change(fill_method=None).fillna(0.0)
+    faktor = ergebnisse["tech"]["gesamt"]["volatility"] / ergebnisse["qqq"]["gesamt"]["volatility"]
+    r_mix = faktor * r_qqq + (1 - faktor) * rf.reindex(r_qqq.index).fillna(0.0)
+    kurven["qqq_gleiches_risiko"] = basis.execution.starting_cash * (1 + r_mix).cumprod()
+    ergebnisse["qqq_gleiches_risiko"] = kennzahlen(kurven["qqq_gleiches_risiko"], rf)
+    ergebnisse["qqq_gleiches_risiko"]["faktor"] = faktor
+    print(f"\nQQQ bei gleichem Risiko: {faktor:.0%} QQQ, Rest Geldmarkt -> "
+          f"CAGR {ergebnisse['qqq_gleiches_risiko']['gesamt']['cagr']:+.1%}")
+
+    # ---- Robustheit gegen die Datenluecke ---------------------------------
+    rng = np.random.default_rng(2026)
+    anteil = tech_fehl / tech_mm if tech_mm else 0.0
+    verfuegbar = [c for c in prices.close.columns if c not in ("QQQ", "SPY", "BIL")]
+    stichproben = []
+    for i in range(ZIEHUNGEN):
+        weg = [c for c in verfuegbar if rng.random() < anteil]
+        rest = PriceData(close=prices.close.drop(columns=weg), volume=prices.volume.drop(columns=weg))
+        r = run_backtest(basis, rest, universe_at=tech, cash_return=rf)
+        g = mit_rf(performance_metrics(r.equity), r.equity, rf)
+        stichproben.append({"entfernt": len(weg), "cagr": g["cagr"], "sharpe_rf": g["sharpe_rf"],
+                            "max_drawdown": g["max_drawdown"]})
+        print(f"   Ziehung {i + 1:>2}/{ZIEHUNGEN}: {len(weg):>2} Titel entfernt, "
+              f"CAGR {g['cagr']:+.1%}, Sharpe {g['sharpe_rf']:.2f}")
+    st = pd.DataFrame(stichproben)
+    robustheit = {
+        "ziehungen": ZIEHUNGEN,
+        "anteil_entfernt": anteil,
+        "cagr": {"min": st.cagr.min(), "median": st.cagr.median(), "max": st.cagr.max(), "std": st.cagr.std()},
+        "sharpe_rf": {"min": st.sharpe_rf.min(), "median": st.sharpe_rf.median(),
+                      "max": st.sharpe_rf.max(), "std": st.sharpe_rf.std()},
+        "einzeln": stichproben,
+    }
 
     # ---- Was hat die ehrliche Variante eigentlich gekauft? ----------------
     eh = details["tech"].rebalances
@@ -289,6 +363,9 @@ def main() -> int:
             "anteil_ohne_kurs": fehl_mm / gesamt_mm if gesamt_mm else None,
             "fehlende_symbole": dict(fehl_monate.most_common()),
             "mittel_mitglieder": float(ab["mitglieder"].mean()),
+            "tech_mitglieder_monate": tech_mm,
+            "tech_ohne_kurs": tech_fehl,
+            "tech_anteil_ohne_kurs": tech_fehl / tech_mm if tech_mm else None,
             "kursquellen": dict(Counter(v.get("quelle") or "fehlt" for v in quellen.values())),
         },
         "quelle_universum": {
@@ -296,6 +373,7 @@ def main() -> int:
             "schnappschuesse": len(snap_index),
             "revisionen": {k: v.get("revid") for k, v in sorted(snap_index.items())},
         },
+        "robustheit_datenluecke": robustheit,
         "auswahl_tech": dict(auswahl.most_common()),
         "auswahl_tech_nicht_in_live_liste": dict(sorted(nicht_in_live.items(), key=lambda x: -x[1])),
         "delistings_tech": details["tech"].delistings.to_dict(orient="records"),

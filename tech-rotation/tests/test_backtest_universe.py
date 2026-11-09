@@ -177,3 +177,57 @@ def test_ohne_universumsfunktion_unveraendertes_verhalten(tmp_path):
     b = run_backtest(cfg, panel, universe_at=lambda d: tickers)
     pd.testing.assert_series_equal(a.equity, b.equity)
     assert (a.rebalances["n_universe"] == len(tickers)).all()
+
+
+# --------------------------------------------------------------------------
+# Verzinsung des Cash
+# --------------------------------------------------------------------------
+
+
+def test_reines_cash_waechst_exakt_mit_zinseszins(tmp_path):
+    """Ohne waehlbare Titel bleibt alles Cash -- dann ist das Ergebnis exakt."""
+    panel = make_panel()
+    tickers = [c for c in panel.close.columns if c != "QQQ"]
+    cfg = _cfg(tmp_path, tickers)
+    zins = pd.Series(0.0001, index=panel.close.index)
+
+    res = run_backtest(cfg, panel, universe_at=lambda d: [], cash_return=zins)
+
+    assert res.trades.empty
+    tage = len(res.equity) - 1
+    erwartet = cfg.execution.starting_cash * 1.0001**tage
+    assert float(res.equity.iloc[-1]) == pytest.approx(erwartet, rel=1e-9)
+
+
+def test_zins_nur_auf_cash_nicht_auf_aktien(tmp_path):
+    """Mit Positionen muss der Zinseffekt kleiner sein als bei reinem Cash.
+
+    Wuerde der Zins faelschlich auf das ganze Depot gerechnet, laege der
+    Effekt mindestens so hoch wie im reinen Cash-Fall -- bei wachsendem
+    Depot sogar darueber.
+    """
+    panel = make_panel()
+    tickers = [c for c in panel.close.columns if c != "QQQ"]
+    cfg = _cfg(tmp_path, tickers)
+    zins = pd.Series(0.0001, index=panel.close.index)
+
+    ohne = run_backtest(cfg, panel)
+    mit = run_backtest(cfg, panel, cash_return=zins)
+    effekt = float(mit.equity.iloc[-1] / ohne.equity.iloc[-1]) - 1
+
+    tage = len(ohne.equity) - 1
+    reines_cash = 1.0001**tage - 1
+    # Erwartet ist ungefaehr der Cash-Anteil mal dem Reines-Cash-Effekt. Ein
+    # Zehntel Spielraum fuer Rundungsreste beim Stueckzahlkauf; ein Zins auf
+    # das ganze Depot laege um Groessenordnungen darueber.
+    cash_anteil = 1.0 - ohne.metrics["avg_exposure"]
+    assert 0 < effekt < reines_cash * (cash_anteil + 0.1)
+
+
+def test_null_zins_aendert_nichts(tmp_path):
+    panel = make_panel()
+    tickers = [c for c in panel.close.columns if c != "QQQ"]
+    cfg = _cfg(tmp_path, tickers)
+    a = run_backtest(cfg, panel)
+    b = run_backtest(cfg, panel, cash_return=pd.Series(0.0, index=panel.close.index))
+    pd.testing.assert_series_equal(a.equity, b.equity)
