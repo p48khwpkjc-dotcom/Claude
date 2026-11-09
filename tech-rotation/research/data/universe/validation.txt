@@ -1,0 +1,18 @@
+Quelle: 2026-08_r1365378481_t1.csv
+Gepruefte Ereignisse ab 2019: 152
+  uebereinstimmend:          140 (92.1%)
+  1 Monat Redaktionsverzug:  9
+  echte Abweichung:          3
+
+2019-03-19  raus FOX    erwartet ab 2019-04: ABWEICHUNG  (Two classes of stock of Fox Corporation replaced the two classes of stock of 21st Century Fox, which was acquired by The Walt Disney Company.[47])
+2019-03-19  raus FOXA   erwartet ab 2019-04: ABWEICHUNG  (Two classes of stock of Fox Corporation replaced the two classes of stock of 21st Century Fox, which was acquired by The Walt Disney Company.[47])
+2020-04-30  rein ZM     erwartet ab 2020-05: 1 Monat Redaktionsverzug  (WTW did not meet the minimum monthly weight requirements.[43])
+2020-04-30  raus WTW    erwartet ab 2020-05: 1 Monat Redaktionsverzug  (WTW did not meet the minimum monthly weight requirements.[43])
+2020-06-22  rein DOCU   erwartet ab 2020-07: 1 Monat Redaktionsverzug  (United Airlines did not meet the minimum monthly weight requirements.[42])
+2020-06-22  raus UAL    erwartet ab 2020-07: 1 Monat Redaktionsverzug  (United Airlines did not meet the minimum monthly weight requirements.[42])
+2020-07-20  rein MRNA   erwartet ab 2020-08: 1 Monat Redaktionsverzug  (CoStar did not meet the minimum monthly weight requirements.[41])
+2020-07-20  raus CSGP   erwartet ab 2020-08: 1 Monat Redaktionsverzug  (CoStar did not meet the minimum monthly weight requirements.[41])
+2025-10-30  rein SOLS   erwartet ab 2025-11: 1 Monat Redaktionsverzug  (Solstice Advanced Materials was spun off from Honeywell.[16])
+2025-11-06  raus SOLS   erwartet ab 2025-12: 1 Monat Redaktionsverzug  (Solstice Advanced Materials did not meet the minimum monthly weight requirements.[15])
+2026-01-05  rein VSNT   erwartet ab 2026-02: ABWEICHUNG  (Versant was spun off from Comcast.[12][13])
+2026-06-29  rein HONA   erwartet ab 2026-07: 1 Monat Redaktionsverzug  (Honeywell International spun off Honeywell Aerospace then renamed itself Honeywell Technologies.)
