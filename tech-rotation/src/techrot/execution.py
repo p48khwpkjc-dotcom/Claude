@@ -9,6 +9,7 @@ durchlaeuft exakt dieselbe Logik.
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -72,8 +73,15 @@ def plan_rebalance(
     *,
     asof: pd.Timestamp | None = None,
     force: bool = False,
+    universe: Sequence[str] | None = None,
 ) -> RebalancePlan:
-    """Berechnet den Zielzustand des Portfolios ohne etwas zu veraendern."""
+    """Berechnet den Zielzustand des Portfolios ohne etwas zu veraendern.
+
+    ``universe`` ersetzt fuer diesen einen Plan die Tickerliste der
+    Konfiguration. Der Backtest braucht das: dort ist das Universum an jedem
+    Stichtag ein anderes, naemlich die damalige Indexzusammensetzung. Der
+    Live-Lauf laesst es weg und nimmt die Konfiguration.
+    """
     panel = prices if asof is None else prices.up_to(asof)
     if len(panel.close) == 0:
         raise ValueError("Keine Kursdaten bis zum Stichtag vorhanden")
@@ -92,7 +100,8 @@ def plan_rebalance(
 
     # 1. Datenqualitaet -- vor allem anderen, damit kaputte Reihen weder ins
     #    Ranking noch in den z-Score-Querschnitt gelangen.
-    quality = check_data_quality(panel, list(cfg.tickers), cfg.data, signal_date)
+    tickers = list(universe) if universe is not None else list(cfg.tickers)
+    quality = check_data_quality(panel, tickers, cfg.data, signal_date)
     healthy = [t for t, q in quality.items() if q.ok]
 
     # 2. Kennzahlen und Eignung auf den gesunden Reihen.

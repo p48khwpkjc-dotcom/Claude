@@ -1,0 +1,35 @@
+vteStock market indices,vteStock market indices.1
+Global,Equities MSCI World S&P Global 100 S&P Global 1200 The Global Dow Dow Jones Global Titans 50 FTSE All-World index series OTCM QX ADR 30 Index Commodities Bloomberg Commodity Index S&P GSCI Deutsche Bank Liquid Commodity Index NCDEX Commodity Index Refinitiv Equal Weight Commodity Index Refinitiv/CoreCommodity CRB Index Rogers International Commodity Index Standard & Poor's Commodity Index
+Equities,MSCI World S&P Global 100 S&P Global 1200 The Global Dow Dow Jones Global Titans 50 FTSE All-World index series OTCM QX ADR 30 Index
+Commodities,Bloomberg Commodity Index S&P GSCI Deutsche Bank Liquid Commodity Index NCDEX Commodity Index Refinitiv Equal Weight Commodity Index Refinitiv/CoreCommodity CRB Index Rogers International Commodity Index Standard & Poor's Commodity Index
+Regional,Asia S&P Asia 50 Europe EURO STOXX 50 STOXX Europe 600 FTSEurofirst 300 Index FTSEurofirst Euro Supersector Indices S&P Europe 350 Latin America S&P Latin America 40 Other MSCI EAFE
+Asia,S&P Asia 50
+Europe,EURO STOXX 50 STOXX Europe 600 FTSEurofirst 300 Index FTSEurofirst Euro Supersector Indices S&P Europe 350
+Latin America,S&P Latin America 40
+Other,MSCI EAFE
+Industry indices,Energy Amex Oil Index Electronics PHLX Semiconductor Sector Metals HUI Gold Index Philadelphia Gold and Silver Index Water Palisades Water Index Other Baltic Dry Index
+Energy,Amex Oil Index
+Electronics,PHLX Semiconductor Sector
+Metals,HUI Gold Index Philadelphia Gold and Silver Index
+Water,Palisades Water Index
+Other,Baltic Dry Index
+Americas,USMajor Dow Jones Industrial Average NYSE Composite Nasdaq Composite Nasdaq-100 S&P 500 Russell 2000 Wilshire 5000 Other Dow Jones Transportation Average Dow Jones Utility Average NYSE Arca Tech 100 Index S&P 100 S&P 400 S&P 600 S&P 1500 Russell 1000 Russell 2500 Russell 3000 Canada S&P/TSX 60 S&P/TSX Composite Index Other Indice de Precios y Cotizaciones (Mexico) COLCAP (Colombia) Indice General de la Bolsa de Valores de Colombia (Colombia) Índice Bovespa (Brazil) Índice de Precio Selectivo de Acciones (Chile) MERVAL (Argentina) S&P/BVL Peru General Index (Peru)
+US,Major Dow Jones Industrial Average NYSE Composite Nasdaq Composite Nasdaq-100 S&P 500 Russell 2000 Wilshire 5000 Other Dow Jones Transportation Average Dow Jones Utility Average NYSE Arca Tech 100 Index S&P 100 S&P 400 S&P 600 S&P 1500 Russell 1000 Russell 2500 Russell 3000
+Major,Dow Jones Industrial Average NYSE Composite Nasdaq Composite Nasdaq-100 S&P 500 Russell 2000 Wilshire 5000
+Other,Dow Jones Transportation Average Dow Jones Utility Average NYSE Arca Tech 100 Index S&P 100 S&P 400 S&P 600 S&P 1500 Russell 1000 Russell 2500 Russell 3000
+Canada,S&P/TSX 60 S&P/TSX Composite Index
+Other,Indice de Precios y Cotizaciones (Mexico) COLCAP (Colombia) Indice General de la Bolsa de Valores de Colombia (Colombia) Índice Bovespa (Brazil) Índice de Precio Selectivo de Acciones (Chile) MERVAL (Argentina) S&P/BVL Peru General Index (Peru)
+Europe,UK FT 30 FTSE 100 Index FTSE 250 Index FTSE 350 Index FTSE SmallCap Index FTSE All-Share Index FTSE Fledgling Index FTSE AIM UK 50 Index FTSE AIM 100 Index France CAC 40 CAC Next 20 CAC Mid 60 CAC Small CAC All-Tradable SBF 120 Other AEX ATX BEL 20 BUX DAX FTSE MIB IBEX 35 ISEQ 20 MOEX OBX OMXB10 OMXC25 OMXH25 OMXS30 PSI-20 PX RTSI SMI WIG20
+UK,FT 30 FTSE 100 Index FTSE 250 Index FTSE 350 Index FTSE SmallCap Index FTSE All-Share Index FTSE Fledgling Index FTSE AIM UK 50 Index FTSE AIM 100 Index
+France,CAC 40 CAC Next 20 CAC Mid 60 CAC Small CAC All-Tradable SBF 120
+Other,AEX ATX BEL 20 BUX DAX FTSE MIB IBEX 35 ISEQ 20 MOEX OBX OMXB10 OMXC25 OMXH25 OMXS30 PSI-20 PX RTSI SMI WIG20
+Asia,China SSE Composite SZSE Component SSE 50 Index SSE 180 Index CSI 100 Index CSI 300 Index SZSE 100 Index SZSE 200 Index SZSE 300 Index India BSE SENSEX NIFTY 50 NIFTY Next 50 NIFTY 500 GIFT Nifty Japan Nikkei 225 TOPIX S&P/TOPIX 150 South Korea KOSPI KOSPI 200 KOSDAQ Other KASE (Kazakhstan) KSE (Kyrgyzstan) Tashkent (Uzbekistan) Hang Seng (Hong Kong) TAIEX (Taiwan) Moscow Exchange (Russia) KSE 100 (Pakistan) IDX Composite (Indonesia) Straits Times Index (Singapore) FBM KLCI (Malaysia) PSEi (Philippines) SET Index (SET50/SET100) (Thailand) ASE Weighted (Jordan) DFM Index (Dubai) TASI (Saudi Arabia) TA-125 (Israel) TSE (Iran) BIST (Turkey)
+China,SSE Composite SZSE Component SSE 50 Index SSE 180 Index CSI 100 Index CSI 300 Index SZSE 100 Index SZSE 200 Index SZSE 300 Index
+India,BSE SENSEX NIFTY 50 NIFTY Next 50 NIFTY 500 GIFT Nifty
+Japan,Nikkei 225 TOPIX S&P/TOPIX 150
+South Korea,KOSPI KOSPI 200 KOSDAQ
+Other,KASE (Kazakhstan) KSE (Kyrgyzstan) Tashkent (Uzbekistan) Hang Seng (Hong Kong) TAIEX (Taiwan) Moscow Exchange (Russia) KSE 100 (Pakistan) IDX Composite (Indonesia) Straits Times Index (Singapore) FBM KLCI (Malaysia) PSEi (Philippines) SET Index (SET50/SET100) (Thailand) ASE Weighted (Jordan) DFM Index (Dubai) TASI (Saudi Arabia) TA-125 (Israel) TSE (Iran) BIST (Turkey)
+Oceania,Australia S&P/ASX 20 S&P/ASX 50 S&P/ASX 200 S&P/ASX 300 All Ordinaries New Zealand S&P/NZX 50
+Australia,S&P/ASX 20 S&P/ASX 50 S&P/ASX 200 S&P/ASX 300 All Ordinaries
+New Zealand,S&P/NZX 50
+Africa,EGX 30 JSE Top 40 MADEX NSE 30

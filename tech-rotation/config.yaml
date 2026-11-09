@@ -9,8 +9,14 @@ strategy:
 
 universe:
   # Liquide US-Tech-Werte (Nasdaq-100-Kern + Halbleiter + Software).
-  # Bewusst statisch und versioniert: reproduzierbar, kein Survivorship-Bias
-  # durch stilles Nachziehen der Liste. Beim Aendern die Liste committen.
+  # Bewusst statisch und versioniert, damit der Live-Betrieb reproduzierbar
+  # ist und die Liste nicht still nachgezogen wird. Beim Aendern committen.
+  #
+  # ACHTUNG fuer Backtests: Diese Liste wurde im September 2026 ausgewaehlt,
+  # also mit dem Wissen, welche Titel es bis dahin geschafft haben. Ein
+  # Backtest auf ihr ist survivorship-verzerrt und sieht zu gut aus. Der
+  # ehrliche Backtest nimmt die damalige Indexzusammensetzung -- siehe
+  # research/README.md.
   tickers:
     - AAPL
     - MSFT

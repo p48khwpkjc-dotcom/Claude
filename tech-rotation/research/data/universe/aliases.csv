@@ -1,0 +1,11 @@
+# Ticker, wie er damals in der Indexliste stand -> Symbol, unter dem es heute Kurse gibt.
+# Nur echte Umbenennungen desselben Unternehmens. Uebernommene oder delistete
+# Titel bekommen KEINEN Eintrag: ihre Kurse werden unter dem alten Symbol
+# gesucht, und fehlen sie, steht das offen in der Abdeckungsstatistik.
+listed,symbol,grund
+FB,META,Facebook -> Meta Platforms Juni 2022
+CTRP,TCOM,Ctrip -> Trip.com Group Okt. 2019
+SYMC,GEN,Symantec -> NortonLifeLock 2019 -> Gen Digital 2022
+NLOK,GEN,NortonLifeLock -> Gen Digital Nov. 2022
+FISV,FI,Fiserv: Tickerwechsel beim Wechsel an die NYSE Juni 2023
+WLTW,WTW,Willis Towers Watson: Tickerwechsel Jan. 2022

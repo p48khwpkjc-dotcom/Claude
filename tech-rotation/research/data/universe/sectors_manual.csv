@@ -1,0 +1,50 @@
+# GICS-Sektor fuer Titel, die in keinem Monatsstand mit GICS-Spalte vorkommen.
+# Das sind (a) Mitglieder, die vor 2021 ausschieden -- die Tabelle hatte da noch
+# keine Sektorspalte -- und (b) Neuaufnahmen ab Ende 2025, als der Artikel auf
+# ICB umstellte. Fuer (b) ist die ICB-Angabe aus dem Monatsstand selbst die
+# Grundlage; ICB "Technology" -> Information Technology, ICB "Telecommunications"
+# -> Communication Services. Fuer den Tech-Filter zaehlen nur diese beiden.
+symbol,sector,quelle
+AAL,Industrials,bekannt (Fluggesellschaft)
+BMRN,Health Care,bekannt
+CA,Information Technology,bekannt (CA Technologies)
+CELG,Health Care,bekannt
+CTXS,Information Technology,bekannt (Citrix)
+ESRX,Health Care,bekannt
+EXPE,Consumer Discretionary,bekannt
+GEN,Information Technology,bekannt (Symantec/NortonLifeLock)
+HAS,Consumer Discretionary,bekannt
+HOLX,Health Care,bekannt
+HSIC,Health Care,bekannt
+JBHT,Industrials,bekannt
+LBTYA,Communication Services,bekannt (Liberty Global)
+LBTYK,Communication Services,bekannt (Liberty Global)
+MYL,Health Care,bekannt
+NTAP,Information Technology,bekannt (NetApp)
+QRTEA,Consumer Discretionary,bekannt
+SHPG,Health Care,bekannt
+TFCF,Communication Services,bekannt (Twenty-First Century Fox)
+TFCFA,Communication Services,bekannt (Twenty-First Century Fox)
+UAL,Industrials,bekannt (Fluggesellschaft)
+ULTA,Consumer Discretionary,bekannt
+VOD,Communication Services,bekannt
+WTW,Financials,bekannt (Versicherungsmakler)
+WYNN,Consumer Discretionary,bekannt
+XRAY,Health Care,bekannt
+ALAB,Information Technology,ICB Technology / Semiconductors
+ALNY,Health Care,ICB Health Care
+CRWV,Information Technology,ICB Technology / Computer Services
+FER,Industrials,ICB Industrials
+HONA,Industrials,ICB Industrials / Aerospace
+INSM,Health Care,ICB Health Care
+LITE,Information Technology,ICB Technology / Communication Equipment
+MPWR,Information Technology,ICB Technology / Semiconductors
+NBIS,Information Technology,ICB Technology / Computer Services
+RKLB,Industrials,ICB Industrials / Aerospace
+SNDK,Information Technology,ICB Technology / Electronic Components
+SOLS,Materials,ICB Materials
+SPCX,Communication Services,ICB Telecommunications / Telecommunications Services
+STX,Information Technology,ICB Technology / Electronic Components
+TER,Information Technology,ICB Technology / Semiconductors
+WDC,Information Technology,ICB Technology / Electronic Components
+WMT,Consumer Staples,bekannt (GICS; ICB fuehrt Walmart unter Consumer Discretionary)

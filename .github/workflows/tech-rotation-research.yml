@@ -1,0 +1,78 @@
+name: Tech-Rotation Forschung
+
+# Beschafft die Eingangsdaten fuer den ehrlichen Backtest -- und nur die.
+# Die Entwicklungsumgebung erreicht weder Wikipedia noch Yahoo; alles, was
+# Netz braucht, passiert deshalb hier, und das Ergebnis wird als
+# eingefrorener Datensatz ins Repository committet. Ausgewertet wird lokal.
+#
+# Jeder Schritt ist wiederholbar: was schon da ist, wird nicht neu geholt.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/tech-rotation-research.yml"
+      - "tech-rotation/research/fetch_*.py"
+      - "tech-rotation/research/data/universe/*.csv"
+
+concurrency:
+  group: tech-rotation-research-${{ github.ref_name }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: tech-rotation
+
+jobs:
+  daten:
+    name: Daten beschaffen
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Die aktuelle Spitze, nicht der ausloesende Commit: ein nachgereihter
+          # Lauf soll sehen, was der vorige schon geholt hat, statt alles
+          # doppelt zu laden und beim Zurueckschreiben zu kollidieren.
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Abhaengigkeiten installieren
+        # html5lib: Rueckfallparser von pandas.read_html, wenn lxml eine Seite
+        # nicht verarbeitet -- beim Listenartikel ist das der Fall.
+        run: pip install -e . lxml html5lib
+
+      - name: Indexzusammensetzung (Wikipedia-Versionsgeschichte)
+        run: python research/fetch_snapshots.py
+
+      - name: Kurse aller historischen Mitglieder
+        # Erst moeglich, wenn aus den Schnappschuessen ein Universum gebaut
+        # und committet wurde -- das passiert lokal, mit Pruefung von Hand.
+        run: |
+          if [ -f research/data/universe/membership.csv ] && [ -f research/fetch_prices.py ]; then
+            python research/fetch_prices.py
+          else
+            echo "Noch kein Universum -- Kursabruf uebersprungen."
+          fi
+
+      - name: Ergebnis zurueckschreiben
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # -A auf den Elternordner: leere Unterordner sind in git nicht
+          # verfolgt, ein expliziter Pfad darauf liesse den Schritt scheitern.
+          git add -A research
+          if git diff --cached --quiet; then
+            echo "Nichts Neues."
+            exit 0
+          fi
+          git commit -m "Forschung: Eingangsdaten $(date -u +%Y-%m-%d)"
+          # Zwischenzeitliche Pushes vom Entwicklungsbranch nicht ueberfahren.
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin "HEAD:${{ github.ref_name }}"

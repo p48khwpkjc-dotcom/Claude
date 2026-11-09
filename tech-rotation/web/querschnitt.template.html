@@ -130,6 +130,28 @@ header.kopf p { color: var(--ink-2); margin: 6px 0 0; max-width: 54ch; font-size
 }
 .kennzahl dd small { font-size: 11px; color: var(--ink-3); font-weight: 400; display: block; font-family: var(--font-body); }
 
+/* ---------- Lage des Laufs ---------- */
+.notizen { display: grid; gap: 7px; margin-block: 16px 0; }
+.notiz {
+  display: grid;
+  grid-template-columns: 9px minmax(0, 1fr);
+  gap: 11px;
+  align-items: start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-2);
+  border-radius: 0 3px 3px 0;
+  padding: 10px 13px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.notiz.warnung { border-left-color: var(--critical); }
+.notiz.ruhig { border-left-color: var(--s1); }
+.notiz b { color: var(--ink); font-weight: 600; }
+.notiz .punkt { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; background: var(--line-2); }
+.notiz.warnung .punkt { background: var(--critical); }
+.notiz.ruhig .punkt { background: var(--s1); }
+
 /* ---------- Abschnitte ---------- */
 section { margin-block: 44px; }
 section > h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
@@ -375,6 +397,7 @@ footer {
   </header>
 
   <dl class="kennzahlen" id="kennzahlen"></dl>
+  <div class="notizen" id="notizen"></div>
 
   <section>
     <h2>Der Score, aufgeschlüsselt</h2>
@@ -592,16 +615,56 @@ footer {
   function zeichneKennzahlen(reihen) {
     const zugelassen = reihen.filter(r => r.eligible).length;
     const gehalten = reihen.filter(r => r.shares).length;
+    // Wichtig: `invested_weight` aus dem Export ist die ZIEL-Exposure dieses
+    // Laufs, nicht der Ist-Zustand. Weichen beide ab -- etwa weil der
+    // Regimefilter das Ziel auf null kappt, aber kein Rebalancing faellig
+    // ist -- haelt das Depot weiter Positionen. Hier steht deshalb der Ist-
+    // Stand vorn und das Ziel darunter.
+    const istInvestiert = reihen.reduce((a, r) => a + (r.current_weight ?? 0), 0);
+    const zielInvestiert = D.portfolio.invested_weight ?? 0;
     const werte = [
       ["Universum", f0.format(reihen.length), "Tech-Titel geprüft"],
       ["Zugelassen", `${zugelassen}`, `${reihen.length - zugelassen} gesperrt`],
       ["Im Depot", `${gehalten}`, `Ziel ${D.rules.top_n} Titel`],
       ["Depotwert", geld(D.portfolio.equity), "USD, Papierdepot"],
-      ["Investiert", pct(D.portfolio.invested_weight), `${pct(D.portfolio.cash_weight)} Cash`],
+      ["Investiert", pct(istInvestiert), `${pct(1 - istInvestiert)} Cash · Ziel ${pct(zielInvestiert)}`],
       ["Erwartete Vol", pct(D.exposure.realized_vol), `Ziel ${pct(D.rules.vol_target, 0)}`],
     ];
     document.getElementById("kennzahlen").innerHTML = werte.map(([k, v, s]) => `
       <div class="kennzahl"><dt>${k}</dt><dd>${v}<small>${s}</small></dd></div>`).join("");
+  }
+
+  // ---------- Lage des Laufs ----------
+  function zeichneNotizen(reihen) {
+    const notizen = [];
+    const istInvestiert = reihen.reduce((a, r) => a + (r.current_weight ?? 0), 0);
+    const zielInvestiert = D.portfolio.invested_weight ?? 0;
+
+    if (!D.exposure.regime_ok) {
+      notizen.push(["warnung", "Marktfilter gerissen.",
+        `${D.benchmark} steht unter dem Schnitt der letzten ${D.rules.regime_sma} Tage. `
+        + "Die Zielexposure ist damit auf null gekappt: der Bot würde heute nichts halten."]);
+    }
+    if (!D.due) {
+      notizen.push(["ruhig", "Heute wird nicht gehandelt.",
+        `Letztes Rebalancing ${D.portfolio.last_rebalance ?? "nie"}, das nächste im Folgemonat. `
+        + `Das Depot hält weiter ${pct(istInvestiert)} in Aktien`
+        + (Math.abs(istInvestiert - zielInvestiert) > 0.005
+            ? ` – obwohl die Zielexposure bei ${pct(zielInvestiert)} liegt. Die Rangliste unten zeigt, `
+              + "was der Bot am nächsten Monatstermin daraus machen würde."
+            : ".")]);
+    }
+    if (D.exposure.current_drawdown > 0.05) {
+      const bremst = D.exposure.drawdown_scalar < 1;
+      notizen.push([bremst ? "warnung" : "", "Drawdown " + pct(D.exposure.current_drawdown) + ".",
+        bremst
+          ? `Die Drawdown-Bremse drosselt die Exposure auf den Faktor ${f2.format(D.exposure.drawdown_scalar)}.`
+          : "Die Drawdown-Bremse greift noch nicht; sie setzt erst weiter unten ein."]);
+    }
+
+    document.getElementById("notizen").innerHTML = notizen.map(([art, titel, text]) => `
+      <div class="notiz ${art}"><span class="punkt"></span>
+        <span><b>${titel}</b> ${text}</span></div>`).join("");
   }
 
   // ---------- Signal-Regler ----------
@@ -953,6 +1016,7 @@ footer {
       verdrahteSchalter();
     }
     zeichneKennzahlen(reihen);
+    zeichneNotizen(reihen);
     aktualisiereReglerWerte();
     zeichneLeiter(reihen);
     zeichneRegeln(reihen);
