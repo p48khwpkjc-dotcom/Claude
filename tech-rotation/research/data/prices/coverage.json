@@ -372,8 +372,10 @@
   "von": "2017-01-03"
  },
  "FI": {
-  "fehlt": true,
-  "quelle": null
+  "bis": "2026-11-06",
+  "quelle": "yfinance:FISV",
+  "tage": 2476,
+  "von": "2017-01-03"
  },
  "FOX": {
   "bis": "2026-11-06",
