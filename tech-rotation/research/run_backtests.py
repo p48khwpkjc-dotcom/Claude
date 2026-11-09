@@ -9,13 +9,20 @@ Ergebnis wertlos gemacht.
 
 Varianten
 ---------
-ehrlich         Universum = Nasdaq-100 zum jeweiligen Stichtag
+tech            HAUPTFALL. Universum = Nasdaq-100-Mitglieder der Sektoren
+                Information Technology und Communication Services, jeweils
+                zum Stichtag. Die ehrliche Fassung der Tech-Rotation.
+ndx             Universum = gesamter Nasdaq-100 zum Stichtag. Keine einzige
+                Klassifikationsentscheidung -- die Probe, ob das Ergebnis am
+                Sektorfilter haengt.
 verzerrt        Universum = die 36 Titel aus config.yaml, im Sept. 2026 gewaehlt
-ehrlich_teuer   wie ehrlich, mit 25 bp Slippage und 5 bp Gebuehr statt 5 + 1
+tech_teuer      wie tech, mit 25 bp Slippage und 5 bp Gebuehr statt 5 + 1
+tech_monatsende wie tech, Umschichtung zum Monatsende statt -anfang. Haengt das
+                Ergebnis am Termin, war es Timing-Glueck.
 qqq             QQQ kaufen und halten
 qqq_regeln      QQQ durch dieselben Regeln (Regime, Vol-Ziel, Bremse, Trend) --
                 also alles ausser der Einzeltitelauswahl
-gleichgewichtet alle Indexmitglieder zu gleichen Teilen, monatlich neu gewichtet
+gleichgewichtet alle Tech-Mitglieder zu gleichen Teilen, monatlich neu gewichtet
 
     python research/run_backtests.py
 """
@@ -64,9 +71,20 @@ def lade_kurse() -> PriceData:
     return PriceData(close=close.loc[tage], volume=volume.loc[tage])
 
 
-def lade_universum() -> dict[str, list[str]]:
+def lade_universum(nur_tech: bool) -> dict[str, list[str]]:
     m = pd.read_csv(DATEN / "universe" / "membership.csv", dtype=str)
+    if nur_tech:
+        m = m[m["tech"].str.lower() == "true"]
     return {monat: sorted(g["symbol"].dropna().unique()) for monat, g in m.groupby("month")}
+
+
+def stichtagsfunktion(mitglieder: dict[str, list[str]]):
+    def universum(tag: pd.Timestamp) -> list[str]:
+        # Schnappschuss vom Ersten des Monats, 00:00 UTC. Ein Signal am ersten
+        # Handelstag liegt nie davor. Beim Monatsende-Termin gilt ebenfalls
+        # der Stand vom Ersten desselben Monats -- also aelter, nie juenger.
+        return mitglieder.get(tag.strftime("%Y-%m"), [])
+    return universum
 
 
 def ersetze(cfg: Config, **pfade: object) -> Config:
@@ -158,12 +176,9 @@ def main() -> int:
     ERGEBNIS.mkdir(parents=True, exist_ok=True)
     basis = load_config(HIER.parent / "config.yaml")
     prices = lade_kurse()
-    mitglieder = lade_universum()
-
-    def universum(tag: pd.Timestamp) -> list[str]:
-        # Schnappschuss vom Ersten des Monats, 00:00 UTC. Der Signaltag ist der
-        # erste Handelstag des Monats und liegt damit nie davor.
-        return mitglieder.get(tag.strftime("%Y-%m"), [])
+    tech = stichtagsfunktion(lade_universum(nur_tech=True))
+    ndx = stichtagsfunktion(lade_universum(nur_tech=False))
+    universum = tech  # Hauptfall: der gleichgewichtete Vergleich bezieht sich darauf
 
     # ---- Datenabdeckung zum Signaltag ------------------------------------
     signaltage = [
@@ -173,7 +188,8 @@ def main() -> int:
     fehl_monate: Counter[str] = Counter()
     abdeckung = []
     for tag in signaltage:
-        alle = universum(tag)
+        # Ueber den ganzen Index, nicht nur Tech: die strengere Zahl.
+        alle = ndx(tag)
         mit = [s for s in alle if s in prices.close.columns and pd.notna(prices.close.at[tag, s])]
         for s in set(alle) - set(mit):
             fehl_monate[s] += 1
@@ -186,12 +202,14 @@ def main() -> int:
 
     # ---- Varianten -------------------------------------------------------
     varianten = {
-        "ehrlich": (basis, universum),
+        "tech": (basis, tech),
+        "ndx": (basis, ndx),
         "verzerrt": (basis, None),
-        "ehrlich_teuer": (
+        "tech_teuer": (
             ersetze(basis, **{"execution.slippage_bps": 25.0, "execution.commission_bps": 5.0}),
-            universum,
+            tech,
         ),
+        "tech_monatsende": (ersetze(basis, **{"backtest.rebalance": "month_end"}), tech),
         "qqq_regeln": (
             ersetze(
                 basis,
@@ -226,7 +244,7 @@ def main() -> int:
         print(f"   CAGR {g['cagr']:+.1%}  Vol {g['volatility']:.1%}  Sharpe {g['sharpe']:.2f}  "
               f"MaxDD {g['max_drawdown']:.1%}")
         details[name] = res
-        if name == "ehrlich":
+        if name == "tech":
             kurven["qqq"] = res.benchmark
             ergebnisse["qqq"] = kennzahlen(res.benchmark)
 
@@ -236,16 +254,17 @@ def main() -> int:
     ergebnisse["gleichgewichtet"] = kennzahlen(kurven["gleichgewichtet"])
 
     # ---- Was hat die ehrliche Variante eigentlich gekauft? ----------------
-    eh = details["ehrlich"].rebalances
+    eh = details["tech"].rebalances
     auswahl = Counter(t for s in eh["selected"].dropna() for t in s.split(",") if t)
     nicht_in_live = {t: n for t, n in auswahl.items() if t not in basis.tickers}
 
     # ---- Schreiben ------------------------------------------------------
     gemeinsam = pd.DataFrame(kurven).dropna(how="all")
     gemeinsam.to_csv(ERGEBNIS / "equity.csv", float_format="%.2f")
-    eh.to_csv(ERGEBNIS / "rebalances_ehrlich.csv", index=False)
-    details["ehrlich"].trades.to_csv(ERGEBNIS / "trades_ehrlich.csv", index=False)
-    details["ehrlich"].delistings.to_csv(ERGEBNIS / "delistings_ehrlich.csv", index=False)
+    eh.to_csv(ERGEBNIS / "rebalances_tech.csv", index=False)
+    details["tech"].trades.to_csv(ERGEBNIS / "trades_tech.csv", index=False)
+    details["tech"].delistings.to_csv(ERGEBNIS / "delistings_tech.csv", index=False)
+    details["ndx"].rebalances.to_csv(ERGEBNIS / "rebalances_ndx.csv", index=False)
     details["verzerrt"].rebalances.to_csv(ERGEBNIS / "rebalances_verzerrt.csv", index=False)
 
     quellen = json.loads((DATEN / "prices" / "coverage.json").read_text())
@@ -277,9 +296,9 @@ def main() -> int:
             "schnappschuesse": len(snap_index),
             "revisionen": {k: v.get("revid") for k, v in sorted(snap_index.items())},
         },
-        "auswahl_ehrlich": dict(auswahl.most_common()),
-        "auswahl_ehrlich_nicht_in_live_liste": dict(sorted(nicht_in_live.items(), key=lambda x: -x[1])),
-        "delistings_ehrlich": details["ehrlich"].delistings.to_dict(orient="records"),
+        "auswahl_tech": dict(auswahl.most_common()),
+        "auswahl_tech_nicht_in_live_liste": dict(sorted(nicht_in_live.items(), key=lambda x: -x[1])),
+        "delistings_tech": details["tech"].delistings.to_dict(orient="records"),
     }
     (ERGEBNIS / "ergebnisse.json").write_text(
         json.dumps(sauber(bericht), indent=1, ensure_ascii=False), encoding="utf-8"
