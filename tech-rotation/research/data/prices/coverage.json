@@ -155,6 +155,12 @@
   "tage": 2476,
   "von": "2017-01-03"
  },
+ "BIL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
  "BKNG": {
   "bis": "2026-11-06",
   "quelle": "yfinance",
