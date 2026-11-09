@@ -1,0 +1,512 @@
+//@version=6
+// ════════════════════════════════════════════════════════════════════════════════
+//  MNQ 1AM Range Breakout · Regime Lab
+//  Chart:  MNQ1! · 5 minutes (any timeframe that divides 15m works: 1m, 3m, 5m, 15m)
+//
+//  Core rules
+//   • Range  = high / low of 01:00–01:15 New York time (three 5m candles)
+//   • Long   = a candle BODY closes above the range high  → stop at range low,  target 0.5R
+//   • Short  = a candle BODY closes below the range low   → stop at range high, target 0.5R
+//   • Flat at the end of the holding window (default 15:50 NY)
+//
+//  Regime filters (select in "Regime filter" – compare all of them in the table)
+//   F1  Daily EMA trend          – trade only in the direction of the daily trend
+//   F2  Daily ATR percentile     – trade only in a chosen volatility regime
+//   F3  Range width vs daily ATR – skip ranges that are too tight / too wide
+//   F4  ADX (higher timeframe)   – trade only when the market is trending
+//   F5  VIX level                – trade only in a chosen risk-sentiment regime
+//  Every filter can be inverted, and two filters can be combined (A AND B).
+//
+//  All higher-timeframe values use the previous, completed bar ([1] + lookahead_on),
+//  so nothing repaints and there is no look-ahead bias.
+// ════════════════════════════════════════════════════════════════════════════════
+strategy("MNQ 1AM Range Breakout · Regime Lab", shorttitle = "1AM ORB Lab", overlay = true,
+     initial_capital = 25000, currency = currency.USD,
+     default_qty_type = strategy.fixed, default_qty_value = 1,
+     commission_type = strategy.commission.cash_per_contract, commission_value = 0.75,
+     slippage = 1, process_orders_on_close = true,
+     margin_long = 0, margin_short = 0, pyramiding = 0,
+     max_boxes_count = 500)
+
+// ───────────────────────────── Constants ─────────────────────────────
+const string TZ = "America/New_York"
+
+const string F0 = "0 · None (baseline)"
+const string F1 = "1 · Daily EMA trend"
+const string F2 = "2 · Daily ATR percentile"
+const string F3 = "3 · Range width vs daily ATR"
+const string F4 = "4 · ADX trend strength"
+const string F5 = "5 · VIX level"
+
+const string G_SES = "Session (New York time)"
+const string G_TRD = "Trade"
+const string G_BT  = "Backtest window"
+const string G_FLT = "Regime filter"
+const string G_F1  = "F1 · Daily EMA trend"
+const string G_F2  = "F2 · Daily ATR percentile (volatility regime)"
+const string G_F3  = "F3 · Range width vs daily ATR"
+const string G_F4  = "F4 · ADX trend strength"
+const string G_F5  = "F5 · VIX level (risk sentiment)"
+const string G_DSP = "Display"
+const string G_ALR = "Automation (webhook alerts)"
+
+// ───────────────────────────── Inputs ─────────────────────────────
+rangeSess = input.session("0100-0115", "Opening range", group = G_SES,
+     tooltip = "The high and low of this window form the range. Default 01:00–01:15 New York.")
+entrySess = input.session("0115-1000", "Entry window", group = G_SES,
+     tooltip = "New entries are only allowed on candles that open inside this window.")
+holdSess  = input.session("0115-1550", "Holding window", group = G_SES,
+     tooltip = "An open position is closed at market on the first candle outside this window.")
+
+confirmMode = input.string("Close", "Breakout confirmation", options = ["Close", "Full body"], group = G_TRD,
+     tooltip = "Close: the candle closes beyond the range.\nFull body: open AND close are beyond the range.")
+rrTarget   = input.float(0.5, "Target (R multiple)", minval = 0.1, step = 0.1, group = G_TRD)
+slBufTicks = input.int(0, "Stop buffer (ticks)", minval = 0, group = G_TRD,
+     tooltip = "Extra ticks beyond the opposite side of the range. 0 = stop exactly on the range.")
+maxTrades  = input.int(1, "Max trades per day", minval = 1, maxval = 10, group = G_TRD,
+     tooltip = "A new trade in the same direction needs a close back inside the range first.")
+qtyMode    = input.string("Fixed contracts", "Position sizing", options = ["Fixed contracts", "Fixed $ risk"], group = G_TRD)
+fixedQty   = input.int(1, "Contracts", minval = 1, group = G_TRD)
+riskUsd    = input.float(200, "$ risk per trade", minval = 1, group = G_TRD,
+     tooltip = "Only for 'Fixed $ risk'. Contracts = $ risk / (stop distance × point value), at least 1.")
+maxQty     = input.int(10, "Max contracts", minval = 1, group = G_TRD)
+
+useWindow = input.bool(false, "Limit entries to date range", group = G_BT,
+     tooltip = "Use this for in-sample / out-of-sample tests.")
+startT    = input.time(timestamp("01 Jan 2024 00:00 -0500"), "Start", group = G_BT)
+endT      = input.time(timestamp("31 Dec 2099 00:00 -0500"), "End", group = G_BT)
+
+filterAStr = input.string(F0, "Filter A", options = [F0, F1, F2, F3, F4, F5], group = G_FLT, inline = "A")
+invA       = input.bool(false, "Invert", group = G_FLT, inline = "A")
+filterBStr = input.string(F0, "Filter B (AND)", options = [F0, F1, F2, F3, F4, F5], group = G_FLT, inline = "B")
+invB       = input.bool(false, "Invert", group = G_FLT, inline = "B")
+
+emaLen = input.int(50, "Daily EMA length", minval = 2, group = G_F1,
+     tooltip = "Long only if yesterday's daily close > daily EMA, short only if below.\nInverted = counter-trend only.")
+
+atrLen  = input.int(14, "Daily ATR length (F2 + F3)", minval = 1, group = G_F2)
+pctLook = input.int(100, "Percentile lookback (days)", minval = 10, group = G_F2)
+pctMin  = input.float(20, "Trade if percentile ≥", minval = 0, maxval = 100, group = G_F2, inline = "p")
+pctMax  = input.float(80, "≤", minval = 0, maxval = 100, group = G_F2, inline = "p")
+
+widthMin = input.float(3.0, "Trade if width ≥ % ATR", minval = 0, step = 0.5, group = G_F3, inline = "w")
+widthMax = input.float(12.0, "≤", minval = 0, step = 0.5, group = G_F3, inline = "w",
+     tooltip = "Range height (high − low) as % of yesterday's daily ATR. Check the Today panel to calibrate.")
+
+adxTF  = input.timeframe("60", "ADX timeframe", group = G_F4)
+adxLen = input.int(14, "ADX length", minval = 2, group = G_F4)
+adxThr = input.float(20, "Trade if ADX ≥", minval = 0, group = G_F4,
+     tooltip = "Uses the last completed bar of the ADX timeframe. Inverted = chop regime only.")
+
+vixSym = input.symbol("TVC:VIX", "VIX symbol", group = G_F5)
+vixMin = input.float(0, "Trade if prior VIX close ≥", minval = 0, group = G_F5, inline = "v")
+vixMax = input.float(25, "≤", minval = 0, group = G_F5, inline = "v")
+
+showLevels  = input.bool(true, "Range lines", group = G_DSP)
+showBox     = input.bool(true, "Range box", group = G_DSP)
+showBlocked = input.bool(true, "Mark breakouts blocked by the filter", group = G_DSP)
+showDash    = input.bool(true, "Today panel", group = G_DSP)
+showCmp     = input.bool(true, "Filter comparison table", group = G_DSP)
+
+alertSym = input.string("", "Symbol in alert message", group = G_ALR,
+     tooltip = "Empty = chart ticker. Set the broker contract (e.g. MNQZ2026) if your webhook bridge needs it.\nAlert message: {{strategy.order.alert_message}}")
+
+// ───────────────────────────── Timeframe guard ─────────────────────────────
+if barstate.isfirst
+    int tfSec = timeframe.in_seconds()
+    if not timeframe.isintraday or tfSec > 900 or 900 % tfSec != 0
+        runtime.error("Use an intraday timeframe that divides 15 minutes evenly (5m recommended).")
+
+// ───────────────────────────── Sessions ─────────────────────────────
+bool inRange  = not na(time(timeframe.period, rangeSess, TZ))
+bool inEntry  = not na(time(timeframe.period, entrySess, TZ))
+bool inHold   = not na(time(timeframe.period, holdSess, TZ))
+bool inDate   = not useWindow or (time >= startT and time <= endT)
+bool newRange = inRange and not inRange[1]
+bool rangeEnd = not inRange and inRange[1]
+int  dateKey  = year(time, TZ) * 10000 + month(time, TZ) * 100 + dayofmonth(time, TZ)
+
+// ───────────────────────────── Opening range ─────────────────────────────
+var float rh          = na
+var float rl          = na
+var bool  rangeDone   = false
+var int   rangeKey    = 0
+var box   rBox        = na
+var int   tradesToday = 0
+var bool  armedLong   = true
+var bool  armedShort  = true
+
+if newRange
+    rh          := high
+    rl          := low
+    rangeDone   := false
+    rangeKey    := dateKey
+    tradesToday := 0
+    armedLong   := true
+    armedShort  := true
+    if showBox
+        rBox := box.new(bar_index, high, bar_index, low, border_color = color.new(color.blue, 30), bgcolor = color.new(color.blue, 88))
+else if inRange
+    rh := math.max(rh, high)
+    rl := math.min(rl, low)
+    if showBox and not na(rBox)
+        rBox.set_right(bar_index)
+        rBox.set_top(rh)
+        rBox.set_bottom(rl)
+
+if rangeEnd
+    rangeDone := true
+
+// Range belongs to today (protects against stale ranges on holidays / data gaps)
+bool rangeValid = rangeDone and dateKey == rangeKey and not na(rh)
+
+// ───────────────────────────── Breakout definition ─────────────────────────────
+float bodyHi     = math.max(open, close)
+float bodyLo     = math.min(open, close)
+bool  longBreak  = rangeValid and (confirmMode == "Close" ? close > rh : bodyLo > rh)
+bool  shortBreak = rangeValid and (confirmMode == "Close" ? close < rl : bodyHi < rl)
+
+// ───────────────────────────── Regime data (non-repainting) ─────────────────────────────
+[dClosePrev, dEmaPrev, dAtrPrev, dAtrPct] = request.security(syminfo.tickerid, "D",
+     [close[1], ta.ema(close, emaLen)[1], ta.atr(atrLen)[1], ta.percentrank(ta.atr(atrLen), pctLook)[1]],
+     lookahead = barmerge.lookahead_on)
+
+f_adxPrev(simple int len) =>
+    [diPlus, diMinus, adxVal] = ta.dmi(len, len)
+    adxVal[1]
+
+float adxPrev = request.security(syminfo.tickerid, adxTF, f_adxPrev(adxLen), lookahead = barmerge.lookahead_on)
+float vixPrev = request.security(vixSym, "D", close[1], lookahead = barmerge.lookahead_on, ignore_invalid_symbol = true)
+
+float widthPct = not na(rh) and dAtrPrev > 0 ? (rh - rl) / dAtrPrev * 100 : na
+
+// Raw filter states
+bool f1Valid = not na(dClosePrev) and not na(dEmaPrev)
+bool f1Long  = dClosePrev > dEmaPrev
+bool f1Short = dClosePrev < dEmaPrev
+bool f2Valid = not na(dAtrPct)
+bool f2Pass  = dAtrPct >= pctMin and dAtrPct <= pctMax
+bool f3Valid = not na(widthPct)
+bool f3Pass  = widthPct >= widthMin and widthPct <= widthMax
+bool f4Valid = not na(adxPrev)
+bool f4Pass  = adxPrev >= adxThr
+bool f5Valid = not na(vixPrev)
+bool f5Pass  = vixPrev >= vixMin and vixPrev <= vixMax
+
+f_id(string s) =>
+    switch s
+        F1 => 1
+        F2 => 2
+        F3 => 3
+        F4 => 4
+        F5 => 5
+        => 0
+
+f_name(int id) =>
+    switch id
+        1 => "F1 Daily EMA trend"
+        2 => "F2 ATR percentile"
+        3 => "F3 Range width/ATR"
+        4 => "F4 ADX trend"
+        5 => "F5 VIX level"
+        => "Baseline (no filter)"
+
+// Does filter `id` allow a trade in this direction? id 0 = no filter.
+f_pass(int id, bool isLong, bool inv) =>
+    bool valid = switch id
+        1 => f1Valid
+        2 => f2Valid
+        3 => f3Valid
+        4 => f4Valid
+        5 => f5Valid
+        => true
+    bool raw = switch id
+        1 => isLong ? f1Long : f1Short
+        2 => f2Pass
+        3 => f3Pass
+        4 => f4Pass
+        5 => f5Pass
+        => true
+    id == 0 or (valid and (inv ? not raw : raw))
+
+int  fA      = f_id(filterAStr)
+int  fB      = f_id(filterBStr)
+bool longOK  = f_pass(fA, true, invA) and f_pass(fB, true, invB)
+bool shortOK = f_pass(fA, false, invA) and f_pass(fB, false, invB)
+
+// ───────────────────────────── Helpers ─────────────────────────────
+f_qty(float riskPts) =>
+    float q = fixedQty
+    if qtyMode == "Fixed $ risk" and riskPts > 0
+        q := math.max(1, math.min(maxQty, math.floor(riskUsd / (riskPts * syminfo.pointvalue))))
+    q
+
+f_msg(string action, float qty, float entry, float sl, float tp) =>
+    string sym = alertSym == "" ? syminfo.ticker : alertSym
+    string msg = '{"symbol":"' + sym + '","action":"' + action + '","qty":' + str.tostring(qty)
+    if not na(entry)
+        msg += ',"entry":' + str.tostring(entry, format.mintick) + ',"stop":' + str.tostring(sl, format.mintick) + ',"target":' + str.tostring(tp, format.mintick)
+    msg + ',"time":"' + str.format_time(time_close, "yyyy-MM-dd HH:mm", TZ) + '"}'
+
+// ───────────────────────────── Strategy logic ─────────────────────────────
+// Re-arm a direction once price closes back inside the range
+if rangeValid
+    if close <= rh
+        armedLong := true
+    if close >= rl
+        armedShort := true
+
+float buf       = slBufTicks * syminfo.mintick
+bool  canTrade  = rangeValid and inEntry and inDate and strategy.position_size == 0 and tradesToday < maxTrades
+bool  baseLong  = canTrade and longBreak and armedLong
+bool  baseShort = canTrade and shortBreak and armedShort
+bool  goLong    = baseLong and longOK
+bool  goShort   = baseShort and shortOK
+
+var float tradeSL = na
+var float tradeTP = na
+
+if goLong
+    float sl = rl - buf
+    float r  = close - sl
+    float tp = math.round_to_mintick(close + rrTarget * r)
+    float q  = f_qty(r)
+    strategy.entry("Long", strategy.long, qty = q, alert_message = f_msg("buy", q, close, sl, tp))
+    strategy.exit("Long Exit", "Long", stop = sl, limit = tp, comment_profit = "TP", comment_loss = "SL",
+         alert_message = f_msg("exit", q, na, na, na))
+    tradeSL     := sl
+    tradeTP     := tp
+    tradesToday += 1
+    armedLong   := false
+else if goShort
+    float sl = rh + buf
+    float r  = sl - close
+    float tp = math.round_to_mintick(close - rrTarget * r)
+    float q  = f_qty(r)
+    strategy.entry("Short", strategy.short, qty = q, alert_message = f_msg("sell", q, close, sl, tp))
+    strategy.exit("Short Exit", "Short", stop = sl, limit = tp, comment_profit = "TP", comment_loss = "SL",
+         alert_message = f_msg("exit", q, na, na, na))
+    tradeSL     := sl
+    tradeTP     := tp
+    tradesToday += 1
+    armedShort  := false
+
+// Manage the open position: time exit, or re-anchor the target to the real fill price
+if strategy.position_size != 0
+    float posQty = math.abs(strategy.position_size)
+    if not inHold
+        strategy.close_all(comment = "Time exit", alert_message = f_msg("exit", posQty, na, na, na))
+    else
+        float ep = strategy.position_avg_price
+        if strategy.position_size > 0
+            if ep - tradeSL > 0
+                tradeTP := math.round_to_mintick(ep + rrTarget * (ep - tradeSL))
+            strategy.exit("Long Exit", "Long", stop = tradeSL, limit = tradeTP, comment_profit = "TP", comment_loss = "SL",
+                 alert_message = f_msg("exit", posQty, na, na, na))
+        else
+            if tradeSL - ep > 0
+                tradeTP := math.round_to_mintick(ep - rrTarget * (tradeSL - ep))
+            strategy.exit("Short Exit", "Short", stop = tradeSL, limit = tradeTP, comment_profit = "TP", comment_loss = "SL",
+                 alert_message = f_msg("exit", posQty, na, na, na))
+
+// ───────────────────────────── Filter comparison engine ─────────────────────────────
+// Runs the exact same rules 11 times in parallel (baseline, F1–F5, F1–F5 inverted)
+// and tracks results in R-multiples (no fees). Exits follow the broker-emulator rule:
+// if a candle touches stop AND target, the side closer to the open is assumed first.
+type Sim
+    int   dir       = 0
+    float entry     = na
+    float sl        = na
+    float tp        = na
+    float risk      = na
+    int   dayTrades = 0
+    bool  armedL    = true
+    bool  armedS    = true
+    int   trades    = 0
+    int   wins      = 0
+    float sumR      = 0.0
+    float grossWin  = 0.0
+    float grossLoss = 0.0
+    float peakR     = 0.0
+    float maxDD     = 0.0
+
+method enter(Sim this, int dir, float px, float sl) =>
+    this.dir       := dir
+    this.entry     := px
+    this.sl        := sl
+    this.risk      := math.abs(px - sl)
+    this.tp        := math.round_to_mintick(px + dir * rrTarget * this.risk)
+    this.dayTrades += 1
+    this.armedL    := dir == 1 ? false : this.armedL
+    this.armedS    := dir == -1 ? false : this.armedS
+    this
+
+method exitPx(Sim this) =>
+    float px = na
+    if this.dir == 1
+        if open <= this.sl or open >= this.tp
+            px := open
+        else
+            bool hitSL = low <= this.sl
+            bool hitTP = high >= this.tp
+            if hitSL and hitTP
+                px := (high - open) < (open - low) ? this.tp : this.sl
+            else if hitSL
+                px := this.sl
+            else if hitTP
+                px := this.tp
+    else if this.dir == -1
+        if open >= this.sl or open <= this.tp
+            px := open
+        else
+            bool hitSL = high >= this.sl
+            bool hitTP = low <= this.tp
+            if hitSL and hitTP
+                px := (high - open) < (open - low) ? this.sl : this.tp
+            else if hitSL
+                px := this.sl
+            else if hitTP
+                px := this.tp
+    px
+
+method settle(Sim this, float px) =>
+    float r = (px - this.entry) * this.dir / this.risk
+    this.trades += 1
+    this.sumR   += r
+    if r > 0
+        this.wins     += 1
+        this.grossWin += r
+    else
+        this.grossLoss -= r
+    this.peakR := math.max(this.peakR, this.sumR)
+    this.maxDD := math.max(this.maxDD, this.peakR - this.sumR)
+    this.dir   := 0
+    r
+
+var array<Sim> sims = array.new<Sim>()
+if sims.size() == 0
+    for i = 0 to 10
+        sims.push(Sim.new())
+
+bool simCanTrade = rangeValid and inEntry and inDate
+
+for [i, s] in sims
+    int  fid = i <= 5 ? i : i - 5
+    bool inv = i > 5
+    if newRange
+        s.dayTrades := 0
+        s.armedL    := true
+        s.armedS    := true
+    if s.dir != 0
+        float px = s.exitPx()
+        if not na(px)
+            s.settle(px)
+        else if not inHold
+            s.settle(close)
+    if rangeValid
+        if close <= rh
+            s.armedL := true
+        if close >= rl
+            s.armedS := true
+    if s.dir == 0 and simCanTrade and s.dayTrades < maxTrades
+        if longBreak and s.armedL and f_pass(fid, true, inv)
+            s.enter(1, close, rl - buf)
+        else if shortBreak and s.armedS and f_pass(fid, false, inv)
+            s.enter(-1, close, rh + buf)
+
+// ───────────────────────────── Plots ─────────────────────────────
+bool showLv = showLevels and not na(rh) and (inRange or (rangeValid and inHold))
+plot(showLv ? rh : na, "Range high", color.new(color.teal, 0), 2, plot.style_linebr)
+plot(showLv ? rl : na, "Range low", color.new(color.maroon, 0), 2, plot.style_linebr)
+plot(strategy.position_size != 0 ? tradeSL : na, "Stop", color.new(color.red, 0), 1, plot.style_linebr)
+plot(strategy.position_size != 0 ? tradeTP : na, "Target", color.new(color.green, 0), 1, plot.style_linebr)
+bgcolor(inRange ? color.new(color.blue, 92) : na, title = "Range window")
+plotshape(showBlocked and baseLong and not longOK, "Long blocked by filter", shape.xcross, location.abovebar, color.new(color.orange, 0), size = size.tiny)
+plotshape(showBlocked and baseShort and not shortOK, "Short blocked by filter", shape.xcross, location.belowbar, color.new(color.orange, 0), size = size.tiny)
+
+// Filter values in the Data Window (for calibration)
+plot(dEmaPrev, "F1 · Daily EMA (prev)", display = display.data_window)
+plot(dAtrPct, "F2 · ATR percentile", display = display.data_window)
+plot(widthPct, "F3 · Range width % ATR", display = display.data_window)
+plot(adxPrev, "F4 · ADX (prev)", display = display.data_window)
+plot(vixPrev, "F5 · VIX (prev close)", display = display.data_window)
+
+// ───────────────────────────── Tables ─────────────────────────────
+color C_BG   = color.new(#131722, 10)
+color C_TXT  = color.new(#d1d4dc, 0)
+color C_DIM  = color.new(#787b86, 0)
+color C_GOOD = color.new(#26a69a, 0)
+color C_BAD  = color.new(#ef5350, 0)
+color C_HEAD = color.new(#2a2e39, 0)
+color C_BEST = color.new(#26a69a, 75)
+
+f_stateCol(bool valid, bool pass) =>
+    not valid ? C_DIM : pass ? C_GOOD : C_BAD
+
+f_stateTxt(bool valid, bool pass) =>
+    not valid ? "n/a" : pass ? "PASS" : "FAIL"
+
+f_dirTxt(int id, bool inv) =>
+    id == 0 ? "off" : "L " + (f_pass(id, true, inv) ? "✓" : "✗") + " · S " + (f_pass(id, false, inv) ? "✓" : "✗")
+
+var table dash = table.new(position.top_right, 2, 11, bgcolor = C_BG, border_color = C_HEAD, border_width = 1, frame_color = C_HEAD, frame_width = 1)
+var table cmp  = table.new(position.bottom_right, 7, 13, bgcolor = C_BG, border_color = C_HEAD, border_width = 1, frame_color = C_HEAD, frame_width = 1)
+
+if barstate.islast and showDash
+    string rngTxt = na(rh) ? "—" : (inRange ? "forming · " : "") + "H " + str.tostring(rh, format.mintick) + " · L " + str.tostring(rl, format.mintick)
+    string widTxt = na(rh) ? "—" : str.tostring(rh - rl, format.mintick) + " pts" + (na(widthPct) ? "" : " · " + str.tostring(widthPct, "#.0") + "% ATR")
+    string f1Txt  = not f1Valid ? "n/a" : (f1Long ? "UP" : f1Short ? "DOWN" : "FLAT") + " · EMA " + str.tostring(dEmaPrev, format.mintick)
+    dash.cell(0, 0, "1AM Range Breakout · today", text_color = C_TXT, bgcolor = C_HEAD, text_size = size.small)
+    dash.merge_cells(0, 0, 1, 0)
+    dash.cell(0, 1, "Range", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 1, rngTxt, text_color = C_TXT, text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 2, "Width", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 2, widTxt, text_color = C_TXT, text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 3, "Filter A" + (invA ? " (inv)" : ""), text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 3, fA == 0 ? "none" : f_name(fA) + " · " + f_dirTxt(fA, invA), text_color = C_TXT, text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 4, "Filter B" + (invB ? " (inv)" : ""), text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 4, fB == 0 ? "none" : f_name(fB) + " · " + f_dirTxt(fB, invB), text_color = C_TXT, text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 5, "F1 trend", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 5, f1Txt, text_color = not f1Valid ? C_DIM : f1Long ? C_GOOD : C_BAD, text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 6, "F2 ATR pctile", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 6, (f2Valid ? str.tostring(dAtrPct, "#") + " · " : "") + f_stateTxt(f2Valid, f2Pass), text_color = f_stateCol(f2Valid, f2Pass), text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 7, "F3 width/ATR", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 7, (f3Valid ? str.tostring(widthPct, "#.0") + "% · " : "") + f_stateTxt(f3Valid, f3Pass), text_color = f_stateCol(f3Valid, f3Pass), text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 8, "F4 ADX " + adxTF, text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 8, (f4Valid ? str.tostring(adxPrev, "#.0") + " · " : "") + f_stateTxt(f4Valid, f4Pass), text_color = f_stateCol(f4Valid, f4Pass), text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 9, "F5 VIX", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 9, (f5Valid ? str.tostring(vixPrev, "#.0") + " · " : "") + f_stateTxt(f5Valid, f5Pass), text_color = f_stateCol(f5Valid, f5Pass), text_size = size.small, text_halign = text.align_right)
+    dash.cell(0, 10, "Trades today", text_color = C_DIM, text_size = size.small, text_halign = text.align_left)
+    dash.cell(1, 10, str.tostring(tradesToday) + " / " + str.tostring(maxTrades), text_color = C_TXT, text_size = size.small, text_halign = text.align_right)
+
+if barstate.islast and showCmp
+    // best net R among rows with trades
+    int   bestIdx = -1
+    float bestR   = na
+    for [i, s] in sims
+        if s.trades > 0 and (na(bestR) or s.sumR > bestR)
+            bestR   := s.sumR
+            bestIdx := i
+    array<string> heads = array.from("Filter", "Trades", "Win %", "Net R", "Avg R", "PF", "Max DD R")
+    for [c, h] in heads
+        cmp.cell(c, 0, h, text_color = C_TXT, bgcolor = C_HEAD, text_size = size.small)
+    for [i, s] in sims
+        int    fid  = i <= 5 ? i : i - 5
+        bool   inv  = i > 5
+        bool   sel  = (fid == fA and inv == invA and fid != 0) or (i == 0 and fA == 0 and fB == 0)
+        string name = f_name(fid) + (inv ? " · inv" : "") + (sel ? " ◀" : "")
+        color  rowBg = i == bestIdx ? C_BEST : na
+        float  wr   = s.trades > 0 ? s.wins * 100.0 / s.trades : na
+        float  avgR = s.trades > 0 ? s.sumR / s.trades : na
+        string pf   = s.grossLoss > 0 ? str.tostring(s.grossWin / s.grossLoss, "#.00") : s.trades > 0 ? "∞" : "—"
+        int    row  = i + 1
+        cmp.cell(0, row, name, text_color = C_TXT, bgcolor = rowBg, text_size = size.small, text_halign = text.align_left)
+        cmp.cell(1, row, str.tostring(s.trades), text_color = C_TXT, bgcolor = rowBg, text_size = size.small)
+        cmp.cell(2, row, na(wr) ? "—" : str.tostring(wr, "#.0"), text_color = C_TXT, bgcolor = rowBg, text_size = size.small)
+        cmp.cell(3, row, str.tostring(s.sumR, "#.0"), text_color = s.sumR > 0 ? C_GOOD : s.sumR < 0 ? C_BAD : C_TXT, bgcolor = rowBg, text_size = size.small)
+        cmp.cell(4, row, na(avgR) ? "—" : str.tostring(avgR, "#.000"), text_color = C_TXT, bgcolor = rowBg, text_size = size.small)
+        cmp.cell(5, row, pf, text_color = C_TXT, bgcolor = rowBg, text_size = size.small)
+        cmp.cell(6, row, str.tostring(s.maxDD, "#.0"), text_color = C_TXT, bgcolor = rowBg, text_size = size.small)
+    string foot = "R-multiples, no fees · break-even win rate at " + str.tostring(rrTarget, "#.##") + "R = " + str.tostring(100 / (1 + rrTarget), "#.0") + "%"
+    cmp.cell(0, 12, foot, text_color = C_DIM, text_size = size.tiny, text_halign = text.align_left)
+    cmp.merge_cells(0, 12, 6, 12)
