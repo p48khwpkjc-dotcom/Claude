@@ -1,0 +1,1092 @@
+{
+ "AAL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AAPL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ABNB": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1484,
+  "von": "2020-12-10"
+ },
+ "ADBE": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ADI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ADP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ADSK": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AEP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ALAB": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 662,
+  "von": "2024-03-20"
+ },
+ "ALGN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ALNY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ALXN": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "AMAT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AMD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AMGN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AMZN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ANET": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ANSS": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "APP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1399,
+  "von": "2021-04-15"
+ },
+ "ARM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 791,
+  "von": "2023-09-14"
+ },
+ "ASML": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ATVI": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "AVGO": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AXON": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "AZN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "BIDU": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "BIIB": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "BKNG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "BKR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "BMRN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CA": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "CCEP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CDNS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CDW": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CEG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1206,
+  "von": "2022-01-19"
+ },
+ "CELG": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "CERN": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "CHKP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CHTR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CMCSA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "COST": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CPRT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CRM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CRWD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1863,
+  "von": "2019-06-12"
+ },
+ "CRWV": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 406,
+  "von": "2025-03-28"
+ },
+ "CSCO": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CSGP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CSX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CTAS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CTSH": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "CTXS": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "DASH": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1485,
+  "von": "2020-12-09"
+ },
+ "DDOG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1794,
+  "von": "2019-09-19"
+ },
+ "DLTR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "DOCU": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2145,
+  "von": "2018-04-27"
+ },
+ "DXCM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "EA": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "EBAY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ENPH": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ESRX": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "EXC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "EXPE": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "FANG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "FAST": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "FER": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "FI": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "FOX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1926,
+  "von": "2019-03-13"
+ },
+ "FOXA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1927,
+  "von": "2019-03-12"
+ },
+ "FTNT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "GEHC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 977,
+  "von": "2022-12-15"
+ },
+ "GEN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "GFS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1262,
+  "von": "2021-10-28"
+ },
+ "GILD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "GOOG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "GOOGL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "HAS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "HOLX": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "HON": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "HONA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 102,
+  "von": "2026-06-15"
+ },
+ "HSIC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "IDXX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ILMN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "INCY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "INSM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "INTC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "INTU": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ISRG": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "JBHT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "JD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "KDP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "KHC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "KLAC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LBTYA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LBTYK": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LCID": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1542,
+  "von": "2020-09-18"
+ },
+ "LIN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LITE": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LRCX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "LULU": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MAR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MCHP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MDB": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2275,
+  "von": "2017-10-19"
+ },
+ "MDLZ": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MELI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "META": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MNST": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MPWR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MRNA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1990,
+  "von": "2018-12-07"
+ },
+ "MRVL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MSFT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MSTR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MTCH": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MU": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "MXIM": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "MYL": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "NBIS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 514,
+  "von": "2024-10-21"
+ },
+ "NFLX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "NOW": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "NTAP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "NTES": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "NVDA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "NXPI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ODFL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "OKTA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2410,
+  "von": "2017-04-07"
+ },
+ "ON": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ORCL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ORLY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "PANW": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "PAYX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "PCAR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "PDD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2083,
+  "von": "2018-07-26"
+ },
+ "PEP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "PLTR": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1534,
+  "von": "2020-09-30"
+ },
+ "PTON": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1789,
+  "von": "2019-09-26"
+ },
+ "PYPL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "QCOM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "QQQ": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "QRTEA": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "REGN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "RIVN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1253,
+  "von": "2021-11-10"
+ },
+ "RKLB": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1495,
+  "von": "2020-11-24"
+ },
+ "ROP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ROST": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SBUX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SGEN": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "SHOP": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SHPG": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "SIRI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SMCI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SNDK": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 436,
+  "von": "2025-02-13"
+ },
+ "SNOW": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1544,
+  "von": "2020-09-16"
+ },
+ "SNPS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SOLS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 265,
+  "von": "2025-10-20"
+ },
+ "SPCX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 103,
+  "von": "2026-06-12"
+ },
+ "SPLK": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "SPY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "STX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "SWKS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TCOM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TEAM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TER": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TFCF": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "TFCFA": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "TMUS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TRI": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TSLA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TSM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TTD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TTWO": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "TXN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "UAL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "UBER": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1885,
+  "von": "2019-05-10"
+ },
+ "ULTA": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "VOD": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "VRSK": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "VRSN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "VRTX": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "WBA": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "WBD": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "WDAY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "WDC": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "WMT": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "WTW": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "WYNN": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "XEL": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "XLNX": {
+  "fehlt": true,
+  "quelle": null
+ },
+ "XRAY": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2476,
+  "von": "2017-01-03"
+ },
+ "ZM": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 1900,
+  "von": "2019-04-18"
+ },
+ "ZS": {
+  "bis": "2026-11-06",
+  "quelle": "yfinance",
+  "tage": 2174,
+  "von": "2018-03-16"
+ }
+}
