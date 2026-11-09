@@ -195,10 +195,21 @@ def main() -> int:
                 coverage[sym] = {"quelle": None, "fehlt": True}
                 print(f"  FEHLT: {sym}")
 
+    neu_geladen = [s for s in offen if not coverage.get(s, {}).get("fehlt")]
+    if not neu_geladen:
+        # Nichts Neues: die Dateien nicht anfassen. Neu geschrieben aendern
+        # sie sich sonst byteweise, ohne dass sich ein Kurs geaendert haette,
+        # und jeder Lauf legt Megabytes an Rauschen in die Historie.
+        print("Keine neuen Kurse -- eingefrorener Datensatz bleibt unveraendert.")
+        return 0
+
     close = close.sort_index()
     volume = volume.reindex(index=close.index, columns=close.columns)
-    close.to_csv(pfad_c, float_format="%.8g", compression="gzip")
-    volume.to_csv(pfad_v, float_format="%.8g", compression="gzip")
+    # mtime=0: gleiche Daten ergeben gleiche Bytes. Ohne das stuende im
+    # gzip-Kopf jedes Mal ein neuer Zeitstempel.
+    gz = {"method": "gzip", "mtime": 0}
+    close.to_csv(pfad_c, float_format="%.8g", compression=gz)
+    volume.to_csv(pfad_v, float_format="%.8g", compression=gz)
     pfad_cov.write_text(json.dumps(coverage, indent=1, sort_keys=True))
 
     n_fehlt = sum(1 for v in coverage.values() if v.get("fehlt"))
