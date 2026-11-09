@@ -1,0 +1,11 @@
+variante,name,cagr,vol,sharpe,max_dd,exposure,cagr_19_22,sharpe_19_22,cagr_23_26,sharpe_23_26
+tech,Ehrlich,13.9,19.2,0.64,-24.7,54.4,9.2,0.51,19.0,0.77
+verzerrt,Verzerrt,17.8,19.2,0.82,-23.9,51.4,9.7,0.54,26.9,1.1
+ndx,"Ehrlich, ganzer Index",9.2,19.1,0.42,-29.5,56.0,5.9,0.35,12.8,0.5
+tech_teuer,"Ehrlich, 5-fache Kosten",12.8,19.2,0.59,-24.8,54.4,8.3,0.47,17.7,0.71
+tech_monatsende,"Ehrlich, Monatsende",14.3,18.9,0.66,-23.9,55.1,13.4,0.71,15.2,0.61
+tech_ohne_zins,"Ehrlich, Cash ohne Zins",12.6,19.2,0.58,-24.8,54.4,8.7,0.48,16.9,0.68
+qqq,QQQ halten,20.9,24.0,0.81,-35.1,,15.3,0.63,27.4,1.08
+qqq_gleiches_risiko,"QQQ, gleiches Risiko",17.6,19.2,0.81,-28.6,,12.9,0.63,22.8,1.08
+qqq_regeln,"QQQ, gleiche Regeln",8.2,16.9,0.4,-25.7,67.8,6.4,0.39,10.1,0.41
+gleichgewichtet,Tech gleichgewichtet,19.5,28.0,0.69,-41.1,,14.6,0.57,25.0,0.84
