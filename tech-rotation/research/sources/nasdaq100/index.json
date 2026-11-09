@@ -1,0 +1,3400 @@
+{
+ "2017-12": {
+  "ok": true,
+  "revid": 812610878,
+  "tabellen": [],
+  "wikitext": "2017-12_r812610878.wiki.gz",
+  "zeit": "2017-11-28T21:08:29Z"
+ },
+ "2018-01": {
+  "ok": true,
+  "revid": 816915712,
+  "tabellen": [],
+  "wikitext": "2018-01_r816915712.wiki.gz",
+  "zeit": "2017-12-24T17:09:21Z"
+ },
+ "2018-02": {
+  "ok": true,
+  "revid": 822520144,
+  "tabellen": [],
+  "wikitext": "2018-02_r822520144.wiki.gz",
+  "zeit": "2018-01-26T21:08:29Z"
+ },
+ "2018-03": {
+  "ok": true,
+  "revid": 828106481,
+  "tabellen": [],
+  "wikitext": "2018-03_r828106481.wiki.gz",
+  "zeit": "2018-02-28T16:25:33Z"
+ },
+ "2018-04": {
+  "ok": true,
+  "revid": 831899585,
+  "tabellen": [],
+  "wikitext": "2018-04_r831899585.wiki.gz",
+  "zeit": "2018-03-22T18:51:02Z"
+ },
+ "2018-05": {
+  "ok": true,
+  "revid": 838896259,
+  "tabellen": [],
+  "wikitext": "2018-05_r838896259.wiki.gz",
+  "zeit": "2018-04-30T00:04:07Z"
+ },
+ "2018-06": {
+  "ok": true,
+  "revid": 843366245,
+  "tabellen": [],
+  "wikitext": "2018-06_r843366245.wiki.gz",
+  "zeit": "2018-05-28T17:46:59Z"
+ },
+ "2018-07": {
+  "ok": true,
+  "revid": 847793599,
+  "tabellen": [],
+  "wikitext": "2018-07_r847793599.wiki.gz",
+  "zeit": "2018-06-27T20:25:31Z"
+ },
+ "2018-08": {
+  "ok": true,
+  "revid": 852699124,
+  "tabellen": [],
+  "wikitext": "2018-08_r852699124.wiki.gz",
+  "zeit": "2018-07-30T19:39:09Z"
+ },
+ "2018-09": {
+  "ok": true,
+  "revid": 857294890,
+  "tabellen": [],
+  "wikitext": "2018-09_r857294890.wiki.gz",
+  "zeit": "2018-08-30T20:11:17Z"
+ },
+ "2018-10": {
+  "ok": true,
+  "revid": 858798412,
+  "tabellen": [],
+  "wikitext": "2018-10_r858798412.wiki.gz",
+  "zeit": "2018-09-09T17:39:18Z"
+ },
+ "2018-11": {
+  "ok": true,
+  "revid": 866461468,
+  "tabellen": [],
+  "wikitext": "2018-11_r866461468.wiki.gz",
+  "zeit": "2018-10-30T13:45:27Z"
+ },
+ "2018-12": {
+  "ok": true,
+  "revid": 869592924,
+  "tabellen": [],
+  "wikitext": "2018-12_r869592924.wiki.gz",
+  "zeit": "2018-11-19T16:17:13Z"
+ },
+ "2019-01": {
+  "ok": true,
+  "revid": 875257543,
+  "tabellen": [],
+  "wikitext": "2019-01_r875257543.wiki.gz",
+  "zeit": "2018-12-25T00:35:29Z"
+ },
+ "2019-02": {
+  "ok": true,
+  "revid": 881016095,
+  "tabellen": [
+   {
+    "datei": "2019-02_r881016095_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-01-30T22:26:44Z"
+ },
+ "2019-03": {
+  "ok": true,
+  "revid": 884888976,
+  "tabellen": [
+   {
+    "datei": "2019-03_r884888976_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-02-24T18:01:14Z"
+ },
+ "2019-04": {
+  "ok": true,
+  "revid": 888562557,
+  "tabellen": [
+   {
+    "datei": "2019-04_r888562557_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 105
+   }
+  ],
+  "zeit": "2019-03-19T23:15:00Z"
+ },
+ "2019-05": {
+  "ok": true,
+  "revid": 894872135,
+  "tabellen": [
+   {
+    "datei": "2019-05_r894872135_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-04-30T15:11:38Z"
+ },
+ "2019-06": {
+  "ok": true,
+  "revid": 899583356,
+  "tabellen": [
+   {
+    "datei": "2019-06_r899583356_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-05-31T00:54:33Z"
+ },
+ "2019-07": {
+  "ok": true,
+  "revid": 899583356,
+  "tabellen": [
+   {
+    "datei": "2019-07_r899583356_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-05-31T00:54:33Z"
+ },
+ "2019-08": {
+  "ok": true,
+  "revid": 908090467,
+  "tabellen": [
+   {
+    "datei": "2019-08_r908090467_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-07-27T10:52:08Z"
+ },
+ "2019-09": {
+  "ok": true,
+  "revid": 909843163,
+  "tabellen": [
+   {
+    "datei": "2019-09_r909843163_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-08-07T23:36:09Z"
+ },
+ "2019-10": {
+  "ok": true,
+  "revid": 917838365,
+  "tabellen": [
+   {
+    "datei": "2019-10_r917838365_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-09-25T18:39:18Z"
+ },
+ "2019-11": {
+  "ok": true,
+  "revid": 923476294,
+  "tabellen": [
+   {
+    "datei": "2019-11_r923476294_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-10-28T20:08:55Z"
+ },
+ "2019-12": {
+  "ok": true,
+  "revid": 928626822,
+  "tabellen": [
+   {
+    "datei": "2019-12_r928626822_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-11-30T16:07:07Z"
+ },
+ "2020-01": {
+  "ok": true,
+  "revid": 933321893,
+  "tabellen": [
+   {
+    "datei": "2020-01_r933321893_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2019-12-31T06:42:01Z"
+ },
+ "2020-02": {
+  "ok": true,
+  "revid": 938520141,
+  "tabellen": [
+   {
+    "datei": "2020-02_r938520141_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-02_r938520141_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-01-31T18:31:52Z"
+ },
+ "2020-03": {
+  "ok": true,
+  "revid": 941703939,
+  "tabellen": [
+   {
+    "datei": "2020-03_r941703939_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-03_r941703939_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-02-20T04:27:48Z"
+ },
+ "2020-04": {
+  "ok": true,
+  "revid": 944390238,
+  "tabellen": [
+   {
+    "datei": "2020-04_r944390238_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-04_r944390238_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-03-07T15:31:24Z"
+ },
+ "2020-05": {
+  "ok": true,
+  "revid": 953923975,
+  "tabellen": [
+   {
+    "datei": "2020-05_r953923975_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-05_r953923975_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-04-29T19:25:10Z"
+ },
+ "2020-06": {
+  "ok": true,
+  "revid": 959294807,
+  "tabellen": [
+   {
+    "datei": "2020-06_r959294807_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-06_r959294807_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-05-28T02:22:19Z"
+ },
+ "2020-07": {
+  "ok": true,
+  "revid": 965043448,
+  "tabellen": [
+   {
+    "datei": "2020-07_r965043448_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-07_r965043448_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-06-29T02:19:52Z"
+ },
+ "2020-08": {
+  "ok": true,
+  "revid": 969266760,
+  "tabellen": [
+   {
+    "datei": "2020-08_r969266760_t1.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-08_r969266760_t2.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-07-24T11:26:04Z"
+ },
+ "2020-09": {
+  "ok": true,
+  "revid": 976030055,
+  "tabellen": [
+   {
+    "datei": "2020-09_r976030055_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-09_r976030055_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-08-31T20:01:59Z"
+ },
+ "2020-10": {
+  "ok": true,
+  "revid": 980704158,
+  "tabellen": [
+   {
+    "datei": "2020-10_r980704158_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-10_r980704158_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-09-27T23:34:32Z"
+ },
+ "2020-11": {
+  "ok": true,
+  "revid": 986104052,
+  "tabellen": [
+   {
+    "datei": "2020-11_r986104052_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-11_r986104052_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-10-29T20:24:48Z"
+ },
+ "2020-12": {
+  "ok": true,
+  "revid": 989467113,
+  "tabellen": [
+   {
+    "datei": "2020-12_r989467113_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2020-12_r989467113_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker"
+    ],
+    "zeilen": 103
+   }
+  ],
+  "zeit": "2020-11-19T04:06:30Z"
+ },
+ "2021-01": {
+  "ok": true,
+  "revid": 997352084,
+  "tabellen": [
+   {
+    "datei": "2021-01_r997352084_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 35
+   },
+   {
+    "datei": "2021-01_r997352084_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   }
+  ],
+  "zeit": "2020-12-31T03:04:32Z"
+ },
+ "2021-02": {
+  "ok": true,
+  "revid": 1002784973,
+  "tabellen": [
+   {
+    "datei": "2021-02_r1002784973_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-02_r1002784973_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   }
+  ],
+  "zeit": "2021-01-26T01:22:05Z"
+ },
+ "2021-03": {
+  "ok": true,
+  "revid": 1009137889,
+  "tabellen": [
+   {
+    "datei": "2021-03_r1009137889_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-03_r1009137889_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   }
+  ],
+  "zeit": "2021-02-26T22:48:28Z"
+ },
+ "2021-04": {
+  "ok": true,
+  "revid": 1015153678,
+  "tabellen": [
+   {
+    "datei": "2021-04_r1015153678_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-04_r1015153678_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-04_r1015153678_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-03-30T22:14:59Z"
+ },
+ "2021-05": {
+  "ok": true,
+  "revid": 1019858318,
+  "tabellen": [
+   {
+    "datei": "2021-05_r1019858318_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-05_r1019858318_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-05_r1019858318_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-04-25T20:22:01Z"
+ },
+ "2021-06": {
+  "ok": true,
+  "revid": 1022290305,
+  "tabellen": [
+   {
+    "datei": "2021-06_r1022290305_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-06_r1022290305_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-06_r1022290305_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-05-09T17:24:57Z"
+ },
+ "2021-07": {
+  "ok": true,
+  "revid": 1031130008,
+  "tabellen": [
+   {
+    "datei": "2021-07_r1031130008_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-07_r1031130008_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-07_r1031130008_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-06-30T00:07:12Z"
+ },
+ "2021-08": {
+  "ok": true,
+  "revid": 1035684059,
+  "tabellen": [
+   {
+    "datei": "2021-08_r1035684059_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-08_r1035684059_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-08_r1035684059_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-07-27T03:22:34Z"
+ },
+ "2021-09": {
+  "ok": true,
+  "revid": 1041535953,
+  "tabellen": [
+   {
+    "datei": "2021-09_r1041535953_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-09_r1041535953_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-09_r1041535953_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-08-31T02:41:20Z"
+ },
+ "2021-10": {
+  "ok": true,
+  "revid": 1046359393,
+  "tabellen": [
+   {
+    "datei": "2021-10_r1046359393_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-10_r1046359393_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-10_r1046359393_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-09-25T07:46:17Z"
+ },
+ "2021-11": {
+  "ok": true,
+  "revid": 1052549955,
+  "tabellen": [
+   {
+    "datei": "2021-11_r1052549955_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-11_r1052549955_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-11_r1052549955_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-10-29T20:37:14Z"
+ },
+ "2021-12": {
+  "ok": true,
+  "revid": 1056753112,
+  "tabellen": [
+   {
+    "datei": "2021-12_r1056753112_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2021-12_r1056753112_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2021-12_r1056753112_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-11-23T10:02:00Z"
+ },
+ "2022-01": {
+  "ok": true,
+  "revid": 1062339614,
+  "tabellen": [
+   {
+    "datei": "2022-01_r1062339614_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 36
+   },
+   {
+    "datei": "2022-01_r1062339614_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2022-01_r1062339614_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2021-12-27T21:50:26Z"
+ },
+ "2022-02": {
+  "ok": true,
+  "revid": 1067911522,
+  "tabellen": [
+   {
+    "datei": "2022-02_r1067911522_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-02_r1067911522_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2022-02_r1067911522_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-01-25T19:52:19Z"
+ },
+ "2022-03": {
+  "ok": true,
+  "revid": 1074500543,
+  "tabellen": [
+   {
+    "datei": "2022-03_r1074500543_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-03_r1074500543_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-03_r1074500543_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-02-28T15:56:35Z"
+ },
+ "2022-04": {
+  "ok": true,
+  "revid": 1079704774,
+  "tabellen": [
+   {
+    "datei": "2022-04_r1079704774_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-04_r1079704774_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-04_r1079704774_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-03-28T05:47:22Z"
+ },
+ "2022-05": {
+  "ok": true,
+  "revid": 1084873761,
+  "tabellen": [
+   {
+    "datei": "2022-05_r1084873761_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-05_r1084873761_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-05_r1084873761_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-04-27T03:10:27Z"
+ },
+ "2022-06": {
+  "ok": true,
+  "revid": 1089610542,
+  "tabellen": [
+   {
+    "datei": "2022-06_r1089610542_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-06_r1089610542_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-06_r1089610542_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-05-24T19:43:44Z"
+ },
+ "2022-07": {
+  "ok": true,
+  "revid": 1094882625,
+  "tabellen": [
+   {
+    "datei": "2022-07_r1094882625_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-07_r1094882625_t3.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-07_r1094882625_t6.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-06-25T03:54:48Z"
+ },
+ "2022-08": {
+  "ok": true,
+  "revid": 1099990937,
+  "tabellen": [
+   {
+    "datei": "2022-08_r1099990937_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-08_r1099990937_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-08_r1099990937_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-07-23T17:24:15Z"
+ },
+ "2022-09": {
+  "ok": true,
+  "revid": 1099990937,
+  "tabellen": [
+   {
+    "datei": "2022-09_r1099990937_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-09_r1099990937_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-09_r1099990937_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-07-23T17:24:15Z"
+ },
+ "2022-10": {
+  "ok": true,
+  "revid": 1112139276,
+  "tabellen": [
+   {
+    "datei": "2022-10_r1112139276_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-10_r1112139276_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-10_r1112139276_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-09-24T21:29:04Z"
+ },
+ "2022-11": {
+  "ok": true,
+  "revid": 1113848071,
+  "tabellen": [
+   {
+    "datei": "2022-11_r1113848071_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-11_r1113848071_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-11_r1113848071_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-10-03T14:43:38Z"
+ },
+ "2022-12": {
+  "ok": true,
+  "revid": 1124706982,
+  "tabellen": [
+   {
+    "datei": "2022-12_r1124706982_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2022-12_r1124706982_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2022-12_r1124706982_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-11-30T03:02:01Z"
+ },
+ "2023-01": {
+  "ok": true,
+  "revid": 1128627537,
+  "tabellen": [
+   {
+    "datei": "2023-01_r1128627537_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 37
+   },
+   {
+    "datei": "2023-01_r1128627537_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-01_r1128627537_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2022-12-21T03:37:04Z"
+ },
+ "2023-02": {
+  "ok": true,
+  "revid": 1136723836,
+  "tabellen": [
+   {
+    "datei": "2023-02_r1136723836_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-02_r1136723836_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-02_r1136723836_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-01-31T20:34:44Z"
+ },
+ "2023-03": {
+  "ok": true,
+  "revid": 1139833100,
+  "tabellen": [
+   {
+    "datei": "2023-03_r1139833100_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-03_r1139833100_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-03_r1139833100_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-02-17T03:56:53Z"
+ },
+ "2023-04": {
+  "ok": true,
+  "revid": 1147466925,
+  "tabellen": [
+   {
+    "datei": "2023-04_r1147466925_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-04_r1147466925_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-04_r1147466925_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-03-31T04:15:59Z"
+ },
+ "2023-05": {
+  "ok": true,
+  "revid": 1148916577,
+  "tabellen": [
+   {
+    "datei": "2023-05_r1148916577_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-05_r1148916577_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-05_r1148916577_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-04-09T02:04:54Z"
+ },
+ "2023-06": {
+  "ok": true,
+  "revid": 1157597289,
+  "tabellen": [
+   {
+    "datei": "2023-06_r1157597289_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-06_r1157597289_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-06_r1157597289_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-05-29T17:52:02Z"
+ },
+ "2023-07": {
+  "ok": true,
+  "revid": 1162420528,
+  "tabellen": [
+   {
+    "datei": "2023-07_r1162420528_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-07_r1162420528_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-07_r1162420528_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-06-29T01:54:58Z"
+ },
+ "2023-08": {
+  "ok": true,
+  "revid": 1165811635,
+  "tabellen": [
+   {
+    "datei": "2023-08_r1165811635_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-08_r1165811635_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-08_r1165811635_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-07-17T15:30:01Z"
+ },
+ "2023-09": {
+  "ok": true,
+  "revid": 1171643554,
+  "tabellen": [
+   {
+    "datei": "2023-09_r1171643554_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-09_r1171643554_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-09_r1171643554_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-08-22T11:41:00Z"
+ },
+ "2023-10": {
+  "ok": true,
+  "revid": 1177429481,
+  "tabellen": [
+   {
+    "datei": "2023-10_r1177429481_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-10_r1177429481_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-10_r1177429481_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-09-27T15:16:37Z"
+ },
+ "2023-11": {
+  "ok": true,
+  "revid": 1181632142,
+  "tabellen": [
+   {
+    "datei": "2023-11_r1181632142_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-11_r1181632142_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-11_r1181632142_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-10-24T07:51:53Z"
+ },
+ "2023-12": {
+  "ok": true,
+  "revid": 1185831340,
+  "tabellen": [
+   {
+    "datei": "2023-12_r1185831340_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2023-12_r1185831340_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2023-12_r1185831340_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-11-19T07:45:49Z"
+ },
+ "2024-01": {
+  "ok": true,
+  "revid": 1192374888,
+  "tabellen": [
+   {
+    "datei": "2024-01_r1192374888_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 38
+   },
+   {
+    "datei": "2024-01_r1192374888_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-01_r1192374888_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2023-12-29T00:46:45Z"
+ },
+ "2024-02": {
+  "ok": true,
+  "revid": 1200595893,
+  "tabellen": [
+   {
+    "datei": "2024-02_r1200595893_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-02_r1200595893_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-02_r1200595893_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-01-29T21:26:16Z"
+ },
+ "2024-03": {
+  "ok": true,
+  "revid": 1211099105,
+  "tabellen": [
+   {
+    "datei": "2024-03_r1211099105_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-03_r1211099105_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-03_r1211099105_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-02-29T21:17:27Z"
+ },
+ "2024-04": {
+  "ok": true,
+  "revid": 1215402327,
+  "tabellen": [
+   {
+    "datei": "2024-04_r1215402327_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-04_r1215402327_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-04_r1215402327_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-03-24T22:48:39Z"
+ },
+ "2024-05": {
+  "ok": true,
+  "revid": 1221294485,
+  "tabellen": [
+   {
+    "datei": "2024-05_r1221294485_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-05_r1221294485_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-05_r1221294485_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-04-29T01:46:10Z"
+ },
+ "2024-06": {
+  "ok": true,
+  "revid": 1226340404,
+  "tabellen": [
+   {
+    "datei": "2024-06_r1226340404_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-06_r1226340404_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-06_r1226340404_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-05-30T00:51:14Z"
+ },
+ "2024-07": {
+  "ok": true,
+  "revid": 1231547544,
+  "tabellen": [
+   {
+    "datei": "2024-07_r1231547544_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-07_r1231547544_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-07_r1231547544_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-06-28T22:15:08Z"
+ },
+ "2024-08": {
+  "ok": true,
+  "revid": 1236671800,
+  "tabellen": [
+   {
+    "datei": "2024-08_r1236671800_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 20
+   },
+   {
+    "datei": "2024-08_r1236671800_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-08_r1236671800_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-08_r1236671800_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-07-26T00:01:37Z"
+ },
+ "2024-09": {
+  "ok": true,
+  "revid": 1243178377,
+  "tabellen": [
+   {
+    "datei": "2024-09_r1243178377_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 20
+   },
+   {
+    "datei": "2024-09_r1243178377_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-09_r1243178377_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-09_r1243178377_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-08-30T23:53:11Z"
+ },
+ "2024-10": {
+  "ok": true,
+  "revid": 1246243401,
+  "tabellen": [
+   {
+    "datei": "2024-10_r1246243401_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 20
+   },
+   {
+    "datei": "2024-10_r1246243401_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-10_r1246243401_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-10_r1246243401_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-09-17T19:46:48Z"
+ },
+ "2024-11": {
+  "ok": true,
+  "revid": 1253583359,
+  "tabellen": [
+   {
+    "datei": "2024-11_r1253583359_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 20
+   },
+   {
+    "datei": "2024-11_r1253583359_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-11_r1253583359_t4.csv",
+    "spalten": [
+     "Company",
+     "Symbol",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-11_r1253583359_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-10-26T19:38:53Z"
+ },
+ "2024-12": {
+  "ok": true,
+  "revid": 1259981949,
+  "tabellen": [
+   {
+    "datei": "2024-12_r1259981949_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 21
+   },
+   {
+    "datei": "2024-12_r1259981949_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2024-12_r1259981949_t4.csv",
+    "spalten": [
+     "Company",
+     "Symbol",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2024-12_r1259981949_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-11-28T04:15:15Z"
+ },
+ "2025-01": {
+  "ok": true,
+  "revid": 1265020752,
+  "tabellen": [
+   {
+    "datei": "2025-01_r1265020752_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-01_r1265020752_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 39
+   },
+   {
+    "datei": "2025-01_r1265020752_t4.csv",
+    "spalten": [
+     "Company",
+     "Symbol",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-01_r1265020752_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2024-12-24T17:38:38Z"
+ },
+ "2025-02": {
+  "ok": true,
+  "revid": 1273111564,
+  "tabellen": [
+   {
+    "datei": "2025-02_r1273111564_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-02_r1273111564_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-02_r1273111564_t4.csv",
+    "spalten": [
+     "Company",
+     "Symbol",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-02_r1273111564_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-01-31T19:52:36Z"
+ },
+ "2025-03": {
+  "ok": true,
+  "revid": 1277651003,
+  "tabellen": [
+   {
+    "datei": "2025-03_r1277651003_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-03_r1277651003_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-03_r1277651003_t4.csv",
+    "spalten": [
+     "Company",
+     "Symbol",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-03_r1277651003_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-02-25T22:28:51Z"
+ },
+ "2025-04": {
+  "ok": true,
+  "revid": 1283205731,
+  "tabellen": [
+   {
+    "datei": "2025-04_r1283205731_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-04_r1283205731_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-04_r1283205731_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-04_r1283205731_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-03-31T01:53:04Z"
+ },
+ "2025-05": {
+  "ok": true,
+  "revid": 1288092072,
+  "tabellen": [
+   {
+    "datei": "2025-05_r1288092072_t2.csv",
+    "spalten": [
+     "Milestone[10] (closing)",
+     "Date of Record (closing)[10]",
+     "Trading Days[10]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-05_r1288092072_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-05_r1288092072_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-05_r1288092072_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-04-30T11:22:18Z"
+ },
+ "2025-06": {
+  "ok": true,
+  "revid": 1293291155,
+  "tabellen": [
+   {
+    "datei": "2025-06_r1293291155_t2.csv",
+    "spalten": [
+     "Milestone[9] (closing)",
+     "Date of Record (closing)[9]",
+     "Trading Days[9]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-06_r1293291155_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-06_r1293291155_t4.csv",
+    "spalten": [
+     "Company",
+     "Ticker",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-06_r1293291155_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 79
+   },
+   {
+    "datei": "2025-06_r1293291155_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-05-31T21:52:16Z"
+ },
+ "2025-07": {
+  "ok": true,
+  "revid": 1297071611,
+  "tabellen": [
+   {
+    "datei": "2025-07_r1297071611_t2.csv",
+    "spalten": [
+     "Milestone[9] (closing)",
+     "Date of Record (closing)[9]",
+     "Trading Days[9]"
+    ],
+    "zeilen": 22
+   },
+   {
+    "datei": "2025-07_r1297071611_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-07_r1297071611_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-07_r1297071611_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 205
+   },
+   {
+    "datei": "2025-07_r1297071611_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-06-24T00:44:34Z"
+ },
+ "2025-08": {
+  "ok": true,
+  "revid": 1303281182,
+  "tabellen": [
+   {
+    "datei": "2025-08_r1303281182_t2.csv",
+    "spalten": [
+     "Milestone[9][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[9]",
+     "Trading Days[9]"
+    ],
+    "zeilen": 23
+   },
+   {
+    "datei": "2025-08_r1303281182_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-08_r1303281182_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-08_r1303281182_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 207
+   },
+   {
+    "datei": "2025-08_r1303281182_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-07-30T02:31:37Z"
+ },
+ "2025-09": {
+  "ok": true,
+  "revid": 1308059729,
+  "tabellen": [
+   {
+    "datei": "2025-09_r1308059729_t2.csv",
+    "spalten": [
+     "Milestone[9][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[9]",
+     "Trading Days[9]"
+    ],
+    "zeilen": 23
+   },
+   {
+    "datei": "2025-09_r1308059729_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-09_r1308059729_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-09_r1308059729_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 207
+   },
+   {
+    "datei": "2025-09_r1308059729_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-08-27T07:52:41Z"
+ },
+ "2025-10": {
+  "ok": true,
+  "revid": 1313819214,
+  "tabellen": [
+   {
+    "datei": "2025-10_r1313819214_t2.csv",
+    "spalten": [
+     "Milestone[9][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[9]",
+     "Trading Days[9]"
+    ],
+    "zeilen": 24
+   },
+   {
+    "datei": "2025-10_r1313819214_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-10_r1313819214_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "GICS Sector",
+     "GICS Sub-Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-10_r1313819214_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 207
+   },
+   {
+    "datei": "2025-10_r1313819214_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-09-28T08:32:24Z"
+ },
+ "2025-11": {
+  "ok": true,
+  "revid": 1319703087,
+  "tabellen": [
+   {
+    "datei": "2025-11_r1319703087_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 24
+   },
+   {
+    "datei": "2025-11_r1319703087_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-11_r1319703087_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Sector",
+     "ICB Industry"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2025-11_r1319703087_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 208
+   },
+   {
+    "datei": "2025-11_r1319703087_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-10-31T10:36:56Z"
+ },
+ "2025-12": {
+  "ok": true,
+  "revid": 1324961478,
+  "tabellen": [
+   {
+    "datei": "2025-12_r1324961478_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 24
+   },
+   {
+    "datei": "2025-12_r1324961478_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2025-12_r1324961478_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 102
+   },
+   {
+    "datei": "2025-12_r1324961478_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 208
+   },
+   {
+    "datei": "2025-12_r1324961478_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-11-30T12:54:08Z"
+ },
+ "2026-01": {
+  "ok": true,
+  "revid": 1330182941,
+  "tabellen": [
+   {
+    "datei": "2026-01_r1330182941_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 26
+   },
+   {
+    "datei": "2026-01_r1330182941_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 40
+   },
+   {
+    "datei": "2026-01_r1330182941_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-01_r1330182941_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 215
+   },
+   {
+    "datei": "2026-01_r1330182941_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2025-12-29T23:23:14Z"
+ },
+ "2026-02": {
+  "ok": true,
+  "revid": 1334180983,
+  "tabellen": [
+   {
+    "datei": "2026-02_r1334180983_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 26
+   },
+   {
+    "datei": "2026-02_r1334180983_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-02_r1334180983_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-02_r1334180983_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 218
+   },
+   {
+    "datei": "2026-02_r1334180983_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-01-22T01:14:58Z"
+ },
+ "2026-03": {
+  "ok": true,
+  "revid": 1340907033,
+  "tabellen": [
+   {
+    "datei": "2026-03_r1340907033_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 26
+   },
+   {
+    "datei": "2026-03_r1340907033_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-03_r1340907033_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-03_r1340907033_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 218
+   },
+   {
+    "datei": "2026-03_r1340907033_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-02-28T11:10:00Z"
+ },
+ "2026-04": {
+  "ok": true,
+  "revid": 1341560910,
+  "tabellen": [
+   {
+    "datei": "2026-04_r1341560910_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 26
+   },
+   {
+    "datei": "2026-04_r1341560910_t3.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-04_r1341560910_t4.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-04_r1341560910_t5.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 218
+   },
+   {
+    "datei": "2026-04_r1341560910_t8.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-03-03T21:49:12Z"
+ },
+ "2026-05": {
+  "ok": true,
+  "revid": 1351903947,
+  "tabellen": [
+   {
+    "datei": "2026-05_r1351903947_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 27
+   },
+   {
+    "datei": "2026-05_r1351903947_t4.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-05_r1351903947_t5.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-05_r1351903947_t6.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 219
+   },
+   {
+    "datei": "2026-05_r1351903947_t9.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-04-30T21:08:35Z"
+ },
+ "2026-06": {
+  "ok": true,
+  "revid": 1356794469,
+  "tabellen": [
+   {
+    "datei": "2026-06_r1356794469_t2.csv",
+    "spalten": [
+     "Milestone[6][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[6]",
+     "Trading Days[6]"
+    ],
+    "zeilen": 30
+   },
+   {
+    "datei": "2026-06_r1356794469_t4.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-06_r1356794469_t5.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[14]",
+     "ICB Subsector[14]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-06_r1356794469_t6.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 220
+   },
+   {
+    "datei": "2026-06_r1356794469_t9.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-05-29T21:23:11Z"
+ },
+ "2026-07": {
+  "ok": true,
+  "revid": 1361872969,
+  "tabellen": [
+   {
+    "datei": "2026-07_r1361872969_t2.csv",
+    "spalten": [
+     "Milestone[7][obsolete\u00a0source] (closing)",
+     "Date of Record (closing)[7]",
+     "Trading Days[7]"
+    ],
+    "zeilen": 30
+   },
+   {
+    "datei": "2026-07_r1361872969_t4.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-07_r1361872969_t5.csv",
+    "spalten": [
+     "Ticker",
+     "Company",
+     "ICB Industry[15]",
+     "ICB Subsector[15]"
+    ],
+    "zeilen": 101
+   },
+   {
+    "datei": "2026-07_r1361872969_t6.csv",
+    "spalten": [
+     "Date / Date",
+     "Added / Ticker",
+     "Added / Security",
+     "Removed / Ticker",
+     "Removed / Security",
+     "Reason / Reason"
+    ],
+    "zeilen": 225
+   },
+   {
+    "datei": "2026-07_r1361872969_t9.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "zeit": "2026-06-30T15:59:09Z"
+ },
+ "2026-08": {
+  "ok": true,
+  "revid": 1365260774,
+  "tabellen": [
+   {
+    "datei": "2026-08_r1365260774_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-08_r1365260774_t3.csv",
+    "spalten": [
+     "Milestone (closing)[8]",
+     "Date of Record (closing)[8]",
+     "Trading Days[8]"
+    ],
+    "zeilen": 30
+   },
+   {
+    "datei": "2026-08_r1365260774_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "wikitext": "2026-08_r1365260774.wiki.gz",
+  "zeit": "2026-07-21T07:35:03Z"
+ },
+ "2026-09": {
+  "ok": true,
+  "revid": 1368989338,
+  "tabellen": [
+   {
+    "datei": "2026-09_r1368989338_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-09_r1368989338_t3.csv",
+    "spalten": [
+     "Milestone (closing)[8]",
+     "Date of Record (closing)[8]",
+     "Trading Days[8]"
+    ],
+    "zeilen": 30
+   },
+   {
+    "datei": "2026-09_r1368989338_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "wikitext": "2026-09_r1368989338.wiki.gz",
+  "zeit": "2026-08-12T06:30:10Z"
+ },
+ "2026-10": {
+  "ok": true,
+  "revid": 1376446286,
+  "tabellen": [
+   {
+    "datei": "2026-10_r1376446286_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-10_r1376446286_t3.csv",
+    "spalten": [
+     "Milestone (closing)[8]",
+     "Date of Record (closing)[8]",
+     "Trading Days[8]"
+    ],
+    "zeilen": 30
+   },
+   {
+    "datei": "2026-10_r1376446286_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "wikitext": "2026-10_r1376446286.wiki.gz",
+  "zeit": "2026-09-24T05:04:55Z"
+ },
+ "2026-11": {
+  "ok": true,
+  "revid": 1381716602,
+  "tabellen": [
+   {
+    "datei": "2026-11_r1381716602_t2.csv",
+    "spalten": [
+     "Year",
+     "Closing level",
+     "Change in Index in Points",
+     "Change in Index in\u00a0%"
+    ],
+    "zeilen": 41
+   },
+   {
+    "datei": "2026-11_r1381716602_t3.csv",
+    "spalten": [
+     "Milestone (closing)[13]",
+     "Date of Record (closing)[13]",
+     "Trading Days[13]"
+    ],
+    "zeilen": 31
+   },
+   {
+    "datei": "2026-11_r1381716602_t7.csv",
+    "spalten": [
+     "vteStock market indices",
+     "vteStock market indices.1"
+    ],
+    "zeilen": 34
+   }
+  ],
+  "wikitext": "2026-11_r1381716602.wiki.gz",
+  "zeit": "2026-10-24T09:16:18Z"
+ }
+}
