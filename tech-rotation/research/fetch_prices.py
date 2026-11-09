@@ -36,6 +36,14 @@ START = "2017-01-01"
 # Zusaetzlich zum historischen Index: der Benchmark und die Live-Liste, damit
 # die verzerrte Vergleichsvariante auf demselben Datensatz laeuft.
 EXTRA = ["QQQ", "SPY"]
+# Liefert Yahoo unter dem Indexsymbol nichts, werden diese Symbole versucht.
+# Nur Faelle, in denen dasselbe Unternehmen unter anderem Ticker weiterhandelt;
+# die Kurse werden unter dem urspruenglichen Symbol abgelegt.
+ALTERNATIVEN = {
+    "FI": ["FISV"],       # Fiserv: FISV -> FI (2023) -> zurueck an die Nasdaq
+    "QRTEA": ["QVCGA"],   # Qurate Retail -> QVC Group (2025)
+    "WBD": ["WBDV", "WBDX"],
+}
 
 
 def benoetigte_symbole() -> list[str]:
@@ -97,8 +105,12 @@ def stooq_holen(symbol: str, client: httpx.Client) -> tuple[pd.Series, pd.Series
     try:
         f = pd.read_csv(StringIO(r.text))
     except Exception:  # noqa: BLE001
-        return None
+        f = pd.DataFrame()
     if "Date" not in f.columns or "Close" not in f.columns or f.empty:
+        # Was Stooq stattdessen schickt, sagt, ob die Daten fehlen oder ob
+        # der Abruf abgelehnt wurde -- zwei ganz verschiedene Befunde.
+        print(f"  Stooq {symbol}: HTTP {r.status_code}, {len(r.text)} Bytes: "
+              f"{r.text[:140]!r}")
         return None
     f["Date"] = pd.to_datetime(f["Date"])
     f = f.set_index("Date").sort_index()
@@ -125,7 +137,9 @@ def main() -> int:
     else:
         close, volume, coverage = pd.DataFrame(), pd.DataFrame(), {}
 
-    offen = [s for s in benoetigt if s not in coverage]
+    # Als fehlend markierte Symbole werden erneut versucht: billig, und eine
+    # neue Quelle oder ein Alternativsymbol kann sie inzwischen liefern.
+    offen = [s for s in benoetigt if s not in coverage or coverage[s].get("fehlt")]
     print(f"{len(benoetigt)} Symbole benoetigt, {len(offen)} noch offen")
     if not offen:
         return 0
@@ -151,6 +165,22 @@ def main() -> int:
             eintragen(sym, c_neu[sym], v_neu.get(sym, pd.Series(dtype="float64")), "yfinance")
         else:
             fehlend.append(sym)
+
+    noch_fehlend = []
+    for sym in fehlend:
+        treffer = False
+        for alt_sym in ALTERNATIVEN.get(sym, []):
+            c_alt, v_alt = yfinance_holen([alt_sym], ende)
+            if alt_sym in c_alt.columns and c_alt[alt_sym].notna().sum() > 20:
+                eintragen(sym, c_alt[alt_sym], v_alt.get(alt_sym, pd.Series(dtype="float64")),
+                          f"yfinance:{alt_sym}")
+                print(f"  {sym} ueber Alternativsymbol {alt_sym}: "
+                      f"{coverage[sym]['von']} bis {coverage[sym]['bis']}")
+                treffer = True
+                break
+        if not treffer:
+            noch_fehlend.append(sym)
+    fehlend = noch_fehlend
 
     print(f"yfinance: {len(offen) - len(fehlend)} geladen, {len(fehlend)} ohne Daten -- versuche Stooq")
     with httpx.Client(timeout=30.0, follow_redirects=True,
