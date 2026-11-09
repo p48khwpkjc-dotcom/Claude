@@ -31,11 +31,41 @@
       "skillPath": "skills/ask-sonner/SKILL.md",
       "computedHash": "23f724e97247b2003ccc479f3a9b3af8e4191a0e133b94ee6b73f8405349687f"
     },
+    "coinpaprika-api": {
+      "source": "coinpaprika/skills",
+      "sourceType": "github",
+      "skillPath": "coinpaprika-api/SKILL.md",
+      "computedHash": "b2a93d051d4f9f9fbc19576e2cfc2b685e7db72b0091fea8cf0462592a11c4c6"
+    },
+    "crypto-regime-analyzer": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/crypto-regime-analyzer/SKILL.md",
+      "computedHash": "4c288ba2ec6662b9b30e2ab2d1f48db477d0e29554c94861e5379a23b9f76b07"
+    },
+    "dexpaprika-api": {
+      "source": "coinpaprika/skills",
+      "sourceType": "github",
+      "skillPath": "dexpaprika-api/SKILL.md",
+      "computedHash": "cc11cabb1e399fa5127b9202929a3f7d6c9f7518c2d41ae8de56f0f07cab77b7"
+    },
+    "drawdown-circuit-breaker": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/drawdown-circuit-breaker/SKILL.md",
+      "computedHash": "cea94465f198afb06849548f158351c9ef4bcfa0bf4a105f0d6cb148ab1902ee"
+    },
     "emil-design-eng": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
       "skillPath": "skills/emil-design-eng/SKILL.md",
       "computedHash": "41b0a4dc1a27164fe297845a6c6850a39e9242c42c9be999967fcee9df2c5974"
+    },
+    "exposure-coach": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/exposure-coach/SKILL.md",
+      "computedHash": "9a3a6afe09ccb6363d860171b94ad44b4ca0e1093ff27b00894b9df75f8a5ab8"
     },
     "find-animation-opportunities": {
       "source": "emilkowalski/skill",
@@ -55,6 +85,18 @@
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "eeb219a407e325b687af88db25771cc3018e3148245604112f5ac6990b6fd79c"
     },
+    "macro-regime-detector": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/macro-regime-detector/SKILL.md",
+      "computedHash": "91c1728581d86fa4d80d2a7c39793ac42f8fae15c67bad5689b540b4ea9b85d1"
+    },
+    "market-breadth-analyzer": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/market-breadth-analyzer/SKILL.md",
+      "computedHash": "de7b034da907451056b93d22310dc5d1e02fd7fe274b36b1b10643b941ad9163"
+    },
     "migrate-radix-to-base": {
       "source": "shadcn/ui",
       "sourceType": "github",
@@ -66,6 +108,12 @@
       "sourceType": "github",
       "skillPath": "skills/pick-ui-library/SKILL.md",
       "computedHash": "f8d4d2cf4677bf54b14f35f62a741add93541bfcb67863315a40164365161b49"
+    },
+    "position-sizer": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/position-sizer/SKILL.md",
+      "computedHash": "e1704b2883cb455533ffabe6c55a1b0fc96f003e6c3f481f429eccbbed208f78"
     },
     "prototype": {
       "source": "emilkowalski/skill",
@@ -84,6 +132,36 @@
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "a86630dd9b32722a4ea6846abc6756d5da8f06bdc2343dbc625923cc5c7a758b"
+    },
+    "trader-analyst": {
+      "source": "Jakeschincariol/trader-skill",
+      "sourceType": "github",
+      "skillPath": "trader-analyst/SKILL.md",
+      "computedHash": "d300c26eedb524f81e9ce3790aafa294f30eb39ca808f0285d7f9b12fad06ae1"
+    },
+    "trader-copycat": {
+      "source": "Jakeschincariol/trader-skill",
+      "sourceType": "github",
+      "skillPath": "trader-copycat/SKILL.md",
+      "computedHash": "31c7740e76fe66b0fa6f54285971571beded58d56e88ee7bdd9e82cb6f8cd411"
+    },
+    "trader-memory-core": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/trader-memory-core/SKILL.md",
+      "computedHash": "d0dbc7b2250c298a5ca2f1ed3cee3548fd7ca84cb2cb511e0a0c45967a54bdc3"
+    },
+    "trader-news": {
+      "source": "Jakeschincariol/trader-skill",
+      "sourceType": "github",
+      "skillPath": "trader-news/SKILL.md",
+      "computedHash": "3ffc6887dc0a16351c0476d107e904872df9e7dd3e93da41666b062b7381ec9f"
+    },
+    "uptrend-analyzer": {
+      "source": "tradermonty/claude-trading-skills",
+      "sourceType": "github",
+      "skillPath": "skills/uptrend-analyzer/SKILL.md",
+      "computedHash": "5917868afb723e712dcd20eb3279f824b615826601cf5c5a1b066ea67f8360a4"
     },
     "write-swift": {
       "source": "emilkowalski/skill",
