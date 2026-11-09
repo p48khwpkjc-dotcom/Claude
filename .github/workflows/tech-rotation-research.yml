@@ -31,6 +31,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Die aktuelle Spitze, nicht der ausloesende Commit: ein nachgereihter
+          # Lauf soll sehen, was der vorige schon geholt hat, statt alles
+          # doppelt zu laden und beim Zurueckschreiben zu kollidieren.
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-python@v5
         with:
