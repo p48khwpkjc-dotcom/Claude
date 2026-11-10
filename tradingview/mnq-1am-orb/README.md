@@ -67,20 +67,62 @@ Hinweis: Die Vergleichstabelle simuliert Ein- und Ausstiege zum Schlusskurs (wie
 Stop und Ziel in einer Kerze liegen. Kleine Abweichungen zum Strategy Tester (Slippage, Gebühren,
 Bar Magnifier) sind normal.
 
-## Automatisierung (Webhook)
+## Automatisierung: TradingView → TradersPost → Paper-Konto
 
-Jede Order bringt eine fertige JSON-Nachricht mit:
+Ablauf: TradingView berechnet die Strategie auf seinen Servern und schickt bei jeder Order eine
+Webhook-Nachricht an TradersPost. TradersPost legt die Order samt Stop und Ziel im Paper-/Demo-Konto
+an. Dein Rechner muss dafür nicht laufen.
+
+### Voraussetzungen
+
+| | Warum |
+|---|---|
+| **TradingView-Bezahlplan** (Essential oder höher) | Webhooks gibt es im kostenlosen Plan nicht |
+| **CME-Echtzeitdaten** in TradingView (Zusatzpaket) | Ohne das sind Futures-Kurse 10 Minuten verzögert, der Alarm käme 10 Minuten zu spät |
+| **TradersPost-Konto** mit Paper-Broker (oder Tradovate-/NinjaTrader-Demo) | Führt die Orders aus |
+
+### Einrichtung
+
+1. **TradersPost:** Paper-Broker bzw. Demo-Konto verbinden → *Strategy* anlegen → *Webhook*
+   anlegen → Strategie mit dem Paper-Konto abonnieren (Subscription) → **Webhook-URL kopieren**.
+2. **TradingView:** Chart MNQ1!, 5 Minuten, Strategie drauf. In den Einstellungen unter
+   *Automation* steht das Format standardmäßig auf **TradersPost**. Filter und Größe so einstellen,
+   wie du testen willst.
+3. **Alarm anlegen** (Uhr-Symbol → Bedingung: *1AM ORB Lab*, Auswahl
+   *Order fills and alert() function calls*):
+   - Nachricht: nur `{{strategy.order.alert_message}}`
+   - Benachrichtigungen: **Webhook-URL** = URL aus TradersPost
+   - Ablaufdatum: so lang wie möglich bzw. unbegrenzt
+4. **Testen:** In TradersPost mit dem Test-Werkzeug eine Beispielnachricht schicken (siehe unten)
+   und im Paper-Konto prüfen: Position offen, Stop **und** Ziel als Orders vorhanden. Danach die
+   `exit`-Nachricht schicken und prüfen, dass Position **und** übrige Orders weg sind.
+
+### Nachrichten, die die Strategie schickt
 
 ```json
-{"symbol":"MNQ1!","action":"buy","qty":1,"entry":21234.50,"stop":21210.25,"target":21246.75,"time":"2026-11-09 01:20"}
-{"symbol":"MNQ1!","action":"exit","qty":1,"time":"2026-11-09 01:45"}
+{"ticker":"MNQ1!","action":"sell","orderType":"market","quantity":1,"takeProfit":{"limitPrice":21246.75},"stopLoss":{"type":"stop","stopPrice":21299.25}}
+{"ticker":"MNQ1!","action":"exit"}
 ```
 
-1. Alert erstellen → Bedingung: diese Strategie → **Nachricht:** `{{strategy.order.alert_message}}`
-2. Webhook-URL deines Brückendienstes eintragen (z. B. TradersPost, PickMyTrade, eigener Server).
-3. Unter *Automation* das **Broker-Symbol** setzen (z. B. `MNQZ2026`), falls dein Dienst kein
-   `MNQ1!` versteht, und das JSON-Format bei Bedarf an deinen Dienst anpassen.
-4. Entweder die Bracket-Order (stop/target im Einstieg) **oder** die separaten `exit`-Nachrichten
-   nutzen – nicht beides gleichzeitig ausführen lassen, sonst drohen doppelte Ausstiege.
+- **Einstieg:** Marktorder mit Bracket. Stop und Ziel liegen beim Broker, nicht nur im Chart.
+- **Stop/Ziel getroffen:** keine Nachricht nötig, das erledigt die Bracket-Order.
+- **Zeitausstieg 15:50 NY:** `exit`.
+- **Tägliche Sicherheits-Glattstellung:** Ist die Strategie am Ende des Haltefensters schon flat,
+  geht trotzdem ein `exit` raus. So kann das Konto nie über Nacht eine Position halten, falls
+  Chart und Broker mal auseinanderlaufen. TradersPost meldet das an Tagen ohne Position als
+  „nichts zu schließen“, das ist normal.
 
-Erst im **Paper-Trading** laufen lassen, bevor echtes Geld dranhängt.
+### Was „vollautomatisch“ nicht abdeckt (einmal pro Woche kurz prüfen)
+
+- **Rollover:** MNQ wechselt quartalsweise den Kontrakt (nächster: Dezember 2026, rund eine Woche vor
+  dem Verfall am 18.12.). Prüfe beim Test, ob TradersPost `MNQ1!` automatisch dem Frontmonat
+  zuordnet. Wenn nicht: im Script unter *Symbol in alert message* den Kontrakt eintragen
+  (z. B. `MNQZ2026`) und beim Rollover ändern.
+- **Änderungen am Script oder an den Einstellungen** gelten erst nach **Löschen und Neuanlegen des
+  Alarms**. Der Alarm arbeitet mit dem Stand zum Zeitpunkt seiner Erstellung.
+- **Ablauf des Alarms:** je nach Plan läuft er nach einer Weile ab und muss erneuert werden.
+- **Kontrolle:** Trades im Paper-Konto mit dem Strategy Tester in TradingView vergleichen.
+  Abweichungen deuten auf Probleme mit dem Signal, der Verbindung oder dem Symbol hin.
+
+Erst wenn das Paper-Konto über mehrere Wochen dasselbe zeigt wie der Strategy Tester, über echtes
+Geld nachdenken.

@@ -108,8 +108,12 @@ showBlocked = input.bool(true, "Mark breakouts blocked by the filter", group = G
 showDash    = input.bool(true, "Today panel", group = G_DSP)
 showCmp     = input.bool(true, "Filter comparison table", group = G_DSP)
 
+alertFmt = input.string("TradersPost", "Alert format", options = ["TradersPost", "Generic JSON"], group = G_ALR,
+     tooltip = "TradersPost: the entry carries a broker-side bracket (stop + target), so stop/target fills send no message; only time exits send 'exit'.\nGeneric JSON: entry with stop/target fields, every exit sends an 'exit' message.\nAlert message box: {{strategy.order.alert_message}}")
 alertSym = input.string("", "Symbol in alert message", group = G_ALR,
-     tooltip = "Empty = chart ticker. Set the broker contract (e.g. MNQZ2026) if your webhook bridge needs it.\nAlert message: {{strategy.order.alert_message}}")
+     tooltip = "Empty = chart ticker (MNQ1!). Set the broker contract (e.g. MNQZ2026) if your webhook bridge needs it.")
+safetyFlat = input.bool(true, "Daily safety flatten", group = G_ALR,
+     tooltip = "When the holding window ends and the strategy is flat, an extra 'exit' message is sent, so the broker account can never carry a position overnight. Needs the alert option that includes alert() function calls.")
 
 // ───────────────────────────── Timeframe guard ─────────────────────────────
 if barstate.isfirst
@@ -241,12 +245,25 @@ f_qty(float riskPts) =>
         q := math.max(1, math.min(maxQty, math.floor(riskUsd / (riskPts * syminfo.pointvalue))))
     q
 
+bool isTP = alertFmt == "TradersPost"
+
+// Webhook message. TradersPost: {"ticker","action","orderType","quantity","takeProfit":{"limitPrice"},"stopLoss":{"type","stopPrice"}}
 f_msg(string action, float qty, float entry, float sl, float tp) =>
     string sym = alertSym == "" ? syminfo.ticker : alertSym
-    string msg = '{"symbol":"' + sym + '","action":"' + action + '","qty":' + str.tostring(qty)
-    if not na(entry)
-        msg += ',"entry":' + str.tostring(entry, format.mintick) + ',"stop":' + str.tostring(sl, format.mintick) + ',"target":' + str.tostring(tp, format.mintick)
-    msg + ',"time":"' + str.format_time(time_close, "yyyy-MM-dd HH:mm", TZ) + '"}'
+    string msg = ""
+    if isTP
+        msg := '{"ticker":"' + sym + '","action":"' + action + '"'
+        if not na(entry)
+            msg += ',"orderType":"market","quantity":' + str.tostring(qty)
+            msg += ',"takeProfit":{"limitPrice":' + str.tostring(tp, format.mintick) + '}'
+            msg += ',"stopLoss":{"type":"stop","stopPrice":' + str.tostring(sl, format.mintick) + '}'
+        msg += '}'
+    else
+        msg := '{"symbol":"' + sym + '","action":"' + action + '","qty":' + str.tostring(qty)
+        if not na(entry)
+            msg += ',"entry":' + str.tostring(entry, format.mintick) + ',"stop":' + str.tostring(sl, format.mintick) + ',"target":' + str.tostring(tp, format.mintick)
+        msg += ',"time":"' + str.format_time(time_close, "yyyy-MM-dd HH:mm", TZ) + '"}'
+    msg
 
 // ───────────────────────────── Strategy logic ─────────────────────────────
 // Re-arm a direction once price closes back inside the range
@@ -273,7 +290,7 @@ if goLong
     float q  = f_qty(r)
     strategy.entry("Long", strategy.long, qty = q, alert_message = f_msg("buy", q, close, sl, tp))
     strategy.exit("Long Exit", "Long", stop = sl, limit = tp, comment_profit = "TP", comment_loss = "SL",
-         alert_message = f_msg("exit", q, na, na, na))
+         alert_message = f_msg("exit", q, na, na, na), disable_alert = isTP)
     tradeSL     := sl
     tradeTP     := tp
     tradesToday += 1
@@ -285,29 +302,21 @@ else if goShort
     float q  = f_qty(r)
     strategy.entry("Short", strategy.short, qty = q, alert_message = f_msg("sell", q, close, sl, tp))
     strategy.exit("Short Exit", "Short", stop = sl, limit = tp, comment_profit = "TP", comment_loss = "SL",
-         alert_message = f_msg("exit", q, na, na, na))
+         alert_message = f_msg("exit", q, na, na, na), disable_alert = isTP)
     tradeSL     := sl
     tradeTP     := tp
     tradesToday += 1
     armedShort  := false
 
-// Manage the open position: time exit, or re-anchor the target to the real fill price
-if strategy.position_size != 0
-    float posQty = math.abs(strategy.position_size)
-    if not inHold
-        strategy.close_all(comment = "Time exit", alert_message = f_msg("exit", posQty, na, na, na))
-    else
-        float ep = strategy.position_avg_price
-        if strategy.position_size > 0
-            if ep - tradeSL > 0
-                tradeTP := math.round_to_mintick(ep + rrTarget * (ep - tradeSL))
-            strategy.exit("Long Exit", "Long", stop = tradeSL, limit = tradeTP, comment_profit = "TP", comment_loss = "SL",
-                 alert_message = f_msg("exit", posQty, na, na, na))
-        else
-            if tradeSL - ep > 0
-                tradeTP := math.round_to_mintick(ep - rrTarget * (tradeSL - ep))
-            strategy.exit("Short Exit", "Short", stop = tradeSL, limit = tradeTP, comment_profit = "TP", comment_loss = "SL",
-                 alert_message = f_msg("exit", posQty, na, na, na))
+// Time exit: close at market once the holding window is over.
+// Stop and target stay exactly at the prices sent to the broker, so chart and account stay in sync.
+if strategy.position_size != 0 and not inHold
+    strategy.close_all(comment = "Time exit", alert_message = f_msg("exit", math.abs(strategy.position_size), na, na, na))
+
+// Safety net: if the strategy is already flat when the holding window ends, still send one 'exit'
+// so a broker position that drifted out of sync can never be held overnight.
+if safetyFlat and inHold[1] and not inHold and strategy.position_size == 0
+    alert(f_msg("exit", 0, na, na, na), alert.freq_once_per_bar_close)
 
 // ───────────────────────────── Filter comparison engine ─────────────────────────────
 // Runs the exact same rules 11 times in parallel (baseline, F1–F5, F1–F5 inverted)
